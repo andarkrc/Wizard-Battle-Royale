@@ -2,9 +2,10 @@
   "$GMNotes":"v1",
   "%Name":"Setup",
   "name":"Setup",
+  "openedOnFirstLoad":true,
   "parent":{
-    "name":"Wizard Battle Royale",
-    "path":"Wizard Battle Royale.yyp",
+    "name":"1IMPORTANT",
+    "path":"folders/1IMPORTANT.yy",
   },
   "resourceType":"GMNotes",
   "resourceVersion":"2.0",

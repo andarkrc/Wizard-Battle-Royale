@@ -48,7 +48,7 @@ Aici se seteaza "coding style" (naming conventions)
 - Sequence: UpperCamelCase, prefix: seq
 - Shader: UpperCamelCase, prefix: sh
 - Sound: UpperCamelCase, prefix: snd
-- Sprite: UpperCamelCase, prefix: spr
+- Sprite: UpperCamelCase, prefix: s
 - TileSet: UpperCamelCase, prefix: ts
 - Timeline: UpperCamelCase, prefix: tl
 - Other Resource: Unconstrained
