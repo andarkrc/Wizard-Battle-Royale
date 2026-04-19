@@ -1,0 +1,62 @@
+# SALUT
+
+## Scurt setup inainte sa incepi:
+
+Mergi la:
+
+File -> Preferences
+
+Ti se va deschide meniul de preferinte al engine-ului.
+
+##### Vreau sa tii stii ca trebuie sa apesi pe APPLY ca sa ti se salveze setarile!
+
+Cauta in lista: Text Editor.
+
+Selecteaza apoi Code Editor.
+
+Daca ai tabul de Colours extins, inchide-l.
+
+Acum ar trebui sa ai tab-ul de Options extins. Vreau te rog sa ai selectata optiunea de Keep tabs (sa fie ticked). In rest faci ce vrei.
+
+Acum cauta la preferinte: Feather Settings.
+
+Fa tick pe Enable Feather.
+
+Acum mergi la Naming Rules. 
+
+Asta va dura destul de mult, dar trebuie facut :)
+
+Aici se seteaza "coding style" (naming conventions)
+
+- Instance Variable: all_lower
+- Local Variabble: all_lower
+- Function Parameter: all_lower
+- Enum: ALL_UPPER
+- Enum Member: ALL_UPPER
+- Macro: ALL_UPPER
+- Function: all_lower
+- Constructor Function: UpperCamelCase
+- Animation Curve: UpperCamelCase, prefix: ac
+- Extension: Unconstrained
+- Font: UpperCamelCase, prefix: fn
+- Notes: Unconstrained
+- Object: UpperCamelCase, prefix: o
+- Particle System: UpperCamelCase, prefix: ps
+- Path: UpperCamelCase, prefix: pth
+- Room: UpperCamelCase, prefix: rm
+- Script: UpperCamelCase
+- Sequence: UpperCamelCase, prefix: seq
+- Shader: UpperCamelCase, prefix: sh
+- Sound: UpperCamelCase, prefix: snd
+- Sprite: UpperCamelCase, prefix: spr
+- TileSet: UpperCamelCase, prefix: ts
+- Timeline: UpperCamelCase, prefix: tl
+- Other Resource: Unconstrained
+
+Daca ai facut toate astea, MERSI!
+
+Daca vrei un editor de cod mai fancy (asa cum il am eu), mergi din nou la preferences si cauta: Code Editor 2 (Beta).
+Da click pe el, apoi tick la Enable.
+
+
+
