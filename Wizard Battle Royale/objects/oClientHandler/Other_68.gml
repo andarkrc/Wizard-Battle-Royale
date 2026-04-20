@@ -8,7 +8,7 @@ if (async_load[? "id"] == client) {
 	if (version == global.networking_version) {
 		var type = data.type;
 		// General client packets
-		show_debug_message($"[CLIENT] Received packet of type {type}");
+		//show_debug_message($"[CLIENT] Received packet of type {type}");
 		switch (type) {
 			case PacketType.SV_PONG :
 				ping_received = true;
@@ -16,8 +16,14 @@ if (async_load[? "id"] == client) {
 			
 			case PacketType.SV_INFO_HOST :
 				is_host = true;
-				client_id = data.packet_id;
+				client_id = data.client_id;
 				instance_create_layer(0, 0, "Instances", oInternalServer);
+				signal(data);
+				break;
+			
+			case PacketType.HOST_INFO_CONNECTION_ACCEPTED :
+				client_id = data.client_id;
+				signal(data);
 				break;
 			
 			default:

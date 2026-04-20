@@ -75,28 +75,36 @@ function packet_parse_client_packet(packet)
 }
 
 /// @desc Reads data from a packet from the server and returns a struct containing the data.
+/// @arg {Id.Buffer} packet
 function packet_parse_server_packet(packet)
 {
 	buffer_seek(packet, buffer_seek_start, 0);
 	
 	var version = buffer_read(packet, STRING);
 	var sender = buffer_read(packet, S32);
+	var is_host = buffer_read(packet, BOOL);
 	var data = packet_deserialize_data(packet);
 	
 	struct_set(data, "sender_id", sender);
+	struct_set(data, "sender_is_host", is_host);
 	
 	return data;
 }
 
 /// @desc Creates a new packet.
 /// @desc SHOULD ONLY BE USED BY SERVER.
-function packet_create_server(sender, type, data = {})
+/// @arg {Real} sender
+/// @arg {Bool} is_host
+/// @arg {Real} type
+/// @arg {Struct} data
+function packet_create_server(sender, is_host, type, data = {})
 {
 	var packet = buffer_create(128, buffer_grow, 1);
 	buffer_seek(packet, buffer_seek_start, 0);
 	
 	buffer_write(packet, STRING, global.networking_version);
 	buffer_write(packet, S32, sender);
+	buffer_write(packet, BOOL, is_host);
 	
 	packet_serialize_data(packet, type, data);
 	
@@ -125,7 +133,7 @@ function packet_serialize_data(packet, type, data)
 	var names = struct_get_names(data);
 	for (var i = 0; i < array_length(names); i++) {
 		var name = names[i];
-		if (name == "sender_id" || name == "type") continue;
+		if (name == "sender_id" || name == "type" || name == "sender_is_host") continue;
 		
 		var value = data[$ name];
 		
@@ -178,6 +186,7 @@ function packet_serialize_data(packet, type, data)
 
 /// @desc Reads data from the packet into a struct.
 /// @desc Will read from the position of the buffer cursor.
+/// @arg {Id.Buffer} packet
 function packet_deserialize_data(packet)
 {
 	var data = {};
@@ -206,6 +215,10 @@ function packet_deserialize_data(packet)
 				value = buffer_read(packet, F64);
 				break;
 			
+			case PacketDataType.FLOAT32 :
+				value = buffer_read(packet, F32);
+				break;
+			
 			case PacketDataType.INT32 :
 				value = buffer_read(packet, S32);
 				break;
@@ -215,8 +228,12 @@ function packet_deserialize_data(packet)
 				break;
 			
 			default:
+				value = undefined;
 				show_debug_message($"Unknown type at parsing packet of type {packet_type}: {type} at {name}")
 				break;
+		}
+		if (name == "") {
+			show_debug_message($"EMPTY NAME FOR PARSING PACKET OF TYPE {packet_type}");
 		}
 		if (!struct_exists(data, name)) {
 			struct_set(data, name, value);
@@ -232,15 +249,16 @@ function packet_deserialize_data(packet)
 /// @desc Creates a new packet with the same data, but server packet header.
 /// @arg {Id.Buffer} packet
 /// @arg {Real} sender
+/// @arg {Bool} is_host
 /// @arg {Bool} should_free
-function packet_change_client_to_server(packet, sender, should_free = false)
+function packet_change_client_to_server(packet, sender, is_host, should_free = false)
 {
 	var new_packet = buffer_create(128, buffer_grow, 1);
 	buffer_seek(new_packet, buffer_seek_start, 0);
 	
 	buffer_write(new_packet, STRING, global.networking_version);
 	buffer_write(new_packet, S32, sender);
-	buffer_seek(new_packet, buffer_seek_start, 0);
+	buffer_write(new_packet, BOOL, is_host);
 	var dst_offset = buffer_tell(new_packet);
 	
 	buffer_seek(packet, buffer_seek_start, 0);

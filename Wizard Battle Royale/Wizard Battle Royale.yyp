@@ -30,6 +30,7 @@
   },
   "name":"Wizard Battle Royale",
   "resources":[
+    {"id":{"name":"fnArial12","path":"fonts/fnArial12/fnArial12.yy",},},
     {"id":{"name":"Setup","path":"notes/Setup/Setup.yy",},},
     {"id":{"name":"oClientHandler","path":"objects/oClientHandler/oClientHandler.yy",},},
     {"id":{"name":"oGameplayHandler","path":"objects/oGameplayHandler/oGameplayHandler.yy",},},
@@ -37,6 +38,8 @@
     {"id":{"name":"oPlayer","path":"objects/oPlayer/oPlayer.yy",},},
     {"id":{"name":"oServerHandler","path":"objects/oServerHandler/oServerHandler.yy",},},
     {"id":{"name":"rmTest","path":"rooms/rmTest/rmTest.yy",},},
+    {"id":{"name":"GeneralUseFunctions","path":"scripts/GeneralUseFunctions/GeneralUseFunctions.yy",},},
+    {"id":{"name":"GlobalOptions","path":"scripts/GlobalOptions/GlobalOptions.yy",},},
     {"id":{"name":"NetworkingFunctions","path":"scripts/NetworkingFunctions/NetworkingFunctions.yy",},},
     {"id":{"name":"PacketTypes","path":"scripts/PacketTypes/PacketTypes.yy",},},
     {"id":{"name":"sPlayer","path":"sprites/sPlayer/sPlayer.yy",},},
