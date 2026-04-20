@@ -5,9 +5,9 @@ if (async_load[? "id"] == server)
 	if (type == network_type_connect) {
 		array_push(clients, sock);
 		if (array_length(clients) == 1) {
-			packet_send(sock, packet_create_server(NWTarget.SERVER, PacketType.SV_INFO_HOST, {client_id: sock}));
+			packet_send(sock, packet_create_server(NWTarget.SERVER, true, PacketType.SV_INFO_HOST, {client_id: sock}));
 		} else {
-			packet_send(clients[0], packet_create_server(NWTarget.SERVER, PacketType.SV_INFO_CONNECTION_REQUEST, {client_id: sock}));
+			packet_send(clients[0], packet_create_server(NWTarget.SERVER, true, PacketType.SV_INFO_CONNECTION_REQUEST, {client_id: sock}));
 		}
 	} else if (type == network_type_disconnect) {
 		var idx = -1;
@@ -20,9 +20,9 @@ if (async_load[? "id"] == server)
 		network_destroy(clients[idx]);
 		array_delete(clients, idx, 1);
 		if (idx == 0) { // Basically host just disconnected.
-			packet_send_multiple(clients, packet_create_server(NWTarget.SERVER, PacketType.SV_INFO_HOST_DISCONNECTED));
+			packet_send_multiple(clients, packet_create_server(NWTarget.SERVER, true, PacketType.SV_INFO_HOST_DISCONNECTED));
 		} else {
-			packet_send(clients[0], packet_create_server(NWTarget, PacketType.SV_INFO_CLIENT_DISCONNECTED, {client_id: sock}));
+			packet_send(clients[0], packet_create_server(NWTarget.SERVER, true, PacketType.SV_INFO_CLIENT_DISCONNECTED, {client_id: sock}));
 		}
 	}
 }
@@ -45,7 +45,7 @@ if (async_load[? "type"] == network_type_data &&
 			}
 			switch (type) {
 				case PacketType.CL_PING:
-					packet_send(sock, packet_create_server(NWTarget.SERVER, PacketType.SV_PONG));
+					packet_send(sock, packet_create_server(NWTarget.SERVER, true, PacketType.SV_PONG));
 					break;
 				
 				default:
@@ -55,20 +55,24 @@ if (async_load[? "type"] == network_type_data &&
 			break;
 		
 		case NWTarget.HOST:
-			packet_send(clients[0], packet_change_client_to_server(packet, sock));
+			var is_host = (sock == clients[0]);
+			packet_send(clients[0], packet_change_client_to_server(packet, sock, is_host));
 			break;
 		
 		case NWTarget.OTHER:
-			packet_send_multiple_except(clients, packet_change_client_to_server(packet, sock), sock);
+			var is_host = (sock == clients[0]);
+			packet_send_multiple_except(clients, packet_change_client_to_server(packet, sock, is_host), sock);
 			break;
 		
 		case NWTarget.ALL:
-			packet_send_multiple(clients, packet_change_client_to_server(packet, sock));
+			var is_host = (sock == clients[0]); 
+			packet_send_multiple(clients, packet_change_client_to_server(packet, sock, is_host));
 			break;
 		
 		default:
 			// If packet is malformed, it's gonna crash xd
-			packet_send(target, packet_change_client_to_server(packet, sock));
+			var is_host = (sock == clients[0]);
+			packet_send(target, packet_change_client_to_server(packet, sock, is_host));
 			break;
 	}
 }
