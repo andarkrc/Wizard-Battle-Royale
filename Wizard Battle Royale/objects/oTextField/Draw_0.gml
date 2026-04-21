@@ -1,0 +1,1 @@
+// no sprite in room, just gui
