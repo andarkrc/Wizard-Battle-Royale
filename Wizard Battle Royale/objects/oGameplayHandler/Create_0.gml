@@ -34,8 +34,17 @@ host_sync_player_name_callback = function(data) {
 host_sync_player_position_callback = function(data) {
 	if (!check_host(data)) return;
 	if (data.player_id == oClientHandler.client_id && data.accepted) return;
+	if (!ds_map_exists(player_refs, data.player_id)) return;
 	player_refs[? data.player_id].x = data.x;
 	player_refs[? data.player_id].y = data.y;
+}
+
+host_sync_player_state_callback = function(data) {
+	if (!check_host(data)) return;
+	if (data.player_id == oClientHandler.client_id) return;
+	if (!ds_map_exists(player_refs, data.player_id)) return;
+	player_refs[? data.player_id].state = data.state;
+	player_refs[? data.player_id].image_xscale = data.direction;
 }
 
 with (oClientHandler) {
@@ -43,4 +52,5 @@ with (oClientHandler) {
 	subscribe(other, PacketType.HOST_INFO_CONNECTION_ACCEPTED, other.host_info_connection_accepted_callback);
 	subscribe(other, PacketType.HOST_SYNC_PLAYER_NAME, other.host_sync_player_name_callback);
 	subscribe(other, PacketType.HOST_SYNC_PLAYER_POSITION, other.host_sync_player_position_callback);
+	subscribe(other, PacketType.HOST_SYNC_PLAYER_STATE, other.host_sync_player_state_callback);
 }

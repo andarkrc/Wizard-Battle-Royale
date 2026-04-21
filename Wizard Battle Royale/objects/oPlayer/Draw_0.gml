@@ -1,4 +1,31 @@
 draw_self();
 
+switch (state) {
+	case State.JUMPING:
+		sprite_index = sPlayerJumping;
+		break;
+	
+	case State.BREATHING:
+		sprite_index = sPlayerBreathing;
+		break;
+	
+	case State.RUNNING:
+		sprite_index = sPlayerRunning;
+		break;
+	
+	case State.FALLING:
+		sprite_index = sPlayerFalling;
+		break;
+	
+	case State.SIDE_FALLING:
+		sprite_index = sPlayerSideFalling;
+		break;
+	
+	case State.IDLE:
+	default:
+		sprite_index = sPlayerIdle;
+		break;
+}
+
 draw_setup(c_white,,,fa_bottom);
-draw_text(x + sprite_width / 2, y, name);
+draw_text(x, y - sprite_height / 2, name);

@@ -5,21 +5,21 @@
   "bbox_bottom":447,
   "bbox_left":0,
   "bbox_right":511,
-  "bbox_top":0,
+  "bbox_top":64,
   "collisionKind":1,
   "collisionTolerance":0,
   "DynamicTexturePage":false,
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"5b9940a9-e36b-4206-8170-943b80f2c805","name":"5b9940a9-e36b-4206-8170-943b80f2c805","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"7ba15b5a-3b73-4771-86c4-585ea47d9e1e","name":"7ba15b5a-3b73-4771-86c4-585ea47d9e1e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":448,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"ddd006db-5086-4af2-893e-90bf213f1f0d","blendMode":0,"displayName":"default","isLocked":false,"name":"ddd006db-5086-4af2-893e-90bf213f1f0d","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"5db79416-dbd6-4be6-a2f2-3028aa0934a7","blendMode":0,"displayName":"default","isLocked":false,"name":"5db79416-dbd6-4be6-a2f2-3028aa0934a7","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"sShadowBricks",
   "nineSlice":null,
@@ -69,8 +69,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"5b9940a9-e36b-4206-8170-943b80f2c805","path":"sprites/sShadowBricks/sShadowBricks.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"f4681d98-51b3-4c31-b917-cd6e061e9370","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"7ba15b5a-3b73-4771-86c4-585ea47d9e1e","path":"sprites/sShadowBricks/sShadowBricks.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"4077a01a-a958-4203-b8b4-1649258dce83","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
