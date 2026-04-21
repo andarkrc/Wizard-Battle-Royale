@@ -1,7 +1,12 @@
 {
   "$GMTileSet":"v1",
   "%Name":"tsShadowBricks",
-  "autoTileSets":[],
+  "autoTileSets":[
+    {"$GMAutoTileSet":"","%Name":"autotile_1","closed_edge":true,"name":"autotile_1","resourceType":"GMAutoTileSet","resourceVersion":"2.0","tiles":[
+        16,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,16,16,16,16,9,9,9,9,18,18,18,18,25,25,25,25,17,17,8,
+        8,10,10,26,26,24,24,17,17,17,17,12,
+      ],},
+  ],
   "macroPageTiles":{
     "SerialiseHeight":0,
     "SerialiseWidth":0,

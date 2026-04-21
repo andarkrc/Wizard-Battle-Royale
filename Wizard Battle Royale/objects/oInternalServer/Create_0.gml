@@ -5,8 +5,8 @@ players_map = ds_map_create();
 Player = function(id_) constructor {
 	id = id_;
 	name = "";
-	x = 0;
-	y = 0;
+	x = 672;
+	y = 704;
 }
 
 sync_new_player = function(new_player_id) {
@@ -43,9 +43,14 @@ client_info_player_position_callback = function(data) {
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_POSITION, {player_id: data.sender_id, x: data.x, y: data.y, accepted: true}));
 }
 
+client_info_player_state_callback = function(data) {
+	packet_send(oClientHandler, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_STATE, {player_id: data.sender_id, state: data.state, direction: data.direction}))
+}
+
 with (oClientHandler) {
 	subscribe(other, PacketType.SV_INFO_CONNECTION_REQUEST, other.server_info_connection_request_callback);
 	subscribe(other, PacketType.SV_INFO_HOST, other.server_info_host_callback);
 	subscribe(other, PacketType.CL_INFO_PLAYER_NAME, other.client_info_player_name_callback);
 	subscribe(other, PacketType.CL_INFO_PLAYER_POSITION, other.client_info_player_position_callback);
+	subscribe(other, PacketType.CL_INFO_PLAYER_STATE, other.client_info_player_state_callback);
 }
