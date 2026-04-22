@@ -59,6 +59,12 @@ if (id_ == oClientHandler.client_id) {
 		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_STATE, {state: state, direction: image_xscale}));
 	}
 	
+	if (mouse_check_button_pressed(mb_left)) {
+		var dir = point_direction(x, y - sprite_height / 2, mouse_x, mouse_y);
+		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_SPELLCAST,
+		{x: x, y: y - sprite_height / 2, direction: dir}));
+	}
+	
 	
 	old_state = state;
 }

@@ -31,7 +31,7 @@ cleaned = false;
 /// @desc Signals a particular event to everybody subscribed to it.
 /// @arg {Struct} event
 signal = function(event) {
-	if (!ds_map_exists(events, event.type)) {
+if (!ds_map_exists(events, event.type)) {
 		return;
 	}
 	// Call the callback for this event.

@@ -19,3 +19,7 @@ enum State {
 
 state = State.IDLE;
 old_state = state;
+
+damaged = false;
+
+ts_reset_damage = time_source_create(time_source_game, 0.3, time_source_units_seconds, function(){damaged = false;});

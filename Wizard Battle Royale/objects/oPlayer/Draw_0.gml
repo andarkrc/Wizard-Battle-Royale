@@ -1,3 +1,9 @@
+if (damaged) {
+	image_blend = c_red;
+} else {
+	image_blend = -1;
+}
+
 draw_self();
 
 switch (state) {

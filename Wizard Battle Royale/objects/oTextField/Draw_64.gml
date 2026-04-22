@@ -12,10 +12,10 @@ if (text == "") {
 draw_text(x + width / 2, y + height / 2, display_text);
 
 
-var cursor_x = string_width(string_copy(text, 1, cursor_index - 1));
+var cursor_x = string_width(string_copy(text, 1, cursor_index - 1)) / 2;
 var bar_width = string_width("|");
 if (can_write && blink) {
-	draw_text(x + width / 2 + cursor_x - bar_width / 2, y + height / 2, "|");
+	draw_text(x + width / 2 + cursor_x, y + height / 2, "|");
 }
 
 

@@ -7,6 +7,7 @@ Player = function(id_) constructor {
 	name = "";
 	x = 672;
 	y = 704;
+	total_spells = 0;
 }
 
 sync_new_player = function(new_player_id) {
@@ -47,10 +48,23 @@ client_info_player_state_callback = function(data) {
 	packet_send(oClientHandler, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_STATE, {player_id: data.sender_id, state: data.state, direction: data.direction}))
 }
 
+client_request_spellcast_callback = function(data) {
+	packet_send(oClientHandler, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELLCAST, 
+	{player_id: data.sender_id, spell_id: players_map[? data.sender_id].total_spells, x: data.x, y: data.y, direction: data.direction}));
+	players_map[? data.sender_id].total_spells++;
+}
+
+client_request_spellhit_callback = function(data) {
+	packet_send(oClientHandler, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELLHIT,
+	{caster_id: data.sender_id, spell_id: data.spell_id, target: data.target}));
+}
+
 with (oClientHandler) {
 	subscribe(other, PacketType.SV_INFO_CONNECTION_REQUEST, other.server_info_connection_request_callback);
 	subscribe(other, PacketType.SV_INFO_HOST, other.server_info_host_callback);
 	subscribe(other, PacketType.CL_INFO_PLAYER_NAME, other.client_info_player_name_callback);
 	subscribe(other, PacketType.CL_INFO_PLAYER_POSITION, other.client_info_player_position_callback);
 	subscribe(other, PacketType.CL_INFO_PLAYER_STATE, other.client_info_player_state_callback);
+	subscribe(other, PacketType.CL_REQ_SPELLCAST, other.client_request_spellcast_callback);
+	subscribe(other, PacketType.CL_REQ_SPELLHIT, other.client_request_spellhit_callback);
 }
