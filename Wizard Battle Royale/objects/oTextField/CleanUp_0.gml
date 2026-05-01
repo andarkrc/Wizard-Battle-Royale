@@ -1,1 +1,1 @@
-time_source_destroy(blink_state_timer );
+time_source_destroy(blink_state_timer);

@@ -37,5 +37,8 @@
     "path":"sprites/sButton/sButton.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "UI ELEMENT",
+  ],
   "visible":true,
 }

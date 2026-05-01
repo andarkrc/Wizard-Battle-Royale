@@ -1,10 +1,10 @@
 var mx = device_mouse_x_to_gui(0);
 var my = device_mouse_y_to_gui(0);
 
-selected = point_in_rectangle(mx, my, x, y, x + width, y + height);
+hovered = point_in_rectangle(mx, my, x, y, x + sprite_width, y + sprite_height);
 
 if (mouse_check_button_pressed(mb_left)) {
-	can_write = selected;
+	can_write = hovered;
 	if (can_write) {
 		time_source_start(blink_state_timer);
 	} else {
@@ -18,10 +18,12 @@ if (can_write) {
 	if (keyboard_check_pressed(vk_enter)) {
 		can_write = false;
 		action();
-	} else if (keyboard_check_pressed(vk_backspace)) {
+	} else if (can_delete()) {
 		if (cursor_index > 1) {
 			text = string_delete(text, cursor_index - 1, 1);
 			cursor_index--;
+			delete_delay = true;
+			call_later(delete_delay_time, time_source_units_seconds, function(){delete_delay = false;});
 		}
 	} else if (keyboard_check_pressed(vk_left)) {
 		cursor_index = clamp(cursor_index - 1, 1, string_length(text) + 1);
