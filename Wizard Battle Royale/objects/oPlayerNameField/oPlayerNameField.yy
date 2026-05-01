@@ -37,5 +37,8 @@
     "path":"sprites/sTextBox/sTextBox.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "UI ELEMENT",
+  ],
   "visible":true,
 }

@@ -1,12 +1,9 @@
 type = "";
 
-width = 0;
-height = 0;
-
 text = "";
-font = fnArial12;
+font = global.default_font;
 
-selected = false;
+hovered = false;
 
 /// @function click_action
 click_action = function()

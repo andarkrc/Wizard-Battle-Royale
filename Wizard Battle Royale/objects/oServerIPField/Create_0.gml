@@ -3,9 +3,6 @@ event_inherited();
 
 ghost_text = "<IP>:<Port>";
 
-width = 128;
-height = 64;
-
 action = function() {
 	var tokens = string_split(text, ":");
 	if (array_length(tokens) != 2) return;

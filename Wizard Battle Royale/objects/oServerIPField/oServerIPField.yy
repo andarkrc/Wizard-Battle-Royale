@@ -8,8 +8,8 @@
   "name":"oServerIPField",
   "overriddenProperties":[],
   "parent":{
-    "name":"MainMenu",
-    "path":"folders/Objects/UI/MainMenu.yy",
+    "name":"Direct",
+    "path":"folders/Objects/UI/JoinLobbyMenu/Direct.yy",
   },
   "parentObjectId":{
     "name":"oTextField",
@@ -37,5 +37,8 @@
     "path":"sprites/sTextBox/sTextBox.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "UI ELEMENT",
+  ],
   "visible":true,
 }

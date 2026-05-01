@@ -3,10 +3,10 @@ event_inherited();
 
 text = "Join Lobby";
 
-width = 128;
-height = 64;
-
 click_action = function() {
-	global.connection_type = "direct-client";
-	room_goto(rmTest);
+	var active = !layer_get_visible("JoinLobbyMenu");
+	deactivate_menus();
+	layer_set_visible("MainMenu", true);
+	layer_set_visible("JoinLobbyMenu", active);
+	layer_set_visible("JoinLobbyDirectMenu", active);
 }
