@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"PacketTypes",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"PacketTypes",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

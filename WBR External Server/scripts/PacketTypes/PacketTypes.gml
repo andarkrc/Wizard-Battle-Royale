@@ -1,0 +1,21 @@
+enum PacketType {
+	CL_PING = 0,
+	SV_PONG = 1,
+	
+	SV_INFO_HOST = 2,
+	SV_INFO_CONNECTION_REQUEST = 3,
+	SV_INFO_HOST_DISCONNECTED = 4,
+	SV_INFO_CLIENT_DISCONNECTED = 5,
+	
+	CL_REQ_CREATE_LOBBY = 6,
+	CL_REQ_JOIN_LOBBY = 7,
+	CL_REQ_LOBBY_LIST = 8,
+	SV_INFO_LOBBY_CODE = 9,
+	SV_INFO_LOBBY_LIST = 10,
+	HOST_REQ_REMOVE_FROM_LOBBY = 11,
+	// we need until these packets ^^
+	
+	// These are unneeded. vv can be removed from this enum
+	HOST_INFO_CONNECTION_ACCEPTED = 12,
+	HOST_INFO_CONNECTION_REJECTED = 13,
+};

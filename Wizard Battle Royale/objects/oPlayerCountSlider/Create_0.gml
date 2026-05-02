@@ -5,3 +5,7 @@ min_value = 2;
 max_value = 10;
 step_value = 1;
 slider_value = 2;
+
+update_action = function() {
+	global.lobby_max_player_count = slider_value;
+}

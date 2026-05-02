@@ -65,6 +65,5 @@ if (id_ == oClientHandler.client_id) {
 		{x: x, y: y - sprite_height / 2, direction: dir}));
 	}
 	
-	
 	old_state = state;
 }

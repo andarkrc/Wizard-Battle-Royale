@@ -33,6 +33,10 @@ server_info_connection_request_callback = function(data) {
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER, player));
 }
 
+server_info_client_disconnected = function(data) {
+	// now we know that a player disconnected.
+}
+
 client_info_player_name_callback = function(data) {
 	players_map[? data.sender_id].name = data.name;
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_NAME, {player_id: data.sender_id, name: data.name}));
@@ -45,17 +49,17 @@ client_info_player_position_callback = function(data) {
 }
 
 client_info_player_state_callback = function(data) {
-	packet_send(oClientHandler, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_STATE, {player_id: data.sender_id, state: data.state, direction: data.direction}))
+	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_STATE, {player_id: data.sender_id, state: data.state, direction: data.direction}))
 }
 
 client_request_spellcast_callback = function(data) {
-	packet_send(oClientHandler, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELLCAST, 
+	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELLCAST, 
 	{player_id: data.sender_id, spell_id: players_map[? data.sender_id].total_spells, x: data.x, y: data.y, direction: data.direction}));
 	players_map[? data.sender_id].total_spells++;
 }
 
 client_request_spellhit_callback = function(data) {
-	packet_send(oClientHandler, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELLHIT,
+	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELLHIT,
 	{caster_id: data.sender_id, spell_id: data.spell_id, target: data.target}));
 }
 
