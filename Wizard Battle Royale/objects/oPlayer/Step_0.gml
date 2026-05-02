@@ -14,7 +14,7 @@ if (id_ == oClientHandler.client_id) {
 	var dir_held = (move_side != 0 || input_y != 0);
 	
 	var dash_triggered = false;
-	if ((ctrl_pressed && dir_held) || (ctrl_held && dir_pressed)) {
+	if (dir_held && (ctrl_pressed || (ctrl_held && dir_pressed))) {
 		dash_triggered = true;
 	}
 	
