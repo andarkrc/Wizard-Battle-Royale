@@ -20,6 +20,7 @@ enum State {
 
 state = State.IDLE;
 old_state = state;
+mask_index = sPlayerIdle;
 
 damaged = false;
 
