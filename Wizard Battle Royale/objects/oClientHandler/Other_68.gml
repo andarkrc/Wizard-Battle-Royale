@@ -1,4 +1,4 @@
-if (async_load[? "id"] == client) {
+if (async_load[? "id"] == client && async_load[? "type"] == network_type_data) {
 	var packet = async_load[? "buffer"];
 	
 	buffer_seek(packet, buffer_seek_start, 0);
@@ -19,6 +19,10 @@ if (async_load[? "id"] == client) {
 				client_id = data.client_id;
 				instance_create_layer(0, 0, "Instances", oInternalServer);
 				signal(data);
+				break;
+			
+			case PacketType.SV_INFO_LOBBY_CODE:
+				global.lobby_code = data.code;
 				break;
 			
 			case PacketType.HOST_INFO_CONNECTION_ACCEPTED :

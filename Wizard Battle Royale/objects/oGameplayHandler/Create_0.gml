@@ -15,6 +15,18 @@ check_host = function (data) {
 	return data.sender_is_host;
 }
 
+server_info_host_disconnected_callback = function(data) {
+	if (!check_host(data)) return;
+	show_debug_message("HOST DISCONNECTED. RETURNING TO MAIN MENU.");
+	room_goto(rmMainMenu);
+}
+
+host_info_connection_rejected_callback = function(data) {
+	if (!check_host(data)) return;
+	show_debug_message($"CONNECTION REJECTED: {data.message}");
+	room_goto(rmMainMenu);
+}
+
 host_sync_player_callback = function(data) {
 	if (!check_host(data)) return;
 	create_player_if_doesnt_exist(data.id);
@@ -78,8 +90,10 @@ host_sync_spellhit_callback = function(data) {
 }
 
 with (oClientHandler) {
+	subscribe(other, PacketType.SV_INFO_HOST_DISCONNECTED, other.server_info_host_disconnected_callback);
 	subscribe(other, PacketType.HOST_SYNC_PLAYER, other.host_sync_player_callback);
 	subscribe(other, PacketType.HOST_INFO_CONNECTION_ACCEPTED, other.host_info_connection_accepted_callback);
+	subscribe(other, PacketType.HOST_INFO_CONNECTION_REJECTED, other.host_info_connection_rejected_callback);
 	subscribe(other, PacketType.HOST_SYNC_PLAYER_NAME, other.host_sync_player_name_callback);
 	subscribe(other, PacketType.HOST_SYNC_PLAYER_POSITION, other.host_sync_player_position_callback);
 	subscribe(other, PacketType.HOST_SYNC_PLAYER_STATE, other.host_sync_player_state_callback);

@@ -1,6 +1,8 @@
+/// @desc Generates a random lobby code
+/// @return {String} code
 function generateLobbyCode() {
 	var code = "";
-	var code_length = 8;
+	var code_length = 2;
 	for (var i = 0; i < code_length; i++) {
 		var letter_type = choose(1, 2, 3);
 		

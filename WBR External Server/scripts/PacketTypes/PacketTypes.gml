@@ -12,4 +12,10 @@ enum PacketType {
 	CL_REQ_LOBBY_LIST = 8,
 	SV_INFO_LOBBY_CODE = 9,
 	SV_INFO_LOBBY_LIST = 10,
+	HOST_REQ_REMOVE_FROM_LOBBY = 11,
+	// we need until these packets ^^
+	
+	// These are unneeded. vv can be removed from this enum
+	HOST_INFO_CONNECTION_ACCEPTED = 12,
+	HOST_INFO_CONNECTION_REJECTED = 13,
 };

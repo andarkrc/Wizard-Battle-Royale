@@ -6,6 +6,7 @@ step_value = 0.1;
 
 slider_value = 0;
 
+enabled = true;
 hovered = false;
 
 selected = false;

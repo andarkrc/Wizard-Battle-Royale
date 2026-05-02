@@ -4,7 +4,11 @@ global.default_font = fnPixelPurl;
 // connection settings
 global.server_ip = "127.0.0.1";
 global.server_port = 6000;
-global.connection_type = "";
+global.connection_type = "standard";
+global.connection_role = "";
+
+global.external_server_ip = "127.0.0.1";
+global.external_server_port = 6100;
 
 // lobby settings
 global.lobby_name = "";

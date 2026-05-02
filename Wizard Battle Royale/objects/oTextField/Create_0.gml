@@ -4,6 +4,7 @@ font = global.default_font;
 
 text = "";
 
+enabled = true;
 hovered = false;
 
 ghost_text = "";

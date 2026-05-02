@@ -1,3 +1,5 @@
+if (!enabled) exit;
+
 draw_sprite_ext(sprite_index, hovered || can_write, x, y, image_xscale, image_yscale, 0, c_white, 1);
 
 var display_text = text;
@@ -16,9 +18,3 @@ var bar_width = string_width("|");
 if (can_write && blink) {
 	draw_text(x + sprite_width / 2 + cursor_x, y + sprite_height / 2, "|");
 }
-
-
-
-
-
-

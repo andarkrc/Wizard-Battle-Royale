@@ -20,6 +20,8 @@
     {"name":"inst_44ED95CD","path":"roomui/RoomUI/RoomUI.yy",},
     {"name":"inst_29D13550","path":"roomui/RoomUI/RoomUI.yy",},
     {"name":"inst_5E2D6DFA","path":"roomui/RoomUI/RoomUI.yy",},
+    {"name":"inst_2657FBA1","path":"roomui/RoomUI/RoomUI.yy",},
+    {"name":"inst_2EC2D762","path":"roomui/RoomUI/RoomUI.yy",},
   ],
   "isDnd":false,
   "layers":[

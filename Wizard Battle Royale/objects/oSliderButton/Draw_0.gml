@@ -1,3 +1,5 @@
+if (!enabled) exit;
+
 draw_sprite_ext(sprite_index, hovered || selected, x, y, image_xscale, image_yscale, 0, c_white, 1);
 
 var knob_width = sprite_get_width(sSliderKnob) * image_yscale;

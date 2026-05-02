@@ -5,7 +5,7 @@ text = "Create";
 
 click_action = function() {
 	deactivate_menus();
-	global.connection_type = "direct-host";	
+	global.connection_role = "host";	
 	room_goto(rmTest);
 }
 

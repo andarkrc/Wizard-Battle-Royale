@@ -1,6 +1,22 @@
 client = network_create_socket(network_socket_tcp);
 
-is_connected = network_connect(client, global.server_ip, global.server_port);
+is_connected = -1;
+
+if (global.connection_type == "direct") {
+	is_connected = network_connect(client, global.server_ip, global.server_port);
+} else if (global.connection_type == "standard") {
+	is_connected = network_connect(client, global.external_server_ip, global.external_server_port);
+	if (global.connection_role == "host") {
+		packet_send(client, packet_create(NWTarget.SERVER, PacketType.CL_REQ_CREATE_LOBBY, 
+			{name: global.lobby_name, max_player_count: global.lobby_max_player_count, public: global.lobby_is_public}));
+	} else if (global.connection_role == "guest") {
+		packet_send(client, packet_create(NWTarget.SERVER, PacketType.CL_REQ_JOIN_LOBBY,
+			{code: global.lobby_code}));
+	}
+}
+
+
+if (is_connected < 0) room_goto(rmMainMenu);
 
 client_id = -1;
 is_host = false;

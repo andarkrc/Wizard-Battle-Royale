@@ -1,3 +1,5 @@
+if (!enabled) exit;
+
 var subimage = 0;
 if (hovered) subimage = 1;
 if (selected) subimage = 2;
