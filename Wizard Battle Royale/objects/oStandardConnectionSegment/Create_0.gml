@@ -4,7 +4,7 @@ event_inherited();
 text = "Standard";
 
 // this is the default selected one from the group :)
-selected = true;
+//selected = true;
 
 click_action = function() {
 	global.connection_type = "standard";

@@ -1,3 +1,1 @@
 time_source_destroy(ts_reset_damage);
-time_source_destroy(ts_dash_end);
-time_source_destroy(ts_dash_recharge);
