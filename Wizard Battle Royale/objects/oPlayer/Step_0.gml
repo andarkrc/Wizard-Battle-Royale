@@ -8,19 +8,23 @@ if (id_ == oClientHandler.client_id) {
 	
 	input_x = input_x * !movement_inactive;
 	input_y = input_y * !movement_inactive;
-	
+
+	var collisions_all = [oCollisionBox, oCollisionBoxTopOnly]
+	var collisions_full = oCollisionBox;
+	var collisions_top = [oCollisionBox, oCollisionBoxTopOnly];
+		
 	if (vertical_speed > 0) {
-		var collision_vertical = collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + vertical_speed * _dt, oCollisionBox, false, true);
+		var collision_vertical = collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + vertical_speed * _dt, collisions_top, false, true);
 		if (collision_vertical != noone) {
-			while (collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + 1, oCollisionBox, false, false) == noone) {
+			while (collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + 1, collisions_top, false, false) == noone) {
 				y += 1;
 			}
 			vertical_speed = 0;
 		}
 	} else if (vertical_speed < 0) {
-		var collision_vertical = collision_rectangle(bbox_left, bbox_top + vertical_speed * _dt, bbox_right, bbox_top, oCollisionBox, false, false);
+		var collision_vertical = collision_rectangle(bbox_left, bbox_top + vertical_speed * _dt, bbox_right, bbox_top, collisions_full, false, false);
 		if (collision_vertical != noone) {
-			while (collision_rectangle(bbox_left, bbox_top - 1, bbox_right, bbox_top, oCollisionBox, false, false) == noone) {
+			while (collision_rectangle(bbox_left, bbox_top - 1, bbox_right, bbox_top, collisions_full, false, false) == noone) {
 				y -= 1;
 			}
 			vertical_speed = 0;
@@ -40,13 +44,18 @@ if (id_ == oClientHandler.client_id) {
 		vertical_speed = 0;
 	}
 	
-	var collision_down = collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + 1, oCollisionBox, false, true);
+	var collision_down = collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + 1, collisions_top, false, true);
 	
 	if (collision_down == noone) {
 		vertical_speed += g * _dt;
 	} else {
 		vertical_speed = 0;
 		current_dashes = total_dashes;
+		if (state != State.DASHING) {
+			while (collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, collisions_all, false, false) != noone) {
+				y -= 1;
+			}
+		}
 	}
 	
 	if (keyboard_check_pressed(vk_shift) && !movement_inactive && current_dashes > 0) {

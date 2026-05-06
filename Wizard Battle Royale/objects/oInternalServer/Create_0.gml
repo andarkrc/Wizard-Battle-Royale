@@ -5,8 +5,8 @@ players_map = ds_map_create();
 Player = function(id_) constructor {
 	id = id_;
 	name = "";
-	x = 672;
-	y = 704;
+	x = 664;
+	y = 588;
 	total_spells = 0;
 }
 
