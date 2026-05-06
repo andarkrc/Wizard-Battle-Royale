@@ -1,10 +1,14 @@
+// GENERAL USE MACROS
+
+#macro METER 64
+
 // system
 global.default_font = fnPixelPurl;
 
 // connection settings
 global.server_ip = "127.0.0.1";
 global.server_port = 6000;
-global.connection_type = "standard";
+global.connection_type = "direct";
 global.connection_role = "";
 
 global.external_server_ip = "127.0.0.1";

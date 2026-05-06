@@ -81,7 +81,7 @@ host_sync_spellhit_callback = function(data) {
 	}
 	with (oPlayer) {
 		if (id_ == data.target) {
-			vertical_speed = -2;
+			vertical_speed = -2 * METER;
 			damaged = true;
 			time_source_start(ts_reset_damage);
 		}

@@ -1,5 +1,5 @@
 var _dt = delta_time  / 1000000;
-vertical_speed += g;
+vertical_speed += g * _dt;
 
 x += horizontal_speed * _dt;
 y += vertical_speed * _dt;
