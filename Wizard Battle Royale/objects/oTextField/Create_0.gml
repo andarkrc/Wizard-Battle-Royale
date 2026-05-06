@@ -24,6 +24,8 @@ blink_state_change = function() {
 
 blink_state_timer = time_source_create(time_source_game, 0.5, time_source_units_seconds, blink_state_change, [], -1);
 
+delete_delay_call = undefined;
+
 can_delete = function() {
 	if (keyboard_check_pressed(vk_backspace)) {
 		delete_delay_time = 0.5;

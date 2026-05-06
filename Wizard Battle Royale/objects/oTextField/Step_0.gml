@@ -16,6 +16,12 @@ if (mouse_check_button_pressed(mb_left)) {
 	}
 }
 
+if (keyboard_check_released(vk_backspace)) {
+	if (time_source_exists(delete_delay_call)) {
+		call_cancel(delete_delay_call);
+	}
+}
+
 if (can_write) {
 	if (keyboard_check_pressed(vk_enter)) {
 		can_write = false;
@@ -25,12 +31,14 @@ if (can_write) {
 			text = string_delete(text, cursor_index - 1, 1);
 			cursor_index--;
 			delete_delay = true;
-			call_later(delete_delay_time, time_source_units_seconds, function(){delete_delay = false;});
+			delete_delay_call = call_later(delete_delay_time, time_source_units_seconds, function(){delete_delay = false;});
 		}
 	} else if (keyboard_check_pressed(vk_left)) {
 		cursor_index = clamp(cursor_index - 1, 1, string_length(text) + 1);
 	} else if (keyboard_check_pressed(vk_right)) {
 		cursor_index = clamp(cursor_index + 1, 1, string_length(text) + 1);
+	} else if (keyboard_check(vk_control) && keyboard_check_pressed(ord("V"))) {
+		keyboard_string = clipboard_get_text();
 	}
 
 	//show_debug_message($"Current typing: {keyboard_string}");
