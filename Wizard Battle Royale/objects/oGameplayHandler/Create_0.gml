@@ -2,7 +2,6 @@ player_refs = ds_map_create();
 
 particle_system = part_system_create_layer("Instances", false);
 
-
 create_player_if_doesnt_exist = function(id_) {
 	if (!ds_map_exists(player_refs, id_)) {
 		var new_player = instance_create_layer(0, 0, "Instances", oPlayer);

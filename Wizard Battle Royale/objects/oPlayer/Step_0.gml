@@ -111,9 +111,27 @@ if (id_ == oClientHandler.client_id) {
 	}
 	
 	if (mouse_check_button_pressed(mb_left)) {
-		var dir = point_direction(x, y - sprite_height / 2, mouse_x, mouse_y);
-		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_SPELLCAST,
-		{x: x, y: y - sprite_height / 2, direction: dir}));
+		cast_spell();
+	}
+	
+	if (keyboard_check_pressed(ord("1"))) {
+		selected_spell = 0;
+	}
+	
+	if (keyboard_check_pressed(ord("2"))) {
+		selected_spell = 1;
+	}
+	
+	if (keyboard_check_pressed(ord("3"))) {
+		selected_spell = 2;
+	}
+	
+	if (keyboard_check_pressed(ord("4"))) {
+		selected_spell = 3;
+	}
+	
+	if (keyboard_check_pressed(ord("5"))) {
+		selected_spell = 4;
 	}
 	
 	old_state = state;
