@@ -28,8 +28,8 @@
   ],
   "name":"rmCorridorSmall0",
   "parent":{
-    "name":"Corridors",
-    "path":"folders/Rooms/Corridors.yy",
+    "name":"Small",
+    "path":"folders/Rooms/Corridors/Small.yy",
   },
   "parentRoom":null,
   "physicsSettings":{
