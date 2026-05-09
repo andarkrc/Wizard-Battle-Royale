@@ -110,10 +110,6 @@ if (id_ == oClientHandler.client_id) {
 		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_POSITION, {x: x, y: y}));
 	}
 	
-	if (old_state != state) {
-		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_STATE, {state: state, direction: image_xscale}));
-	}
-	
 	if (mouse_check_button_pressed(mb_left) && selected_spell >= 0 && selected_spell < array_length(spells) && combat_active) {
 		var dir = point_direction(x, y - sprite_height / 2, mouse_x, mouse_y);
 		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_SPELLCAST,
@@ -140,8 +136,24 @@ if (id_ == oClientHandler.client_id) {
 	if (combat_active && keyboard_check_pressed(ord("5"))) {
 		selected_spell = 4;
 	}
+	
 	if (selected_spell >= array_length(spells)) {
 		selected_spell = old_selected_spell;
+	}
+	
+	var spell_platform = collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, oSpellPlatform, false, false);
+	
+	with (oSpellPlatform) {
+		focused = id == spell_platform;
+	} 
+	
+	if (spell_platform != noone && keyboard_check_pressed(ord("E"))) {
+		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_SPELL_GET,
+		{id: spell_platform.id_}));
+	}
+	
+	if (old_state != state) {
+		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_STATE, {state: state, direction: image_xscale}));
 	}
 	
 	old_state = state;

@@ -47,6 +47,8 @@
   "resources":[
     {"id":{"name":"fnArial12","path":"fonts/fnArial12/fnArial12.yy",},},
     {"id":{"name":"fnPixelPurl","path":"fonts/fnPixelPurl/fnPixelPurl.yy",},},
+    {"id":{"name":"NetworkingBriefing","path":"notes/NetworkingBriefing/NetworkingBriefing.yy",},},
+    {"id":{"name":"PacketDOCS","path":"notes/PacketDOCS/PacketDOCS.yy",},},
     {"id":{"name":"Setup","path":"notes/Setup/Setup.yy",},},
     {"id":{"name":"oButton","path":"objects/oButton/oButton.yy",},},
     {"id":{"name":"oClientHandler","path":"objects/oClientHandler/oClientHandler.yy",},},

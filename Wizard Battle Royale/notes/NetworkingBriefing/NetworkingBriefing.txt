@@ -1,0 +1,51 @@
+Sup oricine ai fi, (probabil eu din viitor xd)!
+
+Daca ai nevoie de un refresher (sau sa inveti) cum functioneaza sistemul de networking:
+
+Ca un sistem obisnuit, comunicarea se face prin pachete.
+In mod normal nu ar trebui sa iti bati capul cu pachete trimise catre / de la server.
+
+Totul ar trebui sa fie facut automat de catre **oClientHandler**.
+
+Daca nu ai un client handler, nu poti trimite pachete.
+
+Functia `packet_create` creeaza un pachet de client. Pe asta o vei folosi cel mai des. Mai ai si `packet_create_server` dar o poti ignora.
+
+Ca sa poti "creea" un pachet nou, mai intai trebuie sa ii creezi un tip nou. Vezi scriptul `PacketTypes`.
+
+Dupa ce ai creat tipul pachetului (vezi sa il numesti in acelasi stil :P), trebuie sa te gandesti la cine trimiti pachetul.
+
+Aici intervine primul argument al functiei `packet_create`: `NWTarget`.
+
+Ai 4 optiuni:
+
+- SERVER: trimiti mesaje serverului sa fie procesate de acesta. incearca sa eviti daca nu ai nevoie
+- ALL: toata lumea primeste pachetul (si tu)
+- OTHER: doar ceilalti primesc pachetul (nu si tu)
+- HOST: doar host-ul sesiunii primeste pachetul, daca vrei sa faci orice, ii dai un request
+- <CLIENT_ID> valid: e un numar, in general il primesti de la host
+
+Al doilea argument e tipul pachetului pe care tocmai l-ai creat.
+
+Al treilea argument (care e optional) e un struct in care pui datele trimise. Receptorul va primi exact acelasi struct.
+
+**TINE CONT: CA SA POTI PROCESA UN PACHET TREBUIE SA DAI SUBSCRIBE LA CLIENTHANDLER**
+
+`
+with (oClientHandler) {`
+`	subscribe(other, PacketType.YOUR_PACKET_TYPE, other.your_callback);`
+`}`
+
+
+Ai grija, ca nu vei putea folosi in struct fielduri numite `sender_id`, `type` si `sender_is_host`. Acestea sunt adaugate automat de server si vor suprascrie orice pui tu.
+
+Daca vei avea nevoie sa trimiti mesaje ca server: `packet_create_server`.
+
+Primul parametru e `sender_id`, aici ar trebui sa folosesti `NWTarget.SERVER`.
+
+Al doilea parametru e o semnatura de privilegiu. Daca pachetul e de la cine ar trebui, si e ceva ce face schimbari semnificative, sau ar avea un impact negativ daca este abuzat, pune pe true.
+
+Al treilea parametru e tipul pachetului, al patrulea e struct-ul cu date.
+
+Citirea se face cu `packet_parse_client_packet` sau `packet_parse_server_packet` ca se citesti un packet primit de la un client, server respectiv.
+Nu ar trebui sa ai nevoie de ele :).

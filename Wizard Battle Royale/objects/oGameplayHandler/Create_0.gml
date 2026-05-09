@@ -88,6 +88,28 @@ host_sync_spellhit_callback = function(data) {
 	show_debug_message($"A Player was hit");
 }
 
+host_sync_spell_platform_callback = function(data) {
+	if (!check_host(data)) return;
+		
+	with (oSpellPlatform) {
+		if (id_ == data.id || (x == data.x && y == data.y)) {
+			id_ = data.id;
+			spell = data.spell;
+		}
+	}
+}
+
+host_sync_spell_slot_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			spells[data.slot_index].type = data.spell;
+			spells[data.slot_index].casts_remaining = data.casts;
+		}
+	}
+}
+
 with (oClientHandler) {
 	subscribe(other, PacketType.SV_INFO_HOST_DISCONNECTED, other.server_info_host_disconnected_callback);
 	subscribe(other, PacketType.HOST_SYNC_PLAYER, other.host_sync_player_callback);
@@ -98,4 +120,6 @@ with (oClientHandler) {
 	subscribe(other, PacketType.HOST_SYNC_PLAYER_STATE, other.host_sync_player_state_callback);
 	subscribe(other, PacketType.HOST_SYNC_SPELLCAST, other.host_sync_spellcast_callback);
 	subscribe(other, PacketType.HOST_SYNC_SPELLHIT, other.host_sync_spellhit_callback);
+	subscribe(other, PacketType.HOST_SYNC_SPELL_PLATFORM, other.host_sync_spell_platform_callback);
+	subscribe(other, PacketType.HOST_SYNC_SPELL_SLOT, other.host_sync_spell_slot_callback); 
 }

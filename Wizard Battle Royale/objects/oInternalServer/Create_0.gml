@@ -4,6 +4,8 @@ players_map = ds_map_create();
 
 players_spell_info = ds_map_create();
 
+spell_platforms = [];
+
 Player = function(id_) constructor {
 	id = id_;
 	name = "";
@@ -75,6 +77,45 @@ client_request_spellhit_callback = function(data) {
 	{caster_id: data.sender_id, spell_id: data.spell_id, target: data.target}));
 }
 
+client_request_spell_get_callback = function(data) {
+	if (data.id < 0 || data.id >= array_length(spell_platforms)) {
+		return;
+	}
+	
+	if (spell_platforms[data.id].spell == Spell.NONE) {
+		return;
+	}
+
+	var idx = -1;
+	
+	for (var i = 0; i < players_spell_info[? data.sender_id].max_spells; i++) {
+		if (players_spell_info[? data.sender_id].spells[i].type == Spell.NONE) {
+			idx = i;
+			break;
+		}
+	}
+	
+	if (idx == -1) {
+		return;
+	}
+		
+	players_spell_info[? data.sender_id].spells[idx].type = spell_platforms[data.id].spell;
+	
+	spell_platforms[data.id].spell = Spell.NONE;
+	
+	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_PLATFORM,
+		spell_platforms[data.id]));
+	
+	
+	packet_send(oClientHandler.client, packet_create(data.sender_id, PacketType.HOST_SYNC_SPELL_SLOT,
+		{
+			player_id: data.sender_id, 
+			slot_index: idx, 
+			spell: players_spell_info[? data.sender_id].spells[idx].type,
+			casts: spell_get_max_casts(players_spell_info[? data.sender_id].spells[idx].type)
+		}));
+}
+
 with (oClientHandler) {
 	subscribe(other, PacketType.SV_INFO_CONNECTION_REQUEST, other.server_info_connection_request_callback);
 	subscribe(other, PacketType.SV_INFO_HOST, other.server_info_host_callback);
@@ -83,13 +124,30 @@ with (oClientHandler) {
 	subscribe(other, PacketType.CL_INFO_PLAYER_STATE, other.client_info_player_state_callback);
 	subscribe(other, PacketType.CL_REQ_SPELLCAST, other.client_request_spellcast_callback);
 	subscribe(other, PacketType.CL_REQ_SPELLHIT, other.client_request_spellhit_callback);
+	subscribe(other, PacketType.CL_REQ_SPELL_GET, other.client_request_spell_get_callback);
 }
-
-spell_platforms = [];
 
  init_spell_platforms = function() {
+	var sp_number = 0;
 	with (oSpellPlatform) {
-		array_push(other.spell_platforms, id);
-		spell = choose(Spell.FIREBALL, Spell.SHIELD, Spell.WIND_SLASH);
+		array_push(other.spell_platforms, {
+			id: sp_number,
+			spell: irandom_range(1, Spell.LAST_SPELL - 1),
+			x: x,
+			y: y
+		});
+		sp_number++;
+	}
+	
+	for (var i = 0; i < sp_number; i++) {
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_PLATFORM,
+			spell_platforms[i]
+			));
 	}
 }
+
+generate_map = function() {
+	init_spell_platforms();
+}
+
+generate_map();

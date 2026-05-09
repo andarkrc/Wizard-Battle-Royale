@@ -27,7 +27,7 @@
   ],
   "name":"sSpellScroll",
   "nineSlice":null,
-  "origin":6,
+  "origin":7,
   "parent":{
     "name":"Spells",
     "path":"folders/Sprites/Spells.yy",
@@ -88,7 +88,7 @@
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":0,
+    "xorigin":32,
     "yorigin":64,
   },
   "swatchColours":null,
