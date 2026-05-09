@@ -2,12 +2,14 @@ players = [];
 
 players_map = ds_map_create();
 
+players_spell_info = ds_map_create();
+
 Player = function(id_) constructor {
 	id = id_;
 	name = "";
+	hp = 100;
 	x = 664;
 	y = 588;
-	total_spells = 0;
 }
 
 sync_new_player = function(new_player_id) {
@@ -22,6 +24,11 @@ server_info_host_callback = function(data) {
 	players_map[? data.client_id] = player;
 	players[0].name = global.player_name;
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER, players[0]));
+	players_spell_info[? data.client_id] = {
+		total_spells: 0,
+		max_spells: 2,
+		spells: [new SpellSlot(), new SpellSlot()]
+	};
 }
 
 server_info_connection_request_callback = function(data) {
@@ -31,6 +38,11 @@ server_info_connection_request_callback = function(data) {
 	packet_send(oClientHandler.client, packet_create(data.client_id, PacketType.HOST_INFO_CONNECTION_ACCEPTED, {client_id: data.client_id}))
 	sync_new_player(data.client_id);
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER, player));
+	players_spell_info[? data.client_id] = {
+		total_spells: 0,
+		max_spells: 2,
+		spells: [new SpellSlot(), new SpellSlot()]
+	};
 }
 
 server_info_client_disconnected = function(data) {
@@ -54,8 +66,8 @@ client_info_player_state_callback = function(data) {
 
 client_request_spellcast_callback = function(data) {
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELLCAST, 
-	{player_id: data.sender_id, spell_id: players_map[? data.sender_id].total_spells, x: data.x, y: data.y, direction: data.direction}));
-	players_map[? data.sender_id].total_spells++;
+	{player_id: data.sender_id, spell_id: players_spell_info[? data.sender_id].total_spells, x: data.x, y: data.y, direction: data.direction}));
+	players_spell_info[? data.sender_id].total_spells++;
 }
 
 client_request_spellhit_callback = function(data) {
@@ -71,4 +83,13 @@ with (oClientHandler) {
 	subscribe(other, PacketType.CL_INFO_PLAYER_STATE, other.client_info_player_state_callback);
 	subscribe(other, PacketType.CL_REQ_SPELLCAST, other.client_request_spellcast_callback);
 	subscribe(other, PacketType.CL_REQ_SPELLHIT, other.client_request_spellhit_callback);
+}
+
+spell_platforms = [];
+
+ init_spell_platforms = function() {
+	with (oSpellPlatform) {
+		array_push(other.spell_platforms, id);
+		spell = choose(Spell.FIREBALL, Spell.SHIELD, Spell.WIND_SLASH);
+	}
 }
