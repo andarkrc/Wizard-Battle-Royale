@@ -245,7 +245,7 @@ damage_player = function(player_id, damage) {
 			x: x,
 			y: y
 		});
-		other.spell_platforms[sp_number].spell = Spell.FIREBALL;
+		other.spell_platforms[sp_number].spell = Spell.WIND_SLASH;
 		sp_number++;
 	}
 	

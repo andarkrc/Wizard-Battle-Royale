@@ -155,24 +155,27 @@ clean_runtime_objects = function() {
 /// @desc Creates a new spell depending on casting info.
 /// @arg {Struct} data - data containing info about the spell
 cast_spell = function(data) {
-	var new_spell = noone;
-	
 	switch (data.spell_type) {
 		case Spell.FIREBALL:
-			new_spell = instance_create_layer(data.x, data.y, "Instances", oFireball)
-			with (new_spell) {
+			with (instance_create_layer(data.x, data.y, "Instances", oFireball)) {
 				horizontal_speed = dcos(data.direction) * move_speed;
 				vertical_speed = -dsin(data.direction) * move_speed;
 				caster_id = data.caster_id;
 				spell_id = data.spell_id;
 			}
 			break;
+		
+		case Spell.WIND_SLASH:
+			with (instance_create_layer(data.x, data.y, "Instances", oWindSlash)) {
+				horizontal_speed = dcos(data.direction) * move_speed;
+				vertical_speed = -dsin(data.direction) * move_speed;
+				caster_id = data.caster_id;
+				spell_id = data.spell_id;
+				image_angle = data.direction;
+			}
+			break;
 	
 		default:
 			break;
-	}
-	
-	if (new_spell != noone) {
-		array_push(runtime_objects, new_spell);
 	}
 }

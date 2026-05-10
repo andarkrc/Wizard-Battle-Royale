@@ -1,13 +1,13 @@
 {
   "$GMObject":"",
-  "%Name":"oFireball",
+  "%Name":"oWindSlash",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":1,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":12,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oFireball",
+  "name":"oWindSlash",
   "overriddenProperties":[],
   "parent":{
     "name":"Spells",
@@ -35,9 +35,9 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sFireballCollision",
-    "path":"sprites/sFireballCollision/sFireballCollision.yy",
+    "name":"sWindslashCollision",
+    "path":"sprites/sWindslashCollision/sWindslashCollision.yy",
   },
   "spriteMaskId":null,
-  "visible":false,
+  "visible":true,
 }
