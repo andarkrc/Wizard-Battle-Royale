@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"SpellTypes",
+  "%Name":"SpellsRelated",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"SpellTypes",
+  "name":"SpellsRelated",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

@@ -2,6 +2,8 @@ player_refs = ds_map_create();
 
 particle_system = part_system_create_layer("Instances", false);
 
+runtime_objects = [];
+
 create_player_if_doesnt_exist = function(id_) {
 	if (!ds_map_exists(player_refs, id_)) {
 		var new_player = instance_create_layer(0, 0, "Instances", oPlayer);
@@ -63,20 +65,17 @@ host_sync_player_state_callback = function(data) {
 
 host_sync_spellcast_callback = function(data) {
 	if (!check_host(data)) return;
-	with (instance_create_layer(data.x, data.y, "Instances", oFireball)) {
-		horizontal_speed = dcos(data.direction) * move_speed;
-		vertical_speed = -dsin(data.direction) * move_speed;
-		caster_id = data.player_id;
-		spell_id = data.spell_id;
-	}
+	cast_spell(data);
 }
 
 host_sync_spellhit_callback = function(data) {
 	if (!check_host(data)) return;
-	with (oFireball) {
-		if (caster_id == data.caster_id && spell_id == data.spell_id) {
-			instance_destroy();
-		}	
+	if (data.should_destroy) {
+		with (oSpellParent) {
+			if (caster_id == data.caster_id && spell_id == data.spell_id) {
+				instance_destroy();
+			}	
+		}
 	}
 	with (oPlayer) {
 		if (id_ == data.target) {
@@ -106,8 +105,25 @@ host_sync_spell_slot_callback = function(data) {
 		if (id_ == data.player_id) {
 			spells[data.slot_index].type = data.spell;
 			spells[data.slot_index].casts_remaining = data.casts;
+			if (data.cooldown != -1) {
+				spells[data.slot_index].cooldown = data.cooldown;
+			}
 		}
 	}
+}
+
+host_sync_player_hp_callback = function(data) {
+	if (!check_host(data)) return;
+		
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			hp = data.hp;
+		}
+	}
+}
+
+host_sync_player_died_callback = function(data) {
+	if (!check_host(data)) return;
 }
 
 with (oClientHandler) {
@@ -121,5 +137,42 @@ with (oClientHandler) {
 	subscribe(other, PacketType.HOST_SYNC_SPELLCAST, other.host_sync_spellcast_callback);
 	subscribe(other, PacketType.HOST_SYNC_SPELLHIT, other.host_sync_spellhit_callback);
 	subscribe(other, PacketType.HOST_SYNC_SPELL_PLATFORM, other.host_sync_spell_platform_callback);
-	subscribe(other, PacketType.HOST_SYNC_SPELL_SLOT, other.host_sync_spell_slot_callback); 
+	subscribe(other, PacketType.HOST_SYNC_SPELL_SLOT, other.host_sync_spell_slot_callback);
+	subscribe(other, PacketType.HOST_SYNC_PLAYER_HP, other.host_sync_player_hp_callback);
+	subscribe(other, PacketType.HOST_SYNC_PLAYER_DIED, other.host_sync_player_died_callback);
+}
+
+clean_runtime_objects = function() {
+	for (var i = 0; i < array_length(runtime_objects); i++) {
+		if (instance_exists(runtime_objects[i])) {
+			instance_destroy(runtime_objects[i]);
+		}
+	}
+	
+	runtime_objects = [];
+}
+
+/// @desc Creates a new spell depending on casting info.
+/// @arg {Struct} data - data containing info about the spell
+cast_spell = function(data) {
+	var new_spell = noone;
+	
+	switch (data.spell_type) {
+		case Spell.FIREBALL:
+			new_spell = instance_create_layer(data.x, data.y, "Instances", oFireball)
+			with (new_spell) {
+				horizontal_speed = dcos(data.direction) * move_speed;
+				vertical_speed = -dsin(data.direction) * move_speed;
+				caster_id = data.caster_id;
+				spell_id = data.spell_id;
+			}
+			break;
+	
+		default:
+			break;
+	}
+	
+	if (new_spell != noone) {
+		array_push(runtime_objects, new_spell);
+	}
 }

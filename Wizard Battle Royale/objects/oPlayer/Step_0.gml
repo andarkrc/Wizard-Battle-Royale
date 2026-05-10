@@ -111,9 +111,11 @@ if (id_ == oClientHandler.client_id) {
 	}
 	
 	if (mouse_check_button_pressed(mb_left) && selected_spell >= 0 && selected_spell < array_length(spells) && combat_active) {
-		var dir = point_direction(x, y - sprite_height / 2, mouse_x, mouse_y);
-		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_SPELLCAST,
-		{spell_type: spells[selected_spell].type, x: x, y: y - sprite_height / 2, direction: dir}));
+		if (spells[selected_spell].type != Spell.NONE) {
+			var dir = point_direction(x, y - sprite_height / 2, mouse_x, mouse_y);
+			packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_SPELLCAST,
+				{slot_index: selected_spell, direction: dir}));
+		}
 	}
 	
 	var old_selected_spell = selected_spell;
@@ -150,6 +152,15 @@ if (id_ == oClientHandler.client_id) {
 	if (spell_platform != noone && keyboard_check_pressed(ord("E"))) {
 		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_SPELL_GET,
 		{id: spell_platform.id_}));
+	}
+	
+	for (var i = 0; i < array_length(spells); i++) {
+		if (spells[i].cooldown > 0) {
+			spells[i].cooldown -= _dt;
+			if (spells[i].cooldown < 0) {
+				spells[i].cooldown = 0;
+			}
+		}
 	}
 	
 	if (old_state != state) {

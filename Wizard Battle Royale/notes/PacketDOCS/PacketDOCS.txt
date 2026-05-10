@@ -149,12 +149,14 @@ Trimis catre host
 
 	spell_id
 	target
+	should_destroy
 
 # `HOST_SYNC_SPELLHIT`
 Trimis catre clienti
 
 	caster_id
 	spell_id
+	should_destroy
 	target
 
 # `HOST_SYNC_SPELL_PLATFORM`
@@ -177,4 +179,15 @@ Trimis catre client
 	slot_index
 	spell
 	casts
+	cooldown (-1 means don't change it)
+
+# `HOST_SYNC_PLAYER_HP`
+Trimis catre clienti
+
+	player_id
+	hp
 	
+# `HOST_SYNC_PLAYER_DIED`
+Trimis catre clienti
+	
+	player_id

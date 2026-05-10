@@ -6,6 +6,10 @@ players_spell_info = ds_map_create();
 
 spell_platforms = [];
 
+spell_cooldowns = [];
+
+cast_spells = ds_map_create();
+
 Player = function(id_) constructor {
 	id = id_;
 	name = "";
@@ -14,9 +18,17 @@ Player = function(id_) constructor {
 	y = 588;
 }
 
+/// @desc Fully syncs a newly joined player
+/// @arg {Real} new_player_id
 sync_new_player = function(new_player_id) {
 	for (var i = 0; i < array_length(players); i++) {
 		packet_send(oClientHandler.client, packet_create(new_player_id, PacketType.HOST_SYNC_PLAYER, players[i]));
+	}
+	
+	for (var i = 0; i < array_length(spell_platforms); i++) {
+		packet_send(oClientHandler.client, packet_create(new_player_id, PacketType.HOST_SYNC_SPELL_PLATFORM,
+			spell_platforms[i]
+		));
 	}
 }
 
@@ -67,14 +79,81 @@ client_info_player_state_callback = function(data) {
 }
 
 client_request_spellcast_callback = function(data) {
-	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELLCAST, 
-	{player_id: data.sender_id, spell_id: players_spell_info[? data.sender_id].total_spells, x: data.x, y: data.y, direction: data.direction}));
-	players_spell_info[? data.sender_id].total_spells++;
+	if (!ds_map_exists(players_map, data.sender_id)) {
+		return;
+	}
+	var player_info = players_spell_info[? data.sender_id];
+	
+	if (data.slot_index < 0 || data.slot_index >= array_length(player_info.spells)) {
+		return;
+	}
+	
+	if (player_info.spells[data.slot_index].type == Spell.NONE) {
+		return;
+	}
+	
+	if (player_info.spells[data.slot_index].cooldown > 0) {
+		return;
+	}
+	
+	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELLCAST,
+		{
+			caster_id: data.sender_id, 
+			spell_id: player_info.total_spells, 
+			spell_type: player_info.spells[data.slot_index].type,
+			x: players_map[? data.sender_id].x,
+			y: players_map[? data.sender_id].y - sprite_get_height(sPlayerIdle) / 2,
+			direction: data.direction
+		}));
+	
+	ds_map_add(cast_spells, $"{data.sender_id} {player_info.total_spells}", player_info.spells[data.slot_index].type);
+	
+	player_info.total_spells++;
+	player_info.spells[data.slot_index].casts_remaining--;
+	player_info.spells[data.slot_index].cooldown = global.spellcast_cooldown;
+	
+	array_push(spell_cooldowns, {caster_id: data.sender_id, slot_index: data.slot_index});
+	
+	if (player_info.spells[data.slot_index].casts_remaining <= 0) {
+		player_info.spells[data.slot_index].casts_remaining = 0;
+		player_info.spells[data.slot_index].type = Spell.NONE;
+	}
+	
+	packet_send(oClientHandler.client, packet_create(data.sender_id, PacketType.HOST_SYNC_SPELL_SLOT,
+		{
+			player_id: data.sender_id,
+			slot_index: data.slot_index,
+			spell: player_info.spells[data.slot_index].type,
+			casts: player_info.spells[data.slot_index].casts_remaining,
+			cooldown: global.spellcast_cooldown
+		}
+		));
 }
 
 client_request_spellhit_callback = function(data) {
+	var map_key = $"{data.sender_id} {data.spell_id}";
+	if (!ds_map_exists(cast_spells, map_key)) {
+		return;
+	}
+	
+	if (!ds_map_exists(players_map, data.target)) {
+		return;
+	}
+	
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELLHIT,
-	{caster_id: data.sender_id, spell_id: data.spell_id, target: data.target}));
+		{
+			caster_id: data.sender_id, 
+			spell_id: data.spell_id, 
+			target: data.target, 
+			should_destroy: data.should_destroy
+		}
+	));
+	
+	damage_player(data.target, spell_get_damage(cast_spells[? map_key]));
+
+	if (data.should_destroy) {
+		ds_map_delete(cast_spells, map_key);
+	}
 }
 
 client_request_spell_get_callback = function(data) {
@@ -98,10 +177,13 @@ client_request_spell_get_callback = function(data) {
 	if (idx == -1) {
 		return;
 	}
-		
-	players_spell_info[? data.sender_id].spells[idx].type = spell_platforms[data.id].spell;
 	
-	spell_platforms[data.id].spell = Spell.NONE;
+	var spell = spell_platforms[data.id].spell;
+		
+	players_spell_info[? data.sender_id].spells[idx].type = spell;
+	players_spell_info[? data.sender_id].spells[idx].casts_remaining = spell_get_max_casts(spell);
+	
+	//spell_platforms[data.id].spell = Spell.NONE;
 	
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_PLATFORM,
 		spell_platforms[data.id]));
@@ -112,7 +194,8 @@ client_request_spell_get_callback = function(data) {
 			player_id: data.sender_id, 
 			slot_index: idx, 
 			spell: players_spell_info[? data.sender_id].spells[idx].type,
-			casts: spell_get_max_casts(players_spell_info[? data.sender_id].spells[idx].type)
+			casts: players_spell_info[? data.sender_id].spells[idx].casts_remaining,
+			cooldown: -1
 		}));
 }
 
@@ -127,6 +210,32 @@ with (oClientHandler) {
 	subscribe(other, PacketType.CL_REQ_SPELL_GET, other.client_request_spell_get_callback);
 }
 
+/// @desc Damages a player.
+/// @arg {Real} player_id
+/// @arg {Real} damage
+damage_player = function(player_id, damage) {
+	var player = players_map[? player_id];
+	player.hp -= damage;
+	if (player.hp < 0) {
+		player.hp = 0;
+	}
+	
+	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_HP,
+		{
+			player_id: player_id,
+			hp: player.hp
+		}
+	));
+	
+	if (player.hp <= 0) {
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_DIED,
+			{
+				player_id: player_id
+			}
+		));
+	}
+}
+
  init_spell_platforms = function() {
 	var sp_number = 0;
 	with (oSpellPlatform) {
@@ -136,6 +245,7 @@ with (oClientHandler) {
 			x: x,
 			y: y
 		});
+		other.spell_platforms[sp_number].spell = Spell.FIREBALL;
 		sp_number++;
 	}
 	
