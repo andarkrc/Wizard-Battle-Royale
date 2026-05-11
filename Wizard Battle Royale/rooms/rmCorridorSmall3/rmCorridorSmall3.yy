@@ -39,7 +39,7 @@
       ],"depth":100,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Assets","properties":[],"resourceType":"GMRAssetLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRTileLayer":"","%Name":"Tiles","depth":200,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Tiles","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":15,"SerialiseWidth":15,"TileCompressedData":[
           -10,0,5,80,79,79,100,78,-10,0,5,80,79,84,79,78,-10,0,5,80,89,79,22,78,-10,0,5,80,79,79,35,78,-10,0,5,
-          80,100,79,46,78,-10,0,5,80,23,79,79,78,-10,0,5,93,36,79,79,78,-10,0,5,80,47,79,100,78,-9,0,7,1073741893,
+          80,100,79,46,78,-10,0,5,80,23,79,79,78,-10,0,5,80,36,79,79,78,-10,0,5,80,47,79,100,78,-9,0,7,1073741893,
           80,79,83,79,78,93,-9,92,23,93,79,79,22,78,80,79,79,83,79,99,83,79,100,79,83,79,79,35,78,80,79,84,-9,
           79,4,84,79,78,80,-3,79,6,83,79,83,79,79,83,-3,79,7,89,78,80,100,79,79,65,-9,66,7,65,80,79,79,84,78,1879048261,
           -9,0,
