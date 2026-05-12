@@ -41,3 +41,22 @@ min_spell_count = 1;
 selected_spell = 0;
 
 spells = [new SpellSlot(), new SpellSlot()];
+
+potion = Potion.NONE;
+
+drink_potion = function() {
+	switch (potion) {
+		case Potion.SPEED:
+			move_speed += 1 * METER;
+			if (move_speed > 5.5 * METER) {
+				move_speed = 5.5 * METER;
+			}
+			break;		
+		
+		default:
+			break;
+	}
+	potion = Potion.NONE;
+}
+
+prev_focused = noone;

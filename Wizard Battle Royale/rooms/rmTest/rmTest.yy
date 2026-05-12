@@ -24,6 +24,7 @@
     {"name":"inst_13B34698","path":"rooms/rmTest/rmTest.yy",},
     {"name":"inst_667CAA8A","path":"rooms/rmTest/rmTest.yy",},
     {"name":"inst_10A0C5AB","path":"rooms/rmTest/rmTest.yy",},
+    {"name":"inst_579DD531","path":"rooms/rmTest/rmTest.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -46,6 +47,7 @@
         {"$GMRInstance":"v4","%Name":"inst_13B34698","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_13B34698","objectId":{"name":"oCollisionBoxTopOnly","path":"objects/oCollisionBoxTopOnly/oCollisionBoxTopOnly.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":6.0,"scaleY":1.0,"x":1152.0,"y":352.0,},
         {"$GMRInstance":"v4","%Name":"inst_667CAA8A","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_667CAA8A","objectId":{"name":"oCollisionBoxTopOnly","path":"objects/oCollisionBoxTopOnly/oCollisionBoxTopOnly.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":6.0,"scaleY":1.0,"x":1152.0,"y":256.0,},
         {"$GMRInstance":"v4","%Name":"inst_10A0C5AB","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_10A0C5AB","objectId":{"name":"oSpellPlatform","path":"objects/oSpellPlatform/oSpellPlatform.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":880.0,"y":624.0,},
+        {"$GMRInstance":"v4","%Name":"inst_579DD531","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_579DD531","objectId":{"name":"oChest","path":"objects/oChest/oChest.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":416.0,"y":608.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRAssetLayer":"","%Name":"Assets","assets":[
         {"$GMRSpriteGraphic":"v1","%Name":"graphic_664138B5","animationSpeed":1.0,"colour":4294967295,"frozen":false,"headPosition":0.0,"ignore":false,"inheritedItemId":null,"inheritItemSettings":false,"name":"graphic_664138B5","resourceType":"GMRSpriteGraphic","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"spriteId":{"name":"sBarrel","path":"sprites/sBarrel/sBarrel.yy",},"x":512.0,"y":192.0,},

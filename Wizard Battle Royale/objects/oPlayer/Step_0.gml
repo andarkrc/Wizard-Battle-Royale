@@ -143,15 +143,21 @@ if (id_ == oClientHandler.client_id) {
 		selected_spell = old_selected_spell;
 	}
 	
-	var spell_platform = collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, oSpellPlatform, false, false);
+	var collectible = collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, [oPotionParent, oSpellPlatform, oChest], false, false);
 	
-	with (oSpellPlatform) {
-		focused = id == spell_platform;
-	} 
+	if (instance_exists(prev_focused)) {
+		prev_focused.focused = false;
+		prev_focused = noone;
+	}
 	
-	if (spell_platform != noone && keyboard_check_pressed(ord("E"))) {
-		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_SPELL_GET,
-		{id: spell_platform.id_}));
+	with (collectible) {
+		focused = true;
+	}
+	
+	prev_focused = collectible;
+	
+	if (collectible != noone && keyboard_check_pressed(ord("E")) && collectible.can_be_collected) {
+		collectible.request_loot();
 	}
 	
 	for (var i = 0; i < array_length(spells); i++) {
@@ -161,6 +167,10 @@ if (id_ == oClientHandler.client_id) {
 				spells[i].cooldown = 0;
 			}
 		}
+	}
+	
+	if (potion != Potion.NONE && keyboard_check_pressed(ord("F"))) {
+		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
 	}
 	
 	if (old_state != state) {

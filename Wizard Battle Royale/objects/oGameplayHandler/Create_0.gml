@@ -35,6 +35,8 @@ host_sync_player_callback = function(data) {
 	player.name = data.name;
 	player.x = data.x;
 	player.y = data.y;
+	player.hp = data.hp;
+	player.potion = data.potion;
 }
 
 host_info_connection_accepted_callback = function(data) {
@@ -126,6 +128,60 @@ host_sync_player_died_callback = function(data) {
 	if (!check_host(data)) return;
 }
 
+host_sync_consume_potion_callback = function(data) {
+	if (!check_host(data)) return;
+		
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			potion = data.potion_type;
+			drink_potion();
+		}
+	}
+}
+
+host_sync_chest_callback = function(data) {
+	if (!check_host(data)) return;
+		
+	with (oChest) {
+		if (id_ == data.id || (x == data.x && y == data.y)) {
+			id_ = data.id;
+			potion = data.potion;
+		}
+	}
+}
+
+host_sync_player_potion_callback = function(data) {
+	if (!check_host(data)) return;
+		
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			potion = data.potion_type;
+		}
+	}
+	
+	if (data.potion_to_destroy != -1) {
+		with (oPotionParent) {
+			if (id_ == data.potion_to_destroy) {
+				instance_destroy();
+			}
+		}
+	}
+}
+
+host_sync_chest_open_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	with (oChest) {
+		if (data.id == id_) {
+			potion = Potion.NONE;
+			with (instance_create_layer(x + sprite_width / 2, y, "Instances", oPotionParent)) {
+				id_ = data.potion_id;
+				potion = data.potion_type;	
+			}
+		}
+	}
+}
+
 with (oClientHandler) {
 	subscribe(other, PacketType.SV_INFO_HOST_DISCONNECTED, other.server_info_host_disconnected_callback);
 	subscribe(other, PacketType.HOST_SYNC_PLAYER, other.host_sync_player_callback);
@@ -140,6 +196,10 @@ with (oClientHandler) {
 	subscribe(other, PacketType.HOST_SYNC_SPELL_SLOT, other.host_sync_spell_slot_callback);
 	subscribe(other, PacketType.HOST_SYNC_PLAYER_HP, other.host_sync_player_hp_callback);
 	subscribe(other, PacketType.HOST_SYNC_PLAYER_DIED, other.host_sync_player_died_callback);
+	subscribe(other, PacketType.HOST_SYNC_CONSUME_POTION, other.host_sync_consume_potion_callback);
+	subscribe(other, PacketType.HOST_SYNC_CHEST, other.host_sync_chest_callback);
+	subscribe(other, PacketType.HOST_SYNC_PLAYER_POTION, other.host_sync_player_potion_callback);
+	subscribe(other, PacketType.HOST_SYNC_CHEST_OPEN, other.host_sync_chest_open_callback);
 }
 
 clean_runtime_objects = function() {

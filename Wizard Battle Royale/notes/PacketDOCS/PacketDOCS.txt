@@ -191,3 +191,46 @@ Trimis catre clienti
 Trimis catre clienti
 	
 	player_id
+
+# `HOST_SYNC_PLAYER_POTION`
+Trimis catre clienti
+
+	player_id
+	potion_type
+	potion_to_destroy
+
+# `CL_REQ_CONSUME_POTION`
+Trimis catre host
+
+	NIMIC
+
+# `HOST_SYNC_CONSUME_POTION`
+Trimis catre clienti
+
+	player_id
+	potion_type
+
+# `CL_REQ_CHEST_OPEN`
+Trimis catre host
+
+	id
+
+# `HOST_SYNC_CHEST_OPEN`
+Trimis catre clienti
+
+	id
+	potion_type
+	potion_id
+
+# `HOST_SYNC_CHEST`
+Trimis catre clienti
+
+	id
+	potion
+	x
+	y
+
+# `CL_REQ_POTION_GET`
+Trimis catre host
+
+	id
