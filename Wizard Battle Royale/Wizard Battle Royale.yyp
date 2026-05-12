@@ -77,6 +77,7 @@
     {"id":{"name":"oUIHandler","path":"objects/oUIHandler/oUIHandler.yy",},},
     {"id":{"name":"psFireball","path":"particles/psFireball/psFireball.yy",},},
     {"id":{"name":"psPlayerDash","path":"particles/psPlayerDash/psPlayerDash.yy",},},
+    {"id":{"name":"rmLobby","path":"rooms/rmLobby/rmLobby.yy",},},
     {"id":{"name":"rmMainMenu","path":"rooms/rmMainMenu/rmMainMenu.yy",},},
     {"id":{"name":"rmTest","path":"rooms/rmTest/rmTest.yy",},},
     {"id":{"name":"RoomUI","path":"roomui/RoomUI/RoomUI.yy",},},
@@ -103,6 +104,7 @@
     {"id":{"name":"sDungeonDecoration","path":"sprites/sDungeonDecoration/sDungeonDecoration.yy",},},
     {"id":{"name":"sDungeonTiles","path":"sprites/sDungeonTiles/sDungeonTiles.yy",},},
     {"id":{"name":"sFireballCollision","path":"sprites/sFireballCollision/sFireballCollision.yy",},},
+    {"id":{"name":"sGarderobe","path":"sprites/sGarderobe/sGarderobe.yy",},},
     {"id":{"name":"sHangingChain","path":"sprites/sHangingChain/sHangingChain.yy",},},
     {"id":{"name":"sMenuTile","path":"sprites/sMenuTile/sMenuTile.yy",},},
     {"id":{"name":"sPlayerBreathing","path":"sprites/sPlayerBreathing/sPlayerBreathing.yy",},},
@@ -120,6 +122,7 @@
     {"id":{"name":"sSliderButton","path":"sprites/sSliderButton/sSliderButton.yy",},},
     {"id":{"name":"sSliderKnob","path":"sprites/sSliderKnob/sSliderKnob.yy",},},
     {"id":{"name":"sSpiderWeb","path":"sprites/sSpiderWeb/sSpiderWeb.yy",},},
+    {"id":{"name":"sStartPad","path":"sprites/sStartPad/sStartPad.yy",},},
     {"id":{"name":"sSubmenuBackground","path":"sprites/sSubmenuBackground/sSubmenuBackground.yy",},},
     {"id":{"name":"sTextBox","path":"sprites/sTextBox/sTextBox.yy",},},
     {"id":{"name":"sToggleButton","path":"sprites/sToggleButton/sToggleButton.yy",},},
@@ -137,6 +140,7 @@
   "RoomOrderNodes":[
     {"roomId":{"name":"rmMainMenu","path":"rooms/rmMainMenu/rmMainMenu.yy",},},
     {"roomId":{"name":"rmTest","path":"rooms/rmTest/rmTest.yy",},},
+    {"roomId":{"name":"rmLobby","path":"rooms/rmLobby/rmLobby.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[
