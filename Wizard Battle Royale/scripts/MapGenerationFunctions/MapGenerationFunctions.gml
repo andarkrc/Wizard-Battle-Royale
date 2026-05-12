@@ -271,6 +271,19 @@ function GenerateGridMap(_cols, _rows) {
         while (array_length(_list) > 0) {
             var _cand = array_pop(_list);
             
+            // verificare necesară si aici
+            var _lastRoomID = -1;
+            if (array_length(_mapArray) > 0) {
+                _lastRoomID = _mapArray[array_length(_mapArray) - 1].room_index;
+            }
+            
+            if (_lastRoomID != -1) {
+ 
+                if (_lastRoomID == _cand.room) {
+                    continue;
+                }
+            }
+            
             var _points = roomEntrances[? _cand.room];
             var _pIn = _points[_cand.in_idx];
             var cam = room_get_camera(_cand.room, 7);
