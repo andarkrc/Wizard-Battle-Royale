@@ -1,0 +1,11 @@
+{
+  "$GMNotes":"v1",
+  "%Name":"PacketDOCS",
+  "name":"PacketDOCS",
+  "parent":{
+    "name":"1IMPORTANT",
+    "path":"folders/1IMPORTANT.yy",
+  },
+  "resourceType":"GMNotes",
+  "resourceVersion":"2.0",
+}

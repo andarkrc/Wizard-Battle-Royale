@@ -1,0 +1,242 @@
+Tipuri de pachete si ce contin acestea.
+
+Nu uita, daca procesezi un pachet pe client, va contine in plus:
+# 
+	sender_id - cine a trimis pachetul
+	sender_is_host - daca sender-ul are privilegii
+	type - tipul pachetului
+
+# `CL_PING`
+
+	NIMIC
+
+# `SV_PONG`
+
+	NIMIC
+
+# `SV_INFO_HOST`
+Trimis catre host.
+
+	client_id
+
+# `SV_INFO_CONNECTION_REQUEST`
+Trimis catre host.
+
+	client_id
+
+# `SV_INFO_HOST_DISCONNECTED`
+Trimis catre clienti.
+
+	NIMIC
+
+# `SV_INFO_CLIENT_DISCONNECTED`
+Trimis catre host.
+
+	client_id
+
+# `CL_REQ_CREATE_LOBBY`
+Trimis catre server(external server)
+
+	name
+	max_player_count
+	public
+
+# `CL_REQ_JOIN_LOBBY`
+Trimis catre server(external server)
+
+	code
+
+# `CL_REQ_LOBBY_LIST`
+Trimis catre server(external server)
+
+	NIMIC
+
+# `SV_INFO_LOBBY_CODE`
+Trimis catre host.
+
+	code
+
+# `SV_INFO_LOBBY_LIST`
+Trimis catre client.
+
+	TBD
+
+# `HOST_REQ_REMOVE_FROM_LOBBY`
+Trimis catre server(external server)
+
+	client_id
+
+# `HOST_INFO_CONNECTION_ACCEPTED`
+Trimis catre client
+
+	client_id
+
+# `HOST_INFO_CONNECTION_REJECTED`
+Trimis catre client
+
+	message
+
+# `HOST_INFO_CLIENT_DISCONNECTED`
+Trimis catre clienti.
+
+	TBD
+
+# `CL_INFO_PLAYER_NAME`
+Trimis catre host
+
+	name
+
+# `HOST_SYNC_PLAYER`
+Trimis catre clienti
+
+	id
+	name
+	hp
+	x
+	y
+
+# `CL_INFO_PLAYER_POSITION`
+Trimis catre host
+
+	x
+	y
+
+# `HOST_SYNC_PLAYER_POSITION`
+Trimis catre clienti
+
+	player_id
+	x
+	y
+	accepted
+
+# `HOST_SYNC_PLAYER_NAME`
+Trimis catre clienti
+
+	player_id
+	name
+
+# `CL_INFO_PLAYER_STATE`
+Trimis catre host
+
+	state
+	direction
+
+# `HOST_SYNC_PLAYER_STATE`
+Trimis catre clienti
+
+	player_id
+	state
+	direction
+
+# `CL_REQ_SPELLCAST`
+Trimis catre host
+
+	slot_index
+	direction
+
+# `HOST_SYNC_SPELLCAST`
+Trimis catre clienti
+
+	caster_id
+	spell_id
+	spell_type
+	x
+	y
+	direction
+
+# `CL_REQ_SPELLHIT`
+Trimis catre host
+
+	spell_id
+	target
+	should_destroy
+
+# `HOST_SYNC_SPELLHIT`
+Trimis catre clienti
+
+	caster_id
+	spell_id
+	should_destroy
+	target
+
+# `HOST_SYNC_SPELL_PLATFORM`
+Trimis catre clienti
+
+	id
+	spell
+	x
+	y
+
+# `CL_REQ_SPELL_GET`
+Trimis catre host
+
+	id (spell platform id)
+
+# `HOST_SYNC_SPELL_SLOT`
+Trimis catre client
+
+	player_id
+	slot_index
+	spell
+	casts
+	cooldown (-1 means don't change it)
+
+# `HOST_SYNC_PLAYER_HP`
+Trimis catre clienti
+
+	player_id
+	hp
+	
+# `HOST_SYNC_PLAYER_DIED`
+Trimis catre clienti
+	
+	player_id
+
+# `HOST_SYNC_PLAYER_POTION`
+Trimis catre clienti
+
+	player_id
+	potion_type
+	potion_to_destroy
+
+# `CL_REQ_CONSUME_POTION`
+Trimis catre host
+
+	NIMIC
+
+# `HOST_SYNC_CONSUME_POTION`
+Trimis catre clienti
+
+	player_id
+	potion_type
+
+# `CL_REQ_CHEST_OPEN`
+Trimis catre host
+
+	id
+
+# `HOST_SYNC_CHEST_OPEN`
+Trimis catre clienti
+
+	id
+	potion_type
+	potion_id
+
+# `HOST_SYNC_CHEST`
+Trimis catre clienti
+
+	id
+	potion
+	x
+	y
+
+# `CL_REQ_POTION_GET`
+Trimis catre host
+
+	id
+
+# `HOST_SYNC_SPELL_SLOT_NUMBER`
+Trimis catre clienti
+
+	player_id
+	new_size

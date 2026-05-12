@@ -1,1 +1,2 @@
 time_source_destroy(ts_reset_damage);
+time_source_destroy(make_visibile_timer);

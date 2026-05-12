@@ -23,6 +23,7 @@ if (async_load[? "id"] == client && async_load[? "type"] == network_type_data) {
 			
 			case PacketType.SV_INFO_LOBBY_CODE:
 				global.lobby_code = data.code;
+				signal(data);
 				break;
 			
 			case PacketType.HOST_INFO_CONNECTION_ACCEPTED :

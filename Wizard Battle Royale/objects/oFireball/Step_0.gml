@@ -25,7 +25,7 @@ for (var i = 0; i < collision_no; i++) {
 	
 	hit_another_player = true;
 	packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_SPELLHIT, 
-	{spell_id: spell_id, target: player.id_}));
+	{spell_id: spell_id, target: player.id_, should_destroy: true}));
 }
 ds_list_destroy(collided_players);
 
