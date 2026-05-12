@@ -234,3 +234,9 @@ Trimis catre clienti
 Trimis catre host
 
 	id
+
+# `HOST_SYNC_SPELL_SLOT_NUMBER`
+Trimis catre clienti
+
+	player_id
+	new_size

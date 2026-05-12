@@ -160,7 +160,7 @@ host_sync_player_potion_callback = function(data) {
 	}
 	
 	if (data.potion_to_destroy != -1) {
-		with (oPotionParent) {
+		with (oPotion) {
 			if (id_ == data.potion_to_destroy) {
 				instance_destroy();
 			}
@@ -174,9 +174,22 @@ host_sync_chest_open_callback = function(data) {
 	with (oChest) {
 		if (data.id == id_) {
 			potion = Potion.NONE;
-			with (instance_create_layer(x + sprite_width / 2, y, "Instances", oPotionParent)) {
+			with (instance_create_layer(x + sprite_width / 2, y, "Instances", oPotion)) {
 				id_ = data.potion_id;
 				potion = data.potion_type;	
+			}
+		}
+	}
+}
+
+host_sync_spell_slot_number_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			resize_spell_slots(spells, data.new_size);
+			if (selected_spell >= array_length(spells)) {
+				selected_spell = 0;
 			}
 		}
 	}
@@ -200,6 +213,7 @@ with (oClientHandler) {
 	subscribe(other, PacketType.HOST_SYNC_CHEST, other.host_sync_chest_callback);
 	subscribe(other, PacketType.HOST_SYNC_PLAYER_POTION, other.host_sync_player_potion_callback);
 	subscribe(other, PacketType.HOST_SYNC_CHEST_OPEN, other.host_sync_chest_open_callback);
+	subscribe(other, PacketType.HOST_SYNC_SPELL_SLOT_NUMBER, other.host_sync_spell_slot_number_callback);
 }
 
 clean_runtime_objects = function() {

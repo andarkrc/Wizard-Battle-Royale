@@ -22,7 +22,7 @@ Player = function(id_) constructor {
 	hp = 100;
 	x = 664;
 	y = 588;
-	potion = Potion.SPEED;
+	potion = Potion.NONE;
 }
 
 /// @desc Fully syncs a newly joined player
@@ -47,7 +47,6 @@ server_info_host_callback = function(data) {
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER, players[0]));
 	players_spell_info[? data.client_id] = {
 		total_spells: 0,
-		max_spells: 2,
 		spells: [new SpellSlot(), new SpellSlot()]
 	};
 }
@@ -61,7 +60,6 @@ server_info_connection_request_callback = function(data) {
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER, player));
 	players_spell_info[? data.client_id] = {
 		total_spells: 0,
-		max_spells: 2,
 		spells: [new SpellSlot(), new SpellSlot()]
 	};
 }
@@ -172,8 +170,9 @@ client_request_spell_get_callback = function(data) {
 	}
 
 	var idx = -1;
+	var info = players_spell_info[? data.sender_id];
 	
-	for (var i = 0; i < players_spell_info[? data.sender_id].max_spells; i++) {
+	for (var i = 0; i < array_length(info.spells); i++) {
 		if (players_spell_info[? data.sender_id].spells[i].type == Spell.NONE) {
 			idx = i;
 			break;
@@ -189,7 +188,7 @@ client_request_spell_get_callback = function(data) {
 	players_spell_info[? data.sender_id].spells[idx].type = spell;
 	players_spell_info[? data.sender_id].spells[idx].casts_remaining = spell_get_max_casts(spell);
 	
-	//spell_platforms[data.id].spell = Spell.NONE;
+	spell_platforms[data.id].spell = Spell.NONE;
 	
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_PLATFORM,
 		spell_platforms[data.id]));
@@ -216,6 +215,17 @@ client_request_consume_potion_callback = function(data) {
 			potion_type: players_map[? data.sender_id].potion	
 		}
 	));
+	
+	if (players_map[? data.sender_id].potion == Potion.LIMITS) {
+		var new_size = irandom_range(1, 5);
+		resize_spell_slots(players_spell_info[? data.sender_id].spells, new_size);
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_SLOT_NUMBER,
+			{
+				player_id: data.sender_id,
+				new_size: new_size 
+			}
+		))
+	}
 	
 	players_map[? data.sender_id].potion = Potion.NONE;
 }
@@ -306,7 +316,6 @@ damage_player = function(player_id, damage) {
 			x: x,
 			y: y
 		});
-		other.spell_platforms[sp_number].spell = Spell.WIND_SLASH;
 		sp_number++;
 	}
 	

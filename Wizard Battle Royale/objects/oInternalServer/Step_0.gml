@@ -7,7 +7,7 @@ for (var i = 0; i < array_length(spell_cooldowns); i++) {
 		continue;
 	}
 	
-	if (info.slot_index >= players_spell_info[? info.caster_id].max_spells) {
+	if (info.slot_index >= array_length(players_spell_info[? info.caster_id].spells)) {
 		array_delete(spell_cooldowns, i, 1);
 		i--;
 		continue;

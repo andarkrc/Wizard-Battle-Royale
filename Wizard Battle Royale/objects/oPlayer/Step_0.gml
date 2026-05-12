@@ -101,9 +101,9 @@ if (id_ == oClientHandler.client_id) {
 	}
 	
 	if (state == State.RUNNING || state == State.SIDE_FALLING || state == State.DASHING) {
-		image_xscale = (distance_horizontal < 0) ? -1 : 1;
+		image_xscale = (distance_horizontal < 0) ? -image_scale : image_scale;
 	} else {
-		image_xscale = 1;
+		image_xscale = image_scale;
 	}
 	
 	if (array_length(collisions_side) == 0 || array_length(collisions_vertical) != 0) {
@@ -143,7 +143,7 @@ if (id_ == oClientHandler.client_id) {
 		selected_spell = old_selected_spell;
 	}
 	
-	var collectible = collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, [oPotionParent, oSpellPlatform, oChest], false, false);
+	var collectible = collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, [oPotion, oSpellPlatform, oChest], false, false);
 	
 	if (instance_exists(prev_focused)) {
 		prev_focused.focused = false;

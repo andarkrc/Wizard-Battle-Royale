@@ -11,8 +11,8 @@ jump_power = 6 * METER;
 dash_duration = 0.25;
 dash_speed = 2 * METER / dash_duration;
 dash_direction = 0;
-total_dashes = 3;
-current_dashes = 3;
+total_dashes = 1;
+current_dashes = 1;
 
 hp = 100;
 
@@ -25,6 +25,11 @@ enum State {
 	SIDE_FALLING,
 	DASHING
 }
+
+image_scale = 1.5;
+
+image_xscale = image_scale;
+image_yscale = image_scale;
 
 state = State.IDLE;
 old_state = state;
@@ -51,7 +56,29 @@ drink_potion = function() {
 			if (move_speed > 5.5 * METER) {
 				move_speed = 5.5 * METER;
 			}
-			break;		
+			break;
+		
+		case Potion.INVISIBILITY:
+			if (id_ == oClientHandler.client_id) {
+				image_alpha = 0.7;
+			} else {
+				image_alpha = 0.1;
+			}
+			time_source_stop(make_visibile_timer);
+			time_source_start(make_visibile_timer);
+			break;
+		
+		case Potion.DASHING:
+			total_dashes++;
+			if (total_dashes > 5) {
+				total_dashes = 5;
+			}
+			break;
+		
+		case Potion.LIMITS:
+			// The effect is not handled here.
+			// Check the HOST_SYNC_SPELL_SLOT_NUMBER callback in game handler.
+			break;
 		
 		default:
 			break;
@@ -60,3 +87,14 @@ drink_potion = function() {
 }
 
 prev_focused = noone;
+
+make_visibile_timer = time_source_create (
+						time_source_game, 
+						global.invisibility_duration, 
+						time_source_units_seconds,
+						function () {
+							image_alpha = 1;
+						}
+						);
+
+

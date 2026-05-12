@@ -9,5 +9,5 @@ draw_self();
 if (focused && potion != Potion.NONE && can_be_collected) {
 	draw_setup(,,fa_center, fa_bottom);
 	var yy = sprite_height;
-	draw_text(x + sprite_width / 2, y - sprite_height, "<E>");
+	draw_text(x + sprite_width / 2, y, "<E>");
 }
