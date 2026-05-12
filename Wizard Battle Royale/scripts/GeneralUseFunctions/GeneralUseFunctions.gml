@@ -29,3 +29,13 @@ function deactivate_menus() {
 	layer_set_visible("JoinLobbyListMenu", false);
 	layer_set_visible("SettingsMenu", false);
 }
+
+/// @desc Sets the number of spells slots a player has to a new value.
+/// @arg {Array<SpellSlot>} slots
+function resize_spell_slots(slots, new_size) {
+	if (new_size < array_length(slots)) {
+		array_resize(slots, new_size);
+	} else  while (new_size > array_length(slots)) {
+		array_push(slots, new SpellSlot());	
+	}
+}

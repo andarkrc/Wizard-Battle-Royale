@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"PotionsRelated",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"PotionsRelated",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
