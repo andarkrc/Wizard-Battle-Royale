@@ -6,6 +6,6 @@ text = "Create";
 click_action = function() {
 	deactivate_menus();
 	global.connection_role = "host";	
-	room_goto(rmTest);
+	room_goto(rmGame);
 }
 
