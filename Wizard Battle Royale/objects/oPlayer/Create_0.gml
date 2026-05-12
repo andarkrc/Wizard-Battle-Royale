@@ -11,8 +11,8 @@ jump_power = 6 * METER;
 dash_duration = 0.25;
 dash_speed = 2 * METER / dash_duration;
 dash_direction = 0;
-total_dashes = 1;
-current_dashes = 1;
+total_dashes = 5;
+current_dashes = 5;
 
 hp = 100;
 

@@ -303,9 +303,9 @@ function GenerateGridMap(_cols, _rows) {
             if (!_collided) {
                 
                 var _pOut = _points[_cand.out_idx];
-                
+            
                 var _node = {
-                    room_index: _cand.room,
+                    room_index: room_get_name(_cand.room),
                     world_x: _tx, world_y: _ty,
                     width: _w, height: _h,
                     camera_pos_x: _pos_x, camera_pos_y: _pos_y,

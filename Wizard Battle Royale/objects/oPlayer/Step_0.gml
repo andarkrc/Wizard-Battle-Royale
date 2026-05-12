@@ -1,6 +1,6 @@
-if (id_ == oClientHandler.client_id) {
+if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGAME_LOADING) {
 	var _dt = delta_time / 1000000;
-	var movement_inactive = state == State.DASHING;
+	var movement_inactive = (state == State.DASHING);
 	var input_px = keyboard_check(ord("D"));
 	var input_nx = keyboard_check(ord("A"));
 	var input_py = keyboard_check(ord("S"));
@@ -63,7 +63,7 @@ if (id_ == oClientHandler.client_id) {
 	}
 	
 	if (keyboard_check_pressed(vk_shift) && !movement_inactive && current_dashes > 0) {
-		if (collision_down == noone) {
+		if (collision_down == noone || (collision_down.object_index == oCollisionBoxTopOnly && input_y > 0)) {
 			state = State.DASHING;
 			current_dashes -= 1;
 			if (input_x == 0 && input_y == 0) {

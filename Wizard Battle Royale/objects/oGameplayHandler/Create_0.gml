@@ -195,6 +195,39 @@ host_sync_spell_slot_number_callback = function(data) {
 	}
 }
 
+host_info_map_loading_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	layer_set_visible("Foreground", true);
+	layer_set_visible("Foreground_Text", true);
+	
+	state = GameState.PREGAME_LOADING;
+	
+	lobby.Cleanup(false);
+	init_all_rooms();
+	
+	
+}
+
+host_info_dungeon_room_callback = function(data) {
+	if (!check_host(data)) return;
+	array_push(rooms, RoomLoader.Load(asset_get_index(data.room_index), data.world_x, data.world_y));
+	show_debug_message($"Received a new room {array_length(rooms)}");
+}
+
+host_info_game_start_callback = function(data) {
+	if (!check_host(data)) return;
+		
+	layer_set_visible("Foreground", false);
+	layer_set_visible("Foreground_Text", false);
+	
+	state = GameState.GAME;
+	
+	with (oUIHandler) {
+		should_stretch_view = false;
+	}
+}
+
 with (oClientHandler) {
 	subscribe(other, PacketType.SV_INFO_HOST_DISCONNECTED, other.server_info_host_disconnected_callback);
 	subscribe(other, PacketType.HOST_SYNC_PLAYER, other.host_sync_player_callback);
@@ -214,6 +247,9 @@ with (oClientHandler) {
 	subscribe(other, PacketType.HOST_SYNC_PLAYER_POTION, other.host_sync_player_potion_callback);
 	subscribe(other, PacketType.HOST_SYNC_CHEST_OPEN, other.host_sync_chest_open_callback);
 	subscribe(other, PacketType.HOST_SYNC_SPELL_SLOT_NUMBER, other.host_sync_spell_slot_number_callback);
+	subscribe(other, PacketType.HOST_INFO_MAP_LOADING, other.host_info_map_loading_callback);
+	subscribe(other, PacketType.HOST_INFO_DUNGEON_ROOM, other.host_info_dungeon_room_callback);
+	subscribe(other, PacketType.HOST_INFO_GAME_START, other.host_info_game_start_callback);
 }
 
 clean_runtime_objects = function() {
@@ -252,4 +288,62 @@ cast_spell = function(data) {
 		default:
 			break;
 	}
+}
+
+state = GameState.LOBBY;
+
+map = [];
+
+rooms = [];
+
+lobby = undefined;
+
+unload_all_rooms = function() {
+	for (var i = 0; i < array_length(rooms); i++) {
+		rooms[i].Cleanup(false);
+	}
+}
+
+init_all_rooms = function() {
+	RoomLoader.DataInit(rmArenaLarge0);
+	RoomLoader.DataInit(rmArenaMedium0);
+	RoomLoader.DataInit(rmArenaMedium1);
+	RoomLoader.DataInit(rmArenaMedium2);
+	RoomLoader.DataInit(rmArenaMedium3);
+	RoomLoader.DataInit(rmCorridorMedium0);
+	RoomLoader.DataInit(rmCorridorMedium1);
+	RoomLoader.DataInit(rmCorridorMedium2);
+	RoomLoader.DataInit(rmCorridorMedium3);
+	RoomLoader.DataInit(rmCorridorMedium4);
+	RoomLoader.DataInit(rmCorridorSmall0);
+	RoomLoader.DataInit(rmCorridorSmall1);
+	RoomLoader.DataInit(rmCorridorSmall2);
+	RoomLoader.DataInit(rmCorridorSmall3);
+	RoomLoader.DataInit(rmCorridorSmall4);
+	RoomLoader.DataInit(rmCorridorSmall5);
+	RoomLoader.DataInit(rmCorridorSmall6);
+	RoomLoader.DataInit(rmCorridorSmall7);
+	RoomLoader.DataInit(rmCorridorSmall8);
+	RoomLoader.DataInit(rmLootMedium0);
+	RoomLoader.DataInit(rmLootMedium1);
+	RoomLoader.DataInit(rmLootMedium2);
+	RoomLoader.DataInit(rmLootMedium3);
+	RoomLoader.DataInit(rmLootSmall0);
+	RoomLoader.DataInit(rmLootSmall1);
+	RoomLoader.DataInit(rmLootSmall2);
+	RoomLoader.DataInit(rmLootSmall3);
+	RoomLoader.DataInit(rmLootSmall4);
+	RoomLoader.DataInit(rmLootSmall5);
+	RoomLoader.DataInit(rmLootSmall6);
+}
+
+load_lobby = function() {
+	RoomLoader.DataInit(rmTest);
+	lobby = RoomLoader.Load(rmTest, 0, 0);
+}
+
+load_lobby();
+
+with (oUIHandler) {
+	should_stretch_view = true;
 }

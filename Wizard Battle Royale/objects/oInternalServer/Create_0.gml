@@ -319,6 +319,8 @@ damage_player = function(player_id, damage) {
 		sp_number++;
 	}
 	
+	show_debug_message($"TOTAL OF {sp_number} platforms");
+	
 	for (var i = 0; i < sp_number; i++) {
 		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_PLATFORM,
 			spell_platforms[i]
@@ -338,6 +340,8 @@ damage_player = function(player_id, damage) {
 		chest_number++;
 	}
 	
+	show_debug_message($"TOTAL OF {chest_number} platforms");
+	
 	for (var i = 0; i < chest_number; i++) {
 		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_CHEST,
 			chests[i]
@@ -345,9 +349,26 @@ damage_player = function(player_id, damage) {
 	}
 }
 
-generate_map = function() {
-	init_spell_platforms();
-	init_chests();
-}
+state = GameState.LOBBY;
 
-generate_map();
+total_rooms = 0;
+
+generate_map = function() {
+	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_MAP_LOADING));
+	
+	var map_size = 5 + array_length(players);
+	var dungeon_rooms = GenerateBestGridMap(10, 5); // cus its bugged
+	
+	total_rooms = array_length(dungeon_rooms);
+	show_debug_message($"Generated a total of {total_rooms} rooms");
+	for (var i = 0; i < array_length(dungeon_rooms); i++) {
+		show_debug_message($"sending room {i}")
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_DUNGEON_ROOM,
+			{
+				room_index: dungeon_rooms[i].room_index,
+				world_x: dungeon_rooms[i].world_x,
+				world_y: dungeon_rooms[i].world_y
+			}
+		));
+	}
+}
