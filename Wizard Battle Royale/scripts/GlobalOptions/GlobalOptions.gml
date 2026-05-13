@@ -11,8 +11,8 @@ global.server_port = 6000;
 global.connection_type = "direct";
 global.connection_role = "";
 
-global.external_server_ip = "127.0.0.1";
-global.external_server_port = 6100;
+global.external_server_ip = "2.tcp.eu.ngrok.io";
+global.external_server_port = 22843;
 
 // lobby settings
 global.lobby_name = "";
