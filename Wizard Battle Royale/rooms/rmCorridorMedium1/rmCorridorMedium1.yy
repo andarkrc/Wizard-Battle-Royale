@@ -54,7 +54,6 @@
           79,83,27,79,79,-10,-2147483648,3,80,27,27,-3,79,2,96,27,-8,79,4,96,27,79,79,-10,-2147483648,1,67,-19,
           66,
         ],"TileDataFormat":1,},"tilesetId":{"name":"tsDungeon","path":"tilesets/tsDungeon/tsDungeon.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
-    {"$GMRBackgroundLayer":"","%Name":"Background","animationFPS":15.0,"animationSpeedType":0,"colour":4278190080,"depth":300,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"hspeed":0.0,"htiled":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Background","properties":[],"resourceType":"GMRBackgroundLayer","resourceVersion":"2.0","spriteId":null,"stretch":false,"userdefinedAnimFPS":false,"userdefinedDepth":false,"visible":true,"vspeed":0.0,"vtiled":false,"x":0,"y":0,},
   ],
   "name":"rmCorridorMedium1",
   "parent":{

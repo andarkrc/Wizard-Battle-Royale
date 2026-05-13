@@ -100,7 +100,6 @@
           805306452,805306451,26,28,44,43,44,43,28,27,805306454,805306453,805306452,805306451,-6,27,-6,79,1,805306451,
           -5,27,2,26,28,-30,14,-30,40,
         ],"TileDataFormat":1,},"tilesetId":{"name":"tsDungeon","path":"tilesets/tsDungeon/tsDungeon.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
-    {"$GMRBackgroundLayer":"","%Name":"Background","animationFPS":15.0,"animationSpeedType":0,"colour":4278190080,"depth":300,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"hspeed":0.0,"htiled":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Background","properties":[],"resourceType":"GMRBackgroundLayer","resourceVersion":"2.0","spriteId":null,"stretch":false,"userdefinedAnimFPS":false,"userdefinedDepth":false,"visible":true,"vspeed":0.0,"vtiled":false,"x":0,"y":0,},
   ],
   "name":"rmLootMedium2",
   "parent":{

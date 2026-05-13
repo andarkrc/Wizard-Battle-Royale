@@ -9,10 +9,10 @@ g = 20 * METER;
 jump_power = 6 * METER;
 
 dash_duration = 0.25;
-dash_speed = 2 * METER / dash_duration;
+dash_speed = 2.5 * METER / dash_duration;
 dash_direction = 0;
-total_dashes = 5;
-current_dashes = 5;
+total_dashes = 1;
+current_dashes = 1;
 
 hp = 100;
 
@@ -39,7 +39,7 @@ damaged = false;
 
 ts_reset_damage = time_source_create(time_source_game, 0.3, time_source_units_seconds, function(){damaged = false;});
 
-combat_active = true;
+combat_active = false;
 max_spell_count = 5;
 min_spell_count = 1;
 

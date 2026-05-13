@@ -2,7 +2,7 @@
 event_inherited();
 
 text = "Direct";
-selected = true;
+//selected = true;
 click_action = function() {
 	global.connection_type = "direct";
 	

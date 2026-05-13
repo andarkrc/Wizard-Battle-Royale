@@ -23,5 +23,9 @@ if (window_has_focus()) {
 			flexpanel_calculate_layout(layer_get_flexpanel_node("JoinLobbyMenu"), w, h, d);
 			flexpanel_calculate_layout(layer_get_flexpanel_node("SettingsMenu"), w, h, d);
 		}
+		
+		if (surface_exists(global.shadow_surface)) {
+			surface_free(global.shadow_surface);
+		}
 	}
 }

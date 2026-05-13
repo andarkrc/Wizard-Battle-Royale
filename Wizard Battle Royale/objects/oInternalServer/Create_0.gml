@@ -360,9 +360,7 @@ generate_map = function() {
 	var dungeon_rooms = GenerateBestGridMap(10, 5); // cus its bugged
 	
 	total_rooms = array_length(dungeon_rooms);
-	show_debug_message($"Generated a total of {total_rooms} rooms");
 	for (var i = 0; i < array_length(dungeon_rooms); i++) {
-		show_debug_message($"sending room {i}")
 		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_DUNGEON_ROOM,
 			{
 				room_index: dungeon_rooms[i].room_index,

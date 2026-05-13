@@ -39,3 +39,43 @@ function resize_spell_slots(slots, new_size) {
 		array_push(slots, new SpellSlot());	
 	}
 }
+
+/// @desc Returns the intersection point between the ray and the object.
+/// @arg {Real} x
+/// @arg {Real} y
+/// @arg {Real} dir
+/// @arg {Real} max_dist
+/// @arg {Asset.GMObject} object
+/// @return {Struct}
+function ray_cast_hit_point(x, y, dir, max_dist, object) {
+	var left = 0;
+	var right = max_dist;
+	
+	var lx = lengthdir_x(max_dist, dir);
+	var ly = lengthdir_y(max_dist, dir);
+	var p = {x: x + lx, y: y + ly};
+	
+	if (collision_line(x, y, x + lx, y + ly, object, false, true) == noone) {
+		return p;
+	}
+	var middle;
+	while (left < right) {
+		middle = (left + right) / 2;
+		
+		var xx = lengthdir_x(middle, dir);
+		var yy = lengthdir_y(middle, dir);
+		
+		if (collision_line(x, y, x + xx, y + yy, object, false, false) != noone) {
+			right = middle - 1;
+			p.x = x + xx;
+			p.y = y + yy;
+			continue;
+		} else {
+			left = middle + 1;
+			continue;
+		}
+		
+	}
+	
+	return p;
+}

@@ -9,11 +9,11 @@ click_action = function() {
 	layer_set_visible("MainMenu", true);
 	layer_set_visible("CreateLobbyMenu", active);
 	// Reset the menu
-	global.connection_type = "direct";
+	global.connection_type = "standard";
 	with (oLobbyNameField) {
 		text = "";
 	}
-	with (oDirectConnectionSegment) {
+	with (oStandardConnectionSegment) {
 		unselect_group_members();
 		selected = true;
 	}

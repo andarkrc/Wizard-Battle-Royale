@@ -32,4 +32,7 @@ if (combat_active && id_ == oClientHandler.client_id) {
 	draw_setup(,,fa_right, fa_middle);
 	draw_text(startx, spell_slots_y - spell_slot_size / 2, "Spells    ");
 	draw_text(startx, (healthbar_y1 + healthbar_y2) / 2, "HP    ");
+	
+	draw_setup(,,fa_left);
+	draw_text(8, 64, $"x: {x}, y: {y}");
 }

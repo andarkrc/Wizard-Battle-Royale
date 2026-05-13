@@ -23,3 +23,7 @@ global.lobby_code = -1;
 
 // customization
 global.player_name = "Player";
+
+// gameplay
+
+global.shadow_surface = -1;

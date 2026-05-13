@@ -338,8 +338,8 @@ init_all_rooms = function() {
 }
 
 load_lobby = function() {
-	RoomLoader.DataInit(rmTest);
-	lobby = RoomLoader.Load(rmTest, 0, 0);
+	RoomLoader.DataInit(rmLobby);
+	lobby = RoomLoader.Load(rmLobby, 0, 0);
 }
 
 load_lobby();
