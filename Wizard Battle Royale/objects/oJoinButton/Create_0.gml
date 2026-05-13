@@ -6,5 +6,5 @@ text = "Join";
 click_action = function() {
 	global.connection_role = "guest";
 	deactivate_menus();
-	room_goto(rmTest);
+	room_goto(rmGame);
 }

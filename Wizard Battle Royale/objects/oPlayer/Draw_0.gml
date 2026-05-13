@@ -4,8 +4,6 @@ if (damaged) {
 	image_blend = -1;
 }
 
-draw_self();
-
 switch (state) {
 	case State.JUMPING:
 		sprite_index = sPlayerJumping;
@@ -37,6 +35,12 @@ switch (state) {
 		break;
 }
 
-draw_setup(c_white,,,fa_bottom,fa_center);
+draw_setup();
+draw_self();
+
+draw_setup(c_white, image_alpha,,fa_bottom,fa_center);
 draw_text(x, y - sprite_height / 2 - 20, name);
 
+if (potion != Potion.NONE) {
+	draw_sprite_ext(sPotions, potion, x, y, 1, 1, 0, c_white, image_alpha);
+}

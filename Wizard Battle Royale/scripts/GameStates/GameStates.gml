@@ -1,0 +1,6 @@
+enum GameState {
+	LOBBY,
+	PREGAME_LOADING,
+	GAME,
+	POSTGAME
+}

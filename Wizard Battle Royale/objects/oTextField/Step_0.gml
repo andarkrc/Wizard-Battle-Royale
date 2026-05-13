@@ -7,6 +7,7 @@ hovered = point_in_rectangle(mx, my, x, y, x + sprite_width, y + sprite_height);
 
 if (mouse_check_button_pressed(mb_left)) {
 	can_write = hovered;
+    keyboard_string = "";
 	if (can_write) {
 		time_source_start(blink_state_timer);
 	} else {

@@ -1,8 +1,12 @@
-if (id_ == oClientHandler.client_id) {
+if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGAME_LOADING) {
 	var _dt = delta_time / 1000000;
-	var movement_inactive = state == State.DASHING;
-	var input_x = keyboard_check(ord("D")) - keyboard_check(ord("A"));
-	var input_y = keyboard_check(ord("S")) - keyboard_check(ord("W"));
+	var movement_inactive = (state == State.DASHING);
+	var input_px = keyboard_check(ord("D"));
+	var input_nx = keyboard_check(ord("A"));
+	var input_py = keyboard_check(ord("S"));
+	var input_ny = keyboard_check(ord("W"));
+	var input_x = input_px - input_nx;
+	var input_y = input_py - input_ny;
 	var collisions_side = [];
 	var collisions_vertical = [];
 	
@@ -59,7 +63,7 @@ if (id_ == oClientHandler.client_id) {
 	}
 	
 	if (keyboard_check_pressed(vk_shift) && !movement_inactive && current_dashes > 0) {
-		if (collision_down == noone) {
+		if (collision_down == noone || (collision_down.object_index == oCollisionBoxTopOnly && input_y > 0)) {
 			state = State.DASHING;
 			current_dashes -= 1;
 			if (input_x == 0 && input_y == 0) {
@@ -76,7 +80,7 @@ if (id_ == oClientHandler.client_id) {
 		}
 	}
 	
-	if (keyboard_check_pressed(ord("W")) && !movement_inactive) {
+	if (keyboard_check_pressed(vk_space) && !movement_inactive) {
 		if (collision_down != noone) {
 			vertical_speed = -jump_power;
 			state = State.JUMPING;
@@ -97,41 +101,80 @@ if (id_ == oClientHandler.client_id) {
 	}
 	
 	if (state == State.RUNNING || state == State.SIDE_FALLING || state == State.DASHING) {
-		image_xscale = (distance_horizontal < 0) ? -1 : 1;
+		image_xscale = (distance_horizontal < 0) ? -image_scale : image_scale;
 	} else {
-		image_xscale = 1;
+		image_xscale = image_scale;
 	}
 	
 	if (array_length(collisions_side) == 0 || array_length(collisions_vertical) != 0) {
 		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_POSITION, {x: x, y: y}));
 	}
 	
-	if (old_state != state) {
-		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_STATE, {state: state, direction: image_xscale}));
+	if (mouse_check_button_pressed(mb_left) && selected_spell >= 0 && selected_spell < array_length(spells) && combat_active) {
+		if (spells[selected_spell].type != Spell.NONE) {
+			var dir = point_direction(x, y - sprite_height / 2, mouse_x, mouse_y);
+			packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_SPELLCAST,
+				{slot_index: selected_spell, direction: dir}));
+		}
 	}
 	
-	if (mouse_check_button_pressed(mb_left)) {
-		cast_spell();
-	}
-	
-	if (keyboard_check_pressed(ord("1"))) {
+	var old_selected_spell = selected_spell;
+	if (combat_active && keyboard_check_pressed(ord("1"))) {
 		selected_spell = 0;
 	}
 	
-	if (keyboard_check_pressed(ord("2"))) {
+	if (combat_active && keyboard_check_pressed(ord("2"))) {
 		selected_spell = 1;
 	}
 	
-	if (keyboard_check_pressed(ord("3"))) {
+	if (combat_active && keyboard_check_pressed(ord("3"))) {
 		selected_spell = 2;
 	}
 	
-	if (keyboard_check_pressed(ord("4"))) {
+	if (combat_active && keyboard_check_pressed(ord("4"))) {
 		selected_spell = 3;
 	}
 	
-	if (keyboard_check_pressed(ord("5"))) {
+	if (combat_active && keyboard_check_pressed(ord("5"))) {
 		selected_spell = 4;
+	}
+	
+	if (selected_spell >= array_length(spells)) {
+		selected_spell = old_selected_spell;
+	}
+	
+	var collectible = collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, [oPotion, oSpellPlatform, oChest], false, false);
+	
+	if (instance_exists(prev_focused)) {
+		prev_focused.focused = false;
+		prev_focused = noone;
+	}
+	
+	with (collectible) {
+		focused = true;
+	}
+	
+	prev_focused = collectible;
+	
+	if (collectible != noone && keyboard_check_pressed(ord("E")) && collectible.can_be_collected) {
+		collectible.request_loot();
+	}
+	
+	for (var i = 0; i < array_length(spells); i++) {
+		if (spells[i].cooldown > 0) {
+			spells[i].cooldown -= _dt;
+			if (spells[i].cooldown < 0) {
+				spells[i].cooldown = 0;
+			}
+		}
+	}
+	
+	if (potion != Potion.NONE && keyboard_check_pressed(ord("F"))) {
+		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
+	}
+	
+	if (old_state != state) {
+		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_STATE, {state: state, direction: image_xscale}));
 	}
 	
 	old_state = state;

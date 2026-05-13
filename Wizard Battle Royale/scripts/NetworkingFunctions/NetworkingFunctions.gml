@@ -118,6 +118,61 @@ enum PacketDataType {
 	BOOLEAN,
 }
 
+/// @desc Writes one value into the packet
+/// @arg {Id.Buffer} packet
+/// @arg {Real} value
+function packet_serialize_value(packet, value) {
+	switch (typeof(value)) {
+		case "int32" :
+			buffer_write(packet, S32, PacketDataType.INT32);
+			buffer_write(packet, S32, value);
+			break;
+		
+		case "int64" :
+			buffer_write(packet, S32, PacketDataType.UINT64);
+			buffer_write(packet, U64, value);
+			break;
+		
+		case "number":
+			if (floor(value) == value) {
+				if (value > 2_147_483_647) {
+					buffer_write(packet, S32, PacketDataType.UINT64);
+					buffer_write(packet, U64, value);
+				} else {
+					buffer_write(packet, S32, PacketDataType.INT32);
+					buffer_write(packet, S32, value);
+				}
+			} else {
+				buffer_write(packet, S32, PacketDataType.FLOAT64);
+				buffer_write(packet, F64, value);
+			}
+			break;
+		
+		case "bool":
+			buffer_write(packet, S32, PacketDataType.BOOLEAN);
+			buffer_write(packet, BOOL, value);
+			break;
+		
+		case "string":
+			buffer_write(packet, S32, PacketDataType.STR);
+			buffer_write(packet, STRING, value);
+			break;
+		
+		case "array":
+			buffer_write(packet, S32, PacketDataType.ARRAY);
+			buffer_write(packet, S32, array_length(value));
+			for (var i = 0; i < array_length(value); i++) {
+				packet_serialize_value(packet, value[i]);
+			}
+			break;
+			
+		default:
+			return false;
+	}
+	
+	return true;
+}
+
 /// @desc Writes data into the packet.
 /// @desc Will write at the position of the buffer cursor.
 /// @arg {Id.Buffer} packet
@@ -135,70 +190,22 @@ function packet_serialize_data(packet, type, data)
 		
 		buffer_write(packet, STRING, name);
 		
-		switch (typeof(value)) {
-			case "int32" :
-				buffer_write(packet, S32, PacketDataType.INT32);
-				buffer_write(packet, S32, value);
-				break;
-			
-			case "int64" :
-				buffer_write(packet, S32, PacketDataType.UINT64);
-				buffer_write(packet, U64, value);
-				break;
-			
-			case "number":
-				if (floor(value) == value) {
-					if (value > 2_147_483_647) {
-						buffer_write(packet, S32, PacketDataType.UINT64);
-						buffer_write(packet, U64, value);
-					} else {
-						buffer_write(packet, S32, PacketDataType.INT32);
-						buffer_write(packet, S32, value);
-					}
-				} else {
-					buffer_write(packet, S32, PacketDataType.FLOAT64);
-					buffer_write(packet, F64, value);
-				}
-				break;
-			
-			case "bool":
-				buffer_write(packet, S32, PacketDataType.BOOLEAN);
-				buffer_write(packet, BOOL, value);
-				break;
-			
-			case "string":
-				buffer_write(packet, S32, PacketDataType.STR);
-				buffer_write(packet, STRING, value);
-				break;
-			
-			default:
-				show_debug_message($"Unknown type {typeof(value)} for packet of type {type} at {name}");
-				break;
+		var r = packet_serialize_value(packet, value);
+		
+		if (!r) {
+			show_debug_message($"Unknown type {typeof(value)} for packet of type {type} at {name}");
 		}
 	}
 	
 	buffer_write(packet, STRING, "EOD");
 }
 
-/// @desc Reads data from the packet into a struct.
-/// @desc Will read from the position of the buffer cursor.
+/// @desc Reads one value from the packet and returns it.
 /// @arg {Id.Buffer} packet
-function packet_deserialize_data(packet)
-{
-	var data = {};
-	
-	var packet_type = buffer_read(packet, S32);
-	
-	var name, type, value;
-	
-	while (true) {
-		name = buffer_read(packet, STRING);
-		if (name == "EOD") {
-			break;
-		}
-		type = buffer_read(packet, S32);
-		
-		switch (type) {
+function packet_deserialize_value(packet) {
+	var value;
+	var type = buffer_read(packet, S32);
+	switch (type) {
 			case PacketDataType.STR :
 				value = buffer_read(packet, STRING);
 				break;
@@ -223,13 +230,44 @@ function packet_deserialize_data(packet)
 				value = buffer_read(packet, U64);
 				break;
 			
+			case PacketDataType.ARRAY :
+				value = [];
+				var len = buffer_read(packet, S32);
+				for (var i = 0; i < len; i++) {
+					array_push(value, packet_deserialize_value(packet));
+				}
+				break;
+			
 			default:
 				value = undefined;
-				show_debug_message($"Unknown type at parsing packet of type {packet_type}: {type} at {name}")
 				break;
 		}
+	return value;	
+}
+
+/// @desc Reads data from the packet into a struct.
+/// @desc Will read from the position of the buffer cursor.
+/// @arg {Id.Buffer} packet
+function packet_deserialize_data(packet)
+{
+	var data = {};
+	
+	var packet_type = buffer_read(packet, S32);
+	
+	var name, type, value;
+	
+	while (true) {
+		name = buffer_read(packet, STRING);
+		if (name == "EOD") {
+			break;
+		}
+		
+		value = packet_deserialize_value(packet);
 		if (name == "") {
 			show_debug_message($"EMPTY NAME FOR PARSING PACKET OF TYPE {packet_type}");
+		}
+		if (value == undefined) {
+			show_debug_message($"Unknown type at parsing packet of type {packet_type} at {name}")
 		}
 		if (!struct_exists(data, name)) {
 			struct_set(data, name, value);
