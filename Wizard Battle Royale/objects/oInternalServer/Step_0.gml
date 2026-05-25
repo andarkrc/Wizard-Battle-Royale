@@ -40,6 +40,17 @@ if (state == GameState.PREGAME_LOADING) {
 		
 		for (var i = 0; i < array_length(players); i++) {
 			var player = players[i];
+			
+			if (player.id == oClientHandler.client_id) {
+				player.potion = Potion.BLINDING;
+				packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_POTION, 
+				{
+					player_id: player.id, 
+					potion_type: Potion.BLINDING, 
+					potion_to_destroy: -1
+				}));
+			}
+			
 			var ok = false;
 			show_debug_message($"Trying to spawn player {i}");
 			with (oPlayerSpawnPosition) {

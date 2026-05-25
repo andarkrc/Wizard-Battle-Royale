@@ -2,6 +2,16 @@ player_refs = ds_map_create();
 
 particle_system = part_system_create_layer("Instances", false);
 
+pt_cloud = part_type_create();
+part_type_shape(pt_cloud, pt_shape_smoke);
+part_type_size(pt_cloud, 1.0, 1.5, 0.02, 0);
+part_type_color3(pt_cloud, c_purple, c_fuchsia, c_black);
+part_type_alpha3(pt_cloud, 1.0, 0.6, 0);
+part_type_life(pt_cloud, 30, 40);
+part_type_direction(pt_cloud, 0, 360, 0.5, 0);
+part_type_speed(pt_cloud, 0.5, 1.5, -0.05, 0);
+part_type_orientation(pt_cloud, 0, 360, 1, 0, false);
+
 runtime_objects = [];
 
 create_player_if_doesnt_exist = function(id_) {
@@ -168,6 +178,42 @@ host_sync_player_potion_callback = function(data) {
 	}
 }
 
+host_sync_throw_potion_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	with (instance_create_layer(data.x, data.y, "Instances", oPotion)) {
+		potion = data.potion_type;
+		thrown = true;
+		thrower_id = data.thrower_id;
+		horizontal_speed = data.v_x;
+		vertical_speed = data.v_y;
+	}
+	
+	with (oPlayer) {
+		if (id_ == data.thrower_id) {
+			potion = Potion.NONE;
+		}
+	}
+}
+
+host_sync_potion_cloud_hit_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	with (oPlayer) {
+		if (id_ == data.target_id) {
+			if (data.potion_type == Potion.BLINDING) {
+				if (id_ == oClientHandler.client_id) {
+					blinded = true;
+					blind_opacity = 1.0;
+					blind_time = 20.0;
+					time_source_stop(remove_blinding_timer);
+					time_source_start(remove_blinding_timer);
+				}
+			}
+		}
+	}
+}
+
 host_sync_chest_open_callback = function(data) {
 	if (!check_host(data)) return;
 	
@@ -250,6 +296,8 @@ with (oClientHandler) {
 	subscribe(other, PacketType.HOST_INFO_MAP_LOADING, other.host_info_map_loading_callback);
 	subscribe(other, PacketType.HOST_INFO_DUNGEON_ROOM, other.host_info_dungeon_room_callback);
 	subscribe(other, PacketType.HOST_INFO_GAME_START, other.host_info_game_start_callback);
+	subscribe(other, PacketType.HOST_SYNC_THROW_POTION, other.host_sync_throw_potion_callback);
+	subscribe(other, PacketType.HOST_SYNC_POTION_CLOUD_HIT, other.host_sync_potion_cloud_hit_callback);
 }
 
 clean_runtime_objects = function() {

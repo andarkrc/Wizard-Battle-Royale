@@ -171,7 +171,16 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 	}
 	
 	if (potion != Potion.NONE && keyboard_check_pressed(ord("F"))) {
-		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
+		if (potion == Potion.BLINDING) {
+			var dir = point_direction(x, y - sprite_height / 2, mouse_x, mouse_y);
+			var force = 6 * METER; // Lowered force so it doesn't fly too fast
+			var v_x = dcos(dir) * force;
+			var v_y = -dsin(dir) * force;
+			
+			packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_THROW_POTION, {v_x: v_x, v_y: v_y}));
+		} else {
+			packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
+		}
 	}
 	
 	if (old_state != state) {

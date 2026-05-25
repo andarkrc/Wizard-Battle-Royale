@@ -267,6 +267,38 @@ client_request_potion_get_callback = function(data) {
 	));
 }
 
+client_request_throw_potion_callback = function(data) {
+	if (!ds_map_exists(players_map, data.sender_id)) return;
+		
+	if (players_map[? data.sender_id].potion != Potion.BLINDING) return;
+	
+	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_THROW_POTION,
+		{
+			thrower_id: data.sender_id,
+			x: players_map[? data.sender_id].x,
+			y: players_map[? data.sender_id].y - sprite_get_height(sPlayerIdle) / 2,
+			v_x: data.v_x,
+			v_y: data.v_y,
+			potion_type: players_map[? data.sender_id].potion
+		}
+	));
+	
+	players_map[? data.sender_id].potion = Potion.NONE;
+}
+
+client_request_potion_cloud_hit_callback = function(data) {
+	if (!ds_map_exists(players_map, data.sender_id)) return;
+	if (!ds_map_exists(players_map, data.target_id)) return;
+	
+	// We currently only throw blinding potions
+	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_POTION_CLOUD_HIT,
+		{
+			target_id: data.target_id,
+			potion_type: Potion.BLINDING
+		}
+	));
+}
+
 with (oClientHandler) {
 	subscribe(other, PacketType.SV_INFO_CONNECTION_REQUEST, other.server_info_connection_request_callback);
 	subscribe(other, PacketType.SV_INFO_HOST, other.server_info_host_callback);
@@ -279,6 +311,8 @@ with (oClientHandler) {
 	subscribe(other, PacketType.CL_REQ_CONSUME_POTION, other.client_request_consume_potion_callback);
 	subscribe(other, PacketType.CL_REQ_CHEST_OPEN, other.client_request_chest_open_callback);
 	subscribe(other, PacketType.CL_REQ_POTION_GET, other.client_request_potion_get_callback);
+	subscribe(other, PacketType.CL_REQ_THROW_POTION, other.client_request_throw_potion_callback);
+	subscribe(other, PacketType.CL_REQ_POTION_CLOUD_HIT, other.client_request_potion_cloud_hit_callback);
 }
 
 /// @desc Damages a player.

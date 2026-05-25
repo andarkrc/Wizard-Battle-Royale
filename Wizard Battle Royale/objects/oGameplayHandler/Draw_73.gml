@@ -54,3 +54,54 @@ if (state == GameState.GAME && 0) {
 	draw_setup();
 	draw_surface(surface, xx, yy);
 }
+
+// Curse of Blinding overlay
+var my_player = player_refs[? oClientHandler.client_id];
+
+if (state == GameState.GAME && instance_exists(my_player) && my_player.blinded) {
+	var _dt = delta_time / 1000000;
+	my_player.blind_time -= _dt;
+	
+	if (my_player.blind_time > 10.0) {
+		my_player.blind_opacity = 1.0;
+	} else {
+		my_player.blind_opacity = my_player.blind_time / 10.0;
+	}
+	
+	if (my_player.blind_opacity < 0) {
+		my_player.blind_opacity = 0;
+	}
+	
+	if (my_player.blind_opacity > 0) {
+		var cam = view_get_camera(0);
+		var xx = camera_get_view_x(cam);
+		var yy = camera_get_view_y(cam);
+		var w = camera_get_view_width(cam);
+		var h = camera_get_view_height(cam);
+		
+		if (!surface_exists(global.shadow_surface)) {
+			global.shadow_surface = surface_create(w, h);
+		}
+		
+		var surface = global.shadow_surface;
+		
+		surface_set_target(surface);
+		draw_clear_alpha(c_black, my_player.blind_opacity * 0.95);
+		
+		var px = my_player.x - xx;
+		var py = my_player.y - sprite_get_height(sPlayerIdle) / 2 - yy;
+		var blind_radius = 80;
+		
+		gpu_set_blendmode(bm_subtract);
+		draw_set_color(c_black);
+		draw_set_alpha(1.0);
+		draw_circle(px, py, blind_radius, false);
+		
+		gpu_set_blendmode(bm_normal);
+		surface_reset_target();
+		
+		draw_set_color(c_white);
+		draw_set_alpha(1.0);
+		draw_surface(surface, xx, yy);
+	}
+}

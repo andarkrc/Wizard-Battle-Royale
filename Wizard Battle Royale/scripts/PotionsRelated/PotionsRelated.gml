@@ -4,10 +4,12 @@ enum Potion {
 	INVISIBILITY,
 	LIMITS,
 	DASHING,
+	BLINDING,
 	LAST,
 }
 
 global.invisibility_duration = 20;
+global.blinding_duration = 20;
 
 /// @desc Returns the name of a potion.
 /// @arg {Real} potion
@@ -18,6 +20,7 @@ function potion_get_name(potion) {
 	names[Potion.INVISIBILITY] = "Potion of Invisibility";
 	names[Potion.LIMITS] = "Potion of Limits";
 	names[Potion.DASHING] = "Blessing of Clouds";
+	names[Potion.BLINDING] = "Curse of Blinding";
 	
 	return names[potion];
 }

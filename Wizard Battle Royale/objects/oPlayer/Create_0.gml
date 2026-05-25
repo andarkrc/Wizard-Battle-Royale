@@ -97,4 +97,16 @@ make_visibile_timer = time_source_create (
 						}
 						);
 
+blinded = false;
+blind_opacity = 20;
+
+remove_blinding_timer = time_source_create (
+						time_source_game,
+						global.blinding_duration,
+						time_source_units_seconds,
+						function () {
+							blinded = false;
+						}
+						);
+
 
