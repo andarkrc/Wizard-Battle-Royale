@@ -353,20 +353,40 @@ state = GameState.LOBBY;
 
 total_rooms = 0;
 
+var _toateCamerele = [
+    rmLootSmall0, rmLootSmall1, rmLootSmall2, rmLootSmall3, rmLootSmall4, rmLootSmall5, rmLootSmall6, rmLootSmall7, rmLootSmall8, rmLootSmall9,
+    rmLootMedium0, rmLootMedium1, rmLootMedium2, rmLootMedium3, rmLootMedium4, rmLootMedium5, rmLootMedium6, rmLootMedium7,
+    rmLootMedium8, rmLootMedium9, rmLootMedium10, rmLootMedium11,
+    rmCorridorSmall0, rmCorridorSmall1, rmCorridorSmall2, rmCorridorSmall3, rmCorridorSmall4, rmCorridorSmall5,
+    rmCorridorSmall6, rmCorridorSmall7, rmCorridorSmall8, rmCorridorSmall9, rmCorridorSmall10, rmCorridorSmall11,
+    rmCorridorSmall12, rmCorridorSmall13, rmCorridorSmall14, rmCorridorSmall15, rmCorridorSmall16, rmCorridorSmall17,
+    rmCorridorSmall18, rmCorridorSmall19, rmCorridorSmall20, rmCorridorSmall21, rmCorridorSmall22, 
+    rmCorridorMedium0, rmCorridorMedium1, rmCorridorMedium2, rmCorridorMedium3, rmCorridorMedium4, rmCorridorMedium5, rmCorridorMedium6, rmCorridorMedium7, rmCorridorMedium8,
+    rmArenaMedium0, rmArenaMedium1, rmArenaMedium2, rmArenaMedium3, rmArenaMedium4, rmArenaLarge0, rmArenaLarge1,
+    rmWallHorizontal, rmWallVertical
+];
+
+if (!variable_global_exists("intrariHarta")) {
+    global.intrariHarta = PrecalculateRoomData(_toateCamerele);
+}
+
 generate_map = function() {
-	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_MAP_LOADING));
-	
-	var map_size = 5 + array_length(players);
-	var dungeon_rooms = GenerateBestGridMap(10, 5); // cus its bugged
-	
-	total_rooms = array_length(dungeon_rooms);
-	for (var i = 0; i < array_length(dungeon_rooms); i++) {
-		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_DUNGEON_ROOM,
-			{
-				room_index: dungeon_rooms[i].room_index,
-				world_x: dungeon_rooms[i].world_x,
-				world_y: dungeon_rooms[i].world_y
-			}
-		));
-	}
+    packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_MAP_LOADING));
+    
+    var map_size = 15 + 2 * array_length(players);
+    
+    var _mapResult = GenerateBestRadialMap(map_size, global.intrariHarta);
+    
+    var dungeon_rooms = _mapResult.rooms;
+    total_rooms = array_length(dungeon_rooms);
+    
+    for (var i = 0; i < total_rooms; i++) {
+        packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_DUNGEON_ROOM,
+            {
+                room_index: dungeon_rooms[i].room_index, 
+                world_x: dungeon_rooms[i].world_x,
+                world_y: dungeon_rooms[i].world_y
+            }
+        ));
+    }
 }
