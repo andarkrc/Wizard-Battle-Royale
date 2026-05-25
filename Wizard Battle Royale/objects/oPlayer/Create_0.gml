@@ -85,6 +85,10 @@ drink_potion = function() {
 			blind_opacity = 0;
 			time_source_stop(remove_blinding_timer);
 			break;
+
+		case Potion.TEN_HP:
+			hp = min(hp + 10, 150)
+			break;
 		
 		default:
 			break;

@@ -7,6 +7,7 @@ enum Potion {
 	BLINDING,
 	FLAME,
 	CLEANSING,
+	TEN_HP,
 	LAST,
 }
 
@@ -26,6 +27,7 @@ function potion_get_name(potion) {
 	names[Potion.BLINDING] = "Curse of Blinding";
 	names[Potion.FLAME] = "Flame in a bottle";
 	names[Potion.CLEANSING] = "Potion of Cleansing";
+	names[Potion.TEN_HP] = "Potion of 10 HP";
 	
 	return names[potion];
 }
