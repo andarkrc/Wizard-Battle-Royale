@@ -79,6 +79,12 @@ drink_potion = function() {
 			// The effect is not handled here.
 			// Check the HOST_SYNC_SPELL_SLOT_NUMBER callback in game handler.
 			break;
+			
+		case Potion.CLEANSING:
+			blinded = false;
+			blind_opacity = 0;
+			time_source_stop(remove_blinding_timer);
+			break;
 		
 		default:
 			break;

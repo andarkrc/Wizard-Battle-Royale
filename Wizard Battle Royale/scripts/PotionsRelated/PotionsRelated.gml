@@ -6,6 +6,7 @@ enum Potion {
 	DASHING,
 	BLINDING,
 	FLAME,
+	CLEANSING,
 	LAST,
 }
 
@@ -24,6 +25,7 @@ function potion_get_name(potion) {
 	names[Potion.DASHING] = "Blessing of Clouds";
 	names[Potion.BLINDING] = "Curse of Blinding";
 	names[Potion.FLAME] = "Flame in a bottle";
+	names[Potion.CLEANSING] = "Potion of Cleansing";
 	
 	return names[potion];
 }
