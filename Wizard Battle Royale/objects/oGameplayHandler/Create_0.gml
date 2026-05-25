@@ -12,6 +12,16 @@ part_type_direction(pt_cloud, 0, 360, 0.5, 0);
 part_type_speed(pt_cloud, 0.5, 1.5, -0.05, 0);
 part_type_orientation(pt_cloud, 0, 360, 1, 0, false);
 
+pt_fire = part_type_create();
+part_type_shape(pt_fire, pt_shape_smoke);
+part_type_size(pt_fire, 0.6, 1.2, 0.01, 0.02); // Larger, thicker smoke
+part_type_color3(pt_fire, c_yellow, c_orange, c_maroon);
+part_type_alpha3(pt_fire, 0.8, 0.6, 0); // Smooth fade
+part_type_life(pt_fire, 40, 60); // Lasts longer so it doesn't flicker
+part_type_direction(pt_fire, 85, 95, 0, 2); 
+part_type_speed(pt_fire, 0.2, 0.5, 0, 0);
+part_type_blend(pt_fire, true);
+
 runtime_objects = [];
 
 create_player_if_doesnt_exist = function(id_) {
@@ -102,11 +112,19 @@ host_sync_spellhit_callback = function(data) {
 host_sync_spell_platform_callback = function(data) {
 	if (!check_host(data)) return;
 		
+	var found = false;
 	with (oSpellPlatform) {
 		if (id_ == data.id || (x == data.x && y == data.y)) {
 			id_ = data.id;
 			spell = data.spell;
+			found = true;
 		}
+	}
+	
+	if (!found) {
+		var new_plat = instance_create_layer(data.x, data.y, "Instances", oSpellPlatform);
+		new_plat.id_ = data.id;
+		new_plat.spell = data.spell;
 	}
 }
 
@@ -136,6 +154,12 @@ host_sync_player_hp_callback = function(data) {
 
 host_sync_player_died_callback = function(data) {
 	if (!check_host(data)) return;
+	
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			instance_destroy();
+		}
+	}
 }
 
 host_sync_consume_potion_callback = function(data) {

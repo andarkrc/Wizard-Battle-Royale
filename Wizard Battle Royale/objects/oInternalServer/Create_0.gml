@@ -270,7 +270,8 @@ client_request_potion_get_callback = function(data) {
 client_request_throw_potion_callback = function(data) {
 	if (!ds_map_exists(players_map, data.sender_id)) return;
 		
-	if (players_map[? data.sender_id].potion != Potion.BLINDING) return;
+	var p = players_map[? data.sender_id].potion;
+	if (p != Potion.BLINDING && p != Potion.FLAME) return;
 	
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_THROW_POTION,
 		{
@@ -279,7 +280,7 @@ client_request_throw_potion_callback = function(data) {
 			y: players_map[? data.sender_id].y - sprite_get_height(sPlayerIdle) / 2,
 			v_x: data.v_x,
 			v_y: data.v_y,
-			potion_type: players_map[? data.sender_id].potion
+			potion_type: p
 		}
 	));
 	
@@ -299,6 +300,13 @@ client_request_potion_cloud_hit_callback = function(data) {
 	));
 }
 
+client_request_potion_fire_hit_callback = function(data) {
+	if (!ds_map_exists(players_map, data.sender_id)) return;
+	
+	// Fire deals instant death
+	damage_player(data.sender_id, 9999);
+}
+
 with (oClientHandler) {
 	subscribe(other, PacketType.SV_INFO_CONNECTION_REQUEST, other.server_info_connection_request_callback);
 	subscribe(other, PacketType.SV_INFO_HOST, other.server_info_host_callback);
@@ -313,6 +321,7 @@ with (oClientHandler) {
 	subscribe(other, PacketType.CL_REQ_POTION_GET, other.client_request_potion_get_callback);
 	subscribe(other, PacketType.CL_REQ_THROW_POTION, other.client_request_throw_potion_callback);
 	subscribe(other, PacketType.CL_REQ_POTION_CLOUD_HIT, other.client_request_potion_cloud_hit_callback);
+	subscribe(other, PacketType.CL_REQ_POTION_FIRE_HIT, other.client_request_potion_fire_hit_callback);
 }
 
 /// @desc Damages a player.

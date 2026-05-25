@@ -3,16 +3,36 @@ var _dt = delta_time / 1000000;
 if (broken) {
 	cloud_timer -= _dt;
 	
-	if (random(1) < 15 * _dt) { // Spawn particles over time
-		part_particles_create(oGameplayHandler.particle_system, x + random_range(-15, 15), y + random_range(-15, 15), pt_cloud, 1);
-	}
-	
-	if (!cloud_hit_local) {
+	if (potion == Potion.BLINDING) {
+		if (random(1) < 15 * _dt) { // Spawn particles over time
+			part_particles_create(oGameplayHandler.particle_system, x + random_range(-15, 15), y + random_range(-15, 15), oGameplayHandler.pt_cloud, 1);
+		}
+		
+		if (!cloud_hit_local) {
+			with (oPlayer) {
+				if (id_ == oClientHandler.client_id) {
+					if (point_distance(x, y, other.x, other.y) <= other.cloud_radius) {
+						other.cloud_hit_local = true;
+						packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: id_}));
+					}
+				}
+			}
+		}
+	} else if (potion == Potion.FLAME) {
+		if (random(1) < 300 * _dt) { // Spawn lots of fire particles smoothly
+			var r = random(cloud_radius);
+			var dir = random(360);
+			var px = x + lengthdir_x(r, dir);
+			var py = y - 40 + lengthdir_y(r, dir);
+			part_particles_create(oGameplayHandler.particle_system, px, py, oGameplayHandler.pt_fire, 1);
+		}
+		
 		with (oPlayer) {
 			if (id_ == oClientHandler.client_id) {
 				if (point_distance(x, y, other.x, other.y) <= other.cloud_radius) {
-					other.cloud_hit_local = true;
-					packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: id_}));
+					if (!damaged && other.cloud_timer <= global.flame_duration - 2.0) { // Hit every 0.3s after 2s immunity
+						packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_FIRE_HIT, {}));
+					}
 				}
 			}
 		}
@@ -92,5 +112,21 @@ if (thrown && can_be_collected && !broken) {
 	can_be_collected = false;
 	
 	// Initial visual particle explosion
-	part_particles_create(oGameplayHandler.particle_system, x, y, pt_cloud, 40);
+	if (potion == Potion.BLINDING) {
+		part_particles_create(oGameplayHandler.particle_system, x, y - 40, oGameplayHandler.pt_cloud, 40);
+	} else if (potion == Potion.FLAME) {
+		cloud_timer = global.flame_duration;
+		part_particles_create(oGameplayHandler.particle_system, x, y - 40, oGameplayHandler.pt_fire, 80);
+		
+		if (instance_exists(oInternalServer)) {
+			var new_platform = {
+				id: array_length(oInternalServer.spell_platforms),
+				spell: Spell.FIREBALL,
+				x: x,
+				y: y
+			};
+			array_push(oInternalServer.spell_platforms, new_platform);
+			packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_PLATFORM, new_platform));
+		}
+	}
 }
