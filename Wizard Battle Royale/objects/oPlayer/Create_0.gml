@@ -87,7 +87,11 @@ drink_potion = function() {
 			break;
 
 		case Potion.TEN_HP:
-			hp = min(hp + 10, 150)
+			hp = min(hp + 10, 150);
+			break;
+
+		case Potion.HEAL_HALF:
+			hp = hp + ceil((100 - hp) / 2.0);
 			break;
 		
 		default:

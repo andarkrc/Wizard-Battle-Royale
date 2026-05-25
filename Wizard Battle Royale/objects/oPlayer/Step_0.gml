@@ -178,7 +178,7 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 			var v_y = -dsin(dir) * force;
 			
 			packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_THROW_POTION, {v_x: v_x, v_y: v_y}));
-		} else if (potion == Potion.TEN_HP) {
+		} else if (potion == Potion.TEN_HP || potion = Potion.HEAL_HALF) {
 			if (hp < 100) {
 				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
 			}
