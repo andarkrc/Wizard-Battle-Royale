@@ -7,10 +7,10 @@ part_type_shape(pt_cloud, pt_shape_smoke);
 part_type_size(pt_cloud, 1.0, 1.5, 0.02, 0);
 part_type_color3(pt_cloud, c_purple, c_fuchsia, c_black);
 part_type_alpha3(pt_cloud, 1.0, 0.6, 0);
-part_type_life(pt_cloud, 30, 40);
-part_type_direction(pt_cloud, 0, 360, 0.5, 0);
-part_type_speed(pt_cloud, 0.5, 1.5, -0.05, 0);
-part_type_orientation(pt_cloud, 0, 360, 1, 0, false);
+part_type_life(pt_cloud, 40, 60);
+part_type_direction(pt_cloud, 0, 0, 0, 0);
+part_type_speed(pt_cloud, 0, 0, 0, 0);
+part_type_orientation(pt_cloud, 0, 360, 0, 0, false);
 
 pt_fire = part_type_create();
 part_type_shape(pt_fire, pt_shape_smoke);

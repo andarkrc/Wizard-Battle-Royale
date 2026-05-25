@@ -42,11 +42,11 @@ if (state == GameState.PREGAME_LOADING) {
 			var player = players[i];
 			
 			if (player.id == oClientHandler.client_id) {
-				player.potion = Potion.FLAME;
+				player.potion = Potion.BLINDING;
 				packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_POTION, 
 				{
 					player_id: player.id, 
-					potion_type: Potion.FLAME, 
+					potion_type: Potion.BLINDING, 
 					potion_to_destroy: -1
 				}));
 			}
