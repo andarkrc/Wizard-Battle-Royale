@@ -1,7 +1,7 @@
 if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGAME_LOADING) {
 	var _dt = delta_time / 1000000;
 	var movement_inactive = (state == State.DASHING);
-	combat_active = (oGameplayHandler.state == GameState.GAME);
+	combat_active = (oGameplayHandler.state == GameState.GAME) || 1;
 	var input_px = keyboard_check(ord("D"));
 	var input_nx = keyboard_check(ord("A"));
 	var input_py = keyboard_check(ord("S"));

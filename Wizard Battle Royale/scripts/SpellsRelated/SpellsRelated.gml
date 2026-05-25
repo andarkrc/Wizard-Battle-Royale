@@ -3,6 +3,7 @@ enum Spell {
 	FIREBALL,
 	WIND_SLASH,
 	SHIELD,
+    ICE_SPIKE,
 	LAST,
 }
 
@@ -22,6 +23,7 @@ function spell_get_max_casts(spell) {
 	casts[Spell.FIREBALL] = 3;
 	casts[Spell.WIND_SLASH] = 2;
 	casts[Spell.SHIELD] = 1;
+    casts[Spell.ICE_SPIKE] = 3;
 	
 	return casts[spell];
 }
@@ -34,6 +36,7 @@ function spell_get_damage(spell) {
 	// if a spell is not mentioned, it means it has damage = 0;	
 	damage[Spell.FIREBALL] = 30;
 	damage[Spell.WIND_SLASH] = 25;
+    damage[Spell.ICE_SPIKE] = 20;
 
 	return damage[spell];
 }

@@ -188,7 +188,7 @@ client_request_spell_get_callback = function(data) {
 	players_spell_info[? data.sender_id].spells[idx].type = spell;
 	players_spell_info[? data.sender_id].spells[idx].casts_remaining = spell_get_max_casts(spell);
 	
-	spell_platforms[data.id].spell = Spell.NONE;
+	//spell_platforms[data.id].spell = Spell.NONE;
 	
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_PLATFORM,
 		spell_platforms[data.id]));
@@ -317,7 +317,10 @@ damage_player = function(player_id, damage) {
 			y: y
 		});
 		sp_number++;
+        
 	}
+    
+    spell_platforms[0].spell = Spell.ICE_SPIKE;
 	
 	show_debug_message($"TOTAL OF {sp_number} platforms");
 	
@@ -370,3 +373,5 @@ generate_map = function() {
 		));
 	}
 }
+
+init_spell_platforms();
