@@ -84,6 +84,12 @@ drink_potion = function() {
 			blinded = false;
 			blind_opacity = 0;
 			time_source_stop(remove_blinding_timer);
+			if (reversed) {
+				reversed = false;
+				var camera = view_get_camera(0);
+				camera_set_view_angle(camera, 0);
+				time_source_stop(remove_reverse_timer);
+			}
 			break;
 
 		case Potion.TEN_HP:

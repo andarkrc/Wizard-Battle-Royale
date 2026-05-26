@@ -182,6 +182,10 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 			if (hp < 100) {
 				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
 			}
+		} else if (potion == Potion.CLEANSING) {
+			if (blinded || reversed) {
+				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
+			}
 		} else {
 			packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
 		}
