@@ -22,7 +22,7 @@ Player = function(id_) constructor {
 	hp = 100;
 	x = 664;
 	y = 588;
-	potion = Potion.DECOY;
+	potion = Potion.REVERSE;
 }
 
 /// @desc Fully syncs a newly joined player
@@ -305,7 +305,7 @@ client_request_throw_potion_callback = function(data) {
 	if (!ds_map_exists(players_map, data.sender_id)) return;
 		
 	var p = players_map[? data.sender_id].potion;
-	if (p != Potion.BLINDING && p != Potion.FLAME) return;
+	if (p != Potion.BLINDING && p != Potion.FLAME && p != Potion.REVERSE) return;
 	
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_THROW_POTION,
 		{
@@ -325,11 +325,10 @@ client_request_potion_cloud_hit_callback = function(data) {
 	if (!ds_map_exists(players_map, data.sender_id)) return;
 	if (!ds_map_exists(players_map, data.target_id)) return;
 	
-	// We currently only throw blinding potions
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_POTION_CLOUD_HIT,
 		{
 			target_id: data.target_id,
-			potion_type: Potion.BLINDING
+			potion_type: data.potion_type
 		}
 	));
 }

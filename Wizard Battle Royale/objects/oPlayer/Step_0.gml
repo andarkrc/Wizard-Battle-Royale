@@ -171,7 +171,7 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 	}
 	
 	if (potion != Potion.NONE && keyboard_check_pressed(ord("F"))) {
-		if (potion == Potion.BLINDING || potion == Potion.FLAME) {
+		if (potion == Potion.BLINDING || potion == Potion.FLAME || potion == Potion.REVERSE) {
 			var dir = point_direction(x, y - sprite_height / 2, mouse_x, mouse_y);
 			var force = 6 * METER;
 			var v_x = dcos(dir) * force;

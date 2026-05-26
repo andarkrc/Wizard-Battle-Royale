@@ -15,7 +15,18 @@ if (broken) {
 				if (id_ == oClientHandler.client_id) {
 					if (point_distance(x, y, other.x, other.y) <= other.cloud_radius) {
 						other.cloud_hit_local = true;
-						packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: id_}));
+						packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: id_, potion_type: Potion.BLINDING}));
+					}
+				}
+			}
+		}
+	} else if (potion == Potion.REVERSE) {
+		if (!cloud_hit_local) {
+			with (oPlayer) {
+				if (id_ == oClientHandler.client_id) {
+					if (point_distance(x, y, other.x, other.y) <= other.cloud_radius) {
+						other.cloud_hit_local = true;
+						packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: id_, potion_type: Potion.REVERSE}));
 					}
 				}
 			}
@@ -134,5 +145,7 @@ if (thrown && can_be_collected && !broken) {
 			array_push(oInternalServer.spell_platforms, new_platform);
 			packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_PLATFORM, new_platform));
 		}
+	} else if (potion == Potion.REVERSE) {
+		cloud_timer = global.reverse_duration;
 	}
 }

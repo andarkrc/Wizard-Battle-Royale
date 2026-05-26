@@ -120,11 +120,28 @@ blind_opacity = 20;
 
 remove_blinding_timer = time_source_create (
 						time_source_game,
-						global.blinding_duration,
+						global.blinding_effect_duration,
 						time_source_units_seconds,
 						function () {
 							blinded = false;
 						}
 						);
 
+reversed = false;
+
+remove_reverse_timer = time_source_create (
+						time_source_game,
+						global.reverse_effect_duration,
+						time_source_units_seconds,
+						function () {
+							reversed = false;
+							var camera = view_get_camera(0);
+							camera_set_view_angle(camera, 0);
+							with (oPotion) {
+								if (potion == Potion.REVERSE && broken) {
+									cloud_hit_local = false;
+								}
+							}
+						}
+						);
 

@@ -243,6 +243,14 @@ host_sync_potion_cloud_hit_callback = function(data) {
 					time_source_stop(remove_blinding_timer);
 					time_source_start(remove_blinding_timer);
 				}
+			} else if (data.potion_type == Potion.REVERSE) {
+				if (id_ == oClientHandler.client_id) {
+					reversed = true;
+					var camera = view_get_camera(0);
+					camera_set_view_angle(camera, 180);
+					time_source_stop(remove_reverse_timer);
+					time_source_start(remove_reverse_timer);
+				}
 			}
 		}
 	}
