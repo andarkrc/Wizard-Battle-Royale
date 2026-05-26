@@ -264,19 +264,41 @@ client_request_chest_open_callback = function(data) {
 client_request_potion_get_callback = function(data) {
 	if (!ds_map_exists(players_map, data.sender_id)) return;
 	if (!ds_map_exists(potions, data.id)) return;
-		
-	if (players_map[? data.sender_id].potion != Potion.NONE) return;
 
 	var new_potion = potions[? data.id];
-	players_map[? data.sender_id].potion = new_potion;
+	var old_potion = players_map[? data.sender_id].potion;
 	
-	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_POTION,
-		{
-			player_id: data.sender_id,
-			potion_type: new_potion,
-			potion_to_destroy: data.id	
-		}
-	));
+	if (old_potion != Potion.NONE) {
+		// Swap: update the ground potion to the player's old potion
+		potions[? data.id] = old_potion;
+		players_map[? data.sender_id].potion = new_potion;
+		
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_POTION,
+			{
+				player_id: data.sender_id,
+				potion_type: new_potion,
+				potion_to_destroy: -1
+			}
+		));
+		
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_POTION_UPDATE,
+			{
+				potion_id: data.id,
+				potion_type: old_potion
+			}
+		));
+	} else {
+		// Normal pickup: no potion held
+		players_map[? data.sender_id].potion = new_potion;
+		
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_POTION,
+			{
+				player_id: data.sender_id,
+				potion_type: new_potion,
+				potion_to_destroy: data.id	
+			}
+		));
+	}
 }
 
 client_request_throw_potion_callback = function(data) {

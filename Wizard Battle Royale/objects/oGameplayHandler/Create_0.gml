@@ -202,6 +202,16 @@ host_sync_player_potion_callback = function(data) {
 	}
 }
 
+host_sync_potion_update_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	with (oPotion) {
+		if (id_ == data.potion_id) {
+			potion = data.potion_type;
+		}
+	}
+}
+
 host_sync_throw_potion_callback = function(data) {
 	if (!check_host(data)) return;
 	
@@ -343,6 +353,7 @@ with (oClientHandler) {
 	subscribe(other, PacketType.HOST_SYNC_THROW_POTION, other.host_sync_throw_potion_callback);
 	subscribe(other, PacketType.HOST_SYNC_POTION_CLOUD_HIT, other.host_sync_potion_cloud_hit_callback);
 	subscribe(other, PacketType.HOST_SYNC_DECOY_SPAWN, other.host_sync_decoy_spawn_callback);
+	subscribe(other, PacketType.HOST_SYNC_POTION_UPDATE, other.host_sync_potion_update_callback);
 }
 
 clean_runtime_objects = function() {
