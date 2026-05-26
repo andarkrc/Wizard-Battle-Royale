@@ -1,18 +1,19 @@
 id_ = -1;
 name = "";
 
-move_speed = 5 * METER;
+move_speed = 2.5 * METER;
 
 vertical_speed = 0;
 g = 20 * METER;
 
-jump_power = 12 * METER;
+jump_power = 6 * METER;
 
 dash_duration = 0.25;
 dash_speed = 2.5 * METER / dash_duration;
 dash_direction = 0;
-total_dashes = 10;
-current_dashes = 10;
+total_dashes = 1;
+current_dashes = 1;
+
 
 hp = 100;
 

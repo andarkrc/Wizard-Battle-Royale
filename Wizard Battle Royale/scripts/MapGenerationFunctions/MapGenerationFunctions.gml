@@ -410,7 +410,7 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
                 if (_reqSide == RoomSide.LEFT) {
                     _offsetX = -_w; 
                 } else if (_reqSide == RoomSide.TOP) {
-                    _offsetY = - _h; 
+                    _offsetY = -_h; 
                 }
 
                 var _finalX = _targetDoor.world_x + _offsetX;
