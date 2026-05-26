@@ -110,7 +110,7 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
     var _sealedDoors = []; 
 
     var _startRooms = [rmArenaLarge0, rmArenaLarge1];
-    var _oneEnded = [rmLootSmall0, rmLootSmall4, rmLootSmall5,
+    var _oneEnded = [rmLootSmall0, rmLootSmall4, rmLootSmall5, rmLootSmall10, rmLootSmall11, rmLootSmall12,
                     rmLootSmall6,
                     rmCorridorSmall12, rmCorridorSmall13, rmCorridorSmall15, rmCorridorSmall16, rmCorridorSmall17,
                     rmLootMedium8];
@@ -124,8 +124,11 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
         rmCorridorSmall8, rmCorridorSmall9, rmCorridorSmall10, rmCorridorSmall11, rmCorridorSmall14, rmCorridorSmall18,
         rmCorridorSmall19, rmCorridorSmall20, rmCorridorSmall21, rmCorridorSmall22, 
         rmCorridorMedium0, rmCorridorMedium1, rmCorridorMedium2,
-        rmCorridorMedium3, rmCorridorMedium4, rmCorridorMedium5,rmCorridorMedium6, rmCorridorMedium7, rmCorridorMedium8,
-        rmArenaMedium0, rmArenaMedium1, rmArenaMedium2, rmArenaMedium3, rmArenaMedium4
+        rmCorridorMedium3, rmCorridorMedium4, rmCorridorMedium5,rmCorridorMedium6,
+        rmCorridorMedium7, rmCorridorMedium8, rmCorridorMedium9, rmCorridorMedium10,
+        rmCorridorMedium11, rmCorridorMedium12, rmCorridorMedium13, rmCorridorMedium14,
+        rmArenaMedium0, rmArenaMedium1, rmArenaMedium2, rmArenaMedium3,
+        rmArenaMedium4, rmArenaMedium5, rmArenaMedium6,
     ];
     
     var _wallsHorizontal = [rmWallHorizontal];
@@ -327,25 +330,56 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
     };
 }
 
-function GenerateBestRadialMap(_maxRooms, _entrancesMap, _tries = 10) {
+
+function GenerateBestRadialMap(_maxRooms, _entrancesMap, _tries = 50, _corridorPenalty = 2000, _entranceBonus = 500, _squarenessPenalty = 2) {
     var _bestResult = undefined;
     var _bestScore = 999999999;
+    
+    var _minArenaMedium = _maxRooms div 10; 
 
     for (var i = 0; i < _tries; i++) {
 
         var _currentResult = GenerateRadialMap(_maxRooms, _entrancesMap);
         var _mapArray = _currentResult.rooms;
+        var _roomCount = array_length(_mapArray);
         
+        if (_roomCount == 0) continue;
 
-        if (array_length(_mapArray) == 0) continue;
+        var _arenaCount = 0;
+        var _corridorCount = 0;
+        var _totalDoors = 0;
+        
+        for (var r = 0; r < _roomCount; r++) {
+            var _node = _mapArray[r];
+            
+            if (string_pos("ArenaMedium", _node.room_index) > 0) {
+                _arenaCount++;
+            }
+            
+            if (string_pos("Corridor", _node.room_index) > 0) {
+                _corridorCount++;
+            }
 
+            var _roomAsset = asset_get_index(_node.room_index);
+            var _roomData = _entrancesMap[? _roomAsset];
+            
+            if (_roomData != undefined) {
+                _totalDoors += array_length(_roomData.doors);
+            }
+        }
+
+        if (_arenaCount < _minArenaMedium) {
+            continue;
+        }
+
+        var _avgDoors = _totalDoors / _roomCount;
 
         var _minX = 9999999;
         var _maxX = -9999999;
         var _minY = 9999999;
         var _maxY = -9999999;
 
-        for (var j = 0; j < array_length(_mapArray); j++) {
+        for (var j = 0; j < _roomCount; j++) {
             var _node = _mapArray[j];
             
             if (_node.world_x < _minX) _minX = _node.world_x;
@@ -355,15 +389,27 @@ function GenerateBestRadialMap(_maxRooms, _entrancesMap, _tries = 10) {
             if (_node.world_y + _node.height > _maxY) _maxY = _node.world_y + _node.height;
         }
 
-        var _totalWidth = _maxX - _minX;
-        var _totalHeight = _maxY - _minY;
+        var _mapWidth = _maxX - _minX;
+        var _mapHeight = _maxY - _minY;
 
-        var _score = _totalWidth + _totalHeight;
+        var _sizeScore = _mapWidth + _mapHeight;
+        
+        var _aspectDifference = abs(_mapWidth - _mapHeight);
 
-        if (_score < _bestScore) {
-            _bestScore = _score;
+        var _totalScore = _sizeScore 
+                        + (_aspectDifference * _squarenessPenalty) 
+                        + (_corridorCount * _corridorPenalty) 
+                        - (_avgDoors * _entranceBonus);
+
+        if (_totalScore < _bestScore) {
+            _bestScore = _totalScore;
             _bestResult = _currentResult;
         }
+    }
+
+    if (_bestResult == undefined) {
+        show_debug_message("Nu s-a putut genera o harta cu " + string(_minArenaMedium) + " arene medii în " + string(_tries) + " incercari");
+        return GenerateRadialMap(_maxRooms, _entrancesMap);
     }
 
     return _bestResult;
