@@ -22,10 +22,33 @@ if (window_has_focus()) {
 			flexpanel_calculate_layout(layer_get_flexpanel_node("CreateLobbyMenu"), w, h, d);
 			flexpanel_calculate_layout(layer_get_flexpanel_node("JoinLobbyMenu"), w, h, d);
 			flexpanel_calculate_layout(layer_get_flexpanel_node("SettingsMenu"), w, h, d);
+			flexpanel_calculate_layout(layer_get_flexpanel_node("JoinLobbyListMenu"), w, h, d);
+			flexpanel_calculate_layout(layer_get_flexpanel_node("JoinLobbyCodeMenu"), w, h, d);
+			flexpanel_calculate_layout(layer_get_flexpanel_node("JoinLobbyDirectMenu"), w, h, d);
 		}
 		
 		if (surface_exists(global.shadow_surface)) {
 			surface_free(global.shadow_surface);
 		}
+	}
+
+	var hovered_element = noone;
+	
+	var mx = device_mouse_x_to_gui(0);
+	var my = device_mouse_y_to_gui(0);
+	
+	with (oUIElement) {
+		if (!enabled) continue;
+		hovered = false;
+		var over = hover_check(mx, my);
+		
+		if (over) {
+			if (hovered_element == noone || level > hovered_element.level) {
+				hovered_element = id;
+			}
+		}
+	}
+	if (hovered_element != noone) {
+		hovered_element.hovered = true;
 	}
 }

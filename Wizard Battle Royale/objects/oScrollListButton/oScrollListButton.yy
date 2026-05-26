@@ -1,19 +1,20 @@
 {
   "$GMObject":"",
-  "%Name":"oSearchDirect",
+  "%Name":"oScrollListButton",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oSearchDirect",
+  "name":"oScrollListButton",
   "overriddenProperties":[],
   "parent":{
-    "name":"JoinLobbyMenu",
-    "path":"folders/Objects/UI/JoinLobbyMenu.yy",
+    "name":"UI Elements",
+    "path":"folders/Objects/UI/UI Elements.yy",
   },
   "parentObjectId":{
-    "name":"oSegmentedControlButton",
-    "path":"objects/oSegmentedControlButton/oSegmentedControlButton.yy",
+    "name":"oButton",
+    "path":"objects/oButton/oButton.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -33,12 +34,9 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sSegmentedControlButton",
-    "path":"sprites/sSegmentedControlButton/sSegmentedControlButton.yy",
+    "name":"sButton",
+    "path":"sprites/sButton/sButton.yy",
   },
   "spriteMaskId":null,
-  "tags":[
-    "GROUP SEARCH TYPE",
-  ],
   "visible":true,
 }

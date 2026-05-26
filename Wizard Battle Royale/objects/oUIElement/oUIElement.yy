@@ -1,20 +1,17 @@
 {
   "$GMObject":"",
-  "%Name":"oSearchDirect",
+  "%Name":"oUIElement",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oSearchDirect",
+  "name":"oUIElement",
   "overriddenProperties":[],
   "parent":{
-    "name":"JoinLobbyMenu",
-    "path":"folders/Objects/UI/JoinLobbyMenu.yy",
+    "name":"UI Elements",
+    "path":"folders/Objects/UI/UI Elements.yy",
   },
-  "parentObjectId":{
-    "name":"oSegmentedControlButton",
-    "path":"objects/oSegmentedControlButton/oSegmentedControlButton.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -32,13 +29,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"sSegmentedControlButton",
-    "path":"sprites/sSegmentedControlButton/sSegmentedControlButton.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
-  "tags":[
-    "GROUP SEARCH TYPE",
-  ],
   "visible":true,
 }

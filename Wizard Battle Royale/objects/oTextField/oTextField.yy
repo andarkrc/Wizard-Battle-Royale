@@ -14,7 +14,10 @@
     "name":"UI Elements",
     "path":"folders/Objects/UI/UI Elements.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"oUIElement",
+    "path":"objects/oUIElement/oUIElement.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -37,8 +40,5 @@
     "path":"sprites/sTextBox/sTextBox.yy",
   },
   "spriteMaskId":null,
-  "tags":[
-    "UI ELEMENT",
-  ],
   "visible":true,
 }
