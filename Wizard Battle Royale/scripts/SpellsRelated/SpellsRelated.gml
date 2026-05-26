@@ -7,6 +7,7 @@ enum Spell {
     LIGHTNING_BOLT,
     EARTH_SHAKE,
     TORNADO,
+    SPREAD_SHOT,
 	LAST,
 }
 
@@ -30,6 +31,7 @@ function spell_get_max_casts(spell) {
     casts[Spell.LIGHTNING_BOLT] = 4;
     casts[Spell.EARTH_SHAKE] = 2;
     casts[Spell.TORNADO] = 2;
+    casts[Spell.SPREAD_SHOT] = 5;
 	
 	return casts[spell];
 }
@@ -46,6 +48,7 @@ function spell_get_damage(spell) {
     damage[Spell.LIGHTNING_BOLT] = 15;
     damage[Spell.EARTH_SHAKE] = 35;
     damage[Spell.TORNADO] = 20;
+    damage[Spell.SPREAD_SHOT] = 10;
 
 	return damage[spell];
 }

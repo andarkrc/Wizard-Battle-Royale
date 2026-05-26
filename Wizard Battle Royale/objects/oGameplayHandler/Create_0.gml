@@ -322,6 +322,18 @@ cast_spell = function(data) {
 				spell_id = data.spell_id;
 			}
 			break;
+        
+        case Spell.SPREAD_SHOT:
+            for (var i = -20; i <= 20; i += 10) {
+     			with (instance_create_layer(data.x, data.y, "Instances", oSpreadShot)) {
+     				horizontal_speed = dcos(data.direction + i) * move_speed;
+     				vertical_speed = -dsin(data.direction + i) * move_speed;
+     				caster_id = data.caster_id;
+     				spell_id = data.spell_id;
+     				image_angle = data.direction; 
+                }
+            }
+			break;
 	
 		default:
 			break;

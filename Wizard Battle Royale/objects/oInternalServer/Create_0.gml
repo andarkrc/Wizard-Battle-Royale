@@ -320,7 +320,7 @@ damage_player = function(player_id, damage) {
         
 	}
     
-    spell_platforms[0].spell = Spell.TORNADO;
+    spell_platforms[0].spell = Spell.SPREAD_SHOT;
 	
 	show_debug_message($"TOTAL OF {sp_number} platforms");
 	
