@@ -35,8 +35,21 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 			vertical_speed = 0;
 		}
 	}
-	
+	var tornado = collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, oTornado, false, false);
+    forced_horizontal_speed = 0;
+    
+    if (tornado != noone) {
+        var extra_vspeed = random_range(tornado.player_interaction_speed_min, tornado.player_interaction_speed_max);
+        var extra_hspeed = random_range(tornado.player_interaction_speed_min, tornado.player_interaction_speed_max);
+        vertical_speed = tornado.vertical_speed - extra_vspeed;
+        forced_horizontal_speed = tornado.horizontal_speed + extra_hspeed;
+    }
+    
 	var distance_horizontal = input_x * move_speed * _dt;
+    if (forced_horizontal_speed != 0) {
+        distance_horizontal = forced_horizontal_speed * _dt;
+    }
+    
 	var distance_vertical = vertical_speed * _dt;
 	if (state == State.DASHING) {
 		distance_horizontal = dash_speed * dcos(dash_direction) * _dt;
