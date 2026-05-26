@@ -113,6 +113,16 @@ drink_potion = function() {
 			// Effect handled via cloud hit callback (throwable)
 			break;
 		
+		case Potion.DEVIL:
+			if (hp >= 50 && !devil_pact_used) {
+				devil_pact_hp_taken = hp - 10;
+				hp = 10;
+				devil_pact_active = true;
+				devil_pact_time = 30.0;
+				devil_pact_used = true;
+			}
+			break;
+		
 		default:
 			break;
 	}
@@ -175,3 +185,9 @@ remove_blinking_timer = time_source_create (
 							}
 						}
 						);
+
+devil_pact_active = false;
+devil_pact_time = 0.0;
+devil_pact_hp_taken = 0.0;
+devil_pact_completed = false;
+devil_pact_used = false;

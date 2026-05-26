@@ -186,9 +186,27 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 			if (blinded || reversed || blinking) {
 				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
 			}
+		} else if (potion == Potion.DEVIL) {
+			if (hp >= 50 && !devil_pact_used) {
+				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
+			}
 		} else {
 			packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
 		}
+	}
+	
+	if (devil_pact_active) {
+		devil_pact_time -= _dt;
+		if (devil_pact_time <= 0) {
+			devil_pact_active = false;
+			hp = min(hp + devil_pact_hp_taken, 100);
+			devil_pact_completed = true;
+		}
+	}
+	
+	if (devil_pact_completed && hp <= 50 && hp > 0) {
+		hp = 100;
+		devil_pact_completed = false;
 	}
 	
 	if (old_state != state) {

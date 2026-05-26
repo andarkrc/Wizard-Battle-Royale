@@ -12,10 +12,12 @@ enum Potion {
 	DECOY,
 	REVERSE,
 	BLINKING,
+	DEVIL,
 	LAST,
 }
 
 global.invisibility_duration = 20;
+
 global.blinding_duration = 20;
 global.flame_duration = 15;
 global.decoy_duration = 10;
@@ -45,6 +47,7 @@ function potion_get_name(potion) {
 	names[Potion.DECOY] = "Decoy";
 	names[Potion.REVERSE] = "Curse of Reverse";
 	names[Potion.BLINKING] = "Curse of Blinking";
+	names[Potion.DEVIL] = "Devil Pact";
 	
 	return names[potion];
 }

@@ -22,7 +22,13 @@ Player = function(id_) constructor {
 	hp = 100;
 	x = 664;
 	y = 588;
-	potion = Potion.BLINKING;
+	potion = Potion.DEVIL;
+	
+	devil_pact_active = false;
+	devil_pact_time = 0.0;
+	devil_pact_hp_taken = 0.0;
+	devil_pact_completed = false;
+	devil_pact_used = false;
 }
 
 /// @desc Fully syncs a newly joined player
@@ -208,15 +214,24 @@ client_request_consume_potion_callback = function(data) {
 	if (!ds_map_exists(players_map, data.sender_id)) return;
 		
 	if (players_map[? data.sender_id].potion == Potion.NONE) return;
+	
+	var p = players_map[? data.sender_id];
+	var pot_type = p.potion;
+	
+	if (pot_type == Potion.DEVIL) {
+		if (p.hp < 50 || p.devil_pact_used) {
+			return;
+		}
+	}
 		
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_CONSUME_POTION,
 		{
 			player_id: data.sender_id,
-			potion_type: players_map[? data.sender_id].potion	
+			potion_type: pot_type	
 		}
 	));
 	
-	if (players_map[? data.sender_id].potion == Potion.LIMITS) {
+	if (pot_type == Potion.LIMITS) {
 		var new_size = irandom_range(1, 5);
 		resize_spell_slots(players_spell_info[? data.sender_id].spells, new_size);
 		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_SLOT_NUMBER,
@@ -227,7 +242,7 @@ client_request_consume_potion_callback = function(data) {
 		))
 	}
 	
-	if (players_map[? data.sender_id].potion == Potion.DECOY) {
+	if (pot_type == Potion.DECOY) {
 		var decoy_dir = choose(-1, 1);
 		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_DECOY_SPAWN,
 			{
@@ -239,7 +254,16 @@ client_request_consume_potion_callback = function(data) {
 		));
 	}
 	
-	players_map[? data.sender_id].potion = Potion.NONE;
+	if (pot_type == Potion.DEVIL) {
+		p.devil_pact_hp_taken = p.hp - 10;
+		p.hp = 10;
+		p.devil_pact_active = true;
+		p.devil_pact_time = 30.0;
+		p.devil_pact_used = true;
+		damage_player(data.sender_id, 0); // Trigger host broadcast to sync HP to 10
+	}
+	
+	p.potion = Potion.NONE;
 }
 
 client_request_chest_open_callback = function(data) {
@@ -407,9 +431,13 @@ damage_player = function(player_id, damage) {
  init_chests = function() {
 	var chest_number = 0;
 	with (oChest) {
+		var pot = irandom_range(1, Potion.LAST - 1);
+		if (pot == Potion.DEVIL && random(1) > 0.3) {
+			pot = irandom_range(1, Potion.DEVIL - 1); // Reroll to other potions
+		}
 		array_push(other.chests, {
 			id: chest_number,
-			potion: irandom_range(1, Potion.LAST - 1),
+			potion: pot,
 			x: x,
 			y: y,
 		});

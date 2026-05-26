@@ -149,6 +149,7 @@ if (thrown && can_be_collected && !broken) {
 	
 	// Initial visual particle explosion
 	if (potion == Potion.BLINDING) {
+		cloud_timer = global.blinding_duration;
 		for (var i = 0; i < 60; i++) {
 			var r = random(cloud_radius);
 			var dir = random(360);
