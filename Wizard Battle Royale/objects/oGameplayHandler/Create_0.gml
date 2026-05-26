@@ -251,6 +251,12 @@ host_sync_potion_cloud_hit_callback = function(data) {
 					time_source_stop(remove_reverse_timer);
 					time_source_start(remove_reverse_timer);
 				}
+			} else if (data.potion_type == Potion.BLINKING) {
+				if (id_ == oClientHandler.client_id) {
+					blinking = true;
+					time_source_stop(remove_blinking_timer);
+					time_source_start(remove_blinking_timer);
+				}
 			}
 		}
 	}

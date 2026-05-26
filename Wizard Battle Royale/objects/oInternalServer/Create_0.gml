@@ -22,7 +22,7 @@ Player = function(id_) constructor {
 	hp = 100;
 	x = 664;
 	y = 588;
-	potion = Potion.REVERSE;
+	potion = Potion.NONE;
 }
 
 /// @desc Fully syncs a newly joined player
@@ -305,7 +305,7 @@ client_request_throw_potion_callback = function(data) {
 	if (!ds_map_exists(players_map, data.sender_id)) return;
 		
 	var p = players_map[? data.sender_id].potion;
-	if (p != Potion.BLINDING && p != Potion.FLAME && p != Potion.REVERSE) return;
+	if (!array_contains(global.throwable_potions, p)) return;
 	
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_THROW_POTION,
 		{

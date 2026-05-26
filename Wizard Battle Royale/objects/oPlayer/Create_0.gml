@@ -91,6 +91,10 @@ drink_potion = function() {
 				camera_set_view_angle(camera, 0);
 				time_source_stop(remove_reverse_timer);
 			}
+			if (blinking) {
+				blinking = false;
+				time_source_stop(remove_blinking_timer);
+			}
 			break;
 
 		case Potion.TEN_HP:
@@ -103,6 +107,10 @@ drink_potion = function() {
 		
 		case Potion.DECOY:
 			// Effect handled via HOST_SYNC_DECOY_SPAWN callback
+			break;
+		
+		case Potion.BLINKING:
+			// Effect handled via cloud hit callback (throwable)
 			break;
 		
 		default:
@@ -152,3 +160,18 @@ remove_reverse_timer = time_source_create (
 						}
 						);
 
+blinking = false;
+
+remove_blinking_timer = time_source_create (
+						time_source_game,
+						global.blinking_effect_duration,
+						time_source_units_seconds,
+						function () {
+							blinking = false;
+							with (oPotion) {
+								if (potion == Potion.BLINKING && broken) {
+									cloud_hit_local = false;
+								}
+							}
+						}
+						);

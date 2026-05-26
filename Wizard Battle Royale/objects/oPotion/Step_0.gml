@@ -31,6 +31,17 @@ if (broken) {
 				}
 			}
 		}
+	} else if (potion == Potion.BLINKING) {
+		if (!cloud_hit_local) {
+			with (oPlayer) {
+				if (id_ == oClientHandler.client_id) {
+					if (point_distance(x, y, other.x, other.y) <= other.cloud_radius) {
+						other.cloud_hit_local = true;
+						packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: id_, potion_type: Potion.BLINKING}));
+					}
+				}
+			}
+		}
 	} else if (potion == Potion.FLAME) {
 		if (random(1) < 300 * _dt) { // Spawn lots of fire particles smoothly
 			var r = random(cloud_radius);
@@ -147,5 +158,7 @@ if (thrown && can_be_collected && !broken) {
 		}
 	} else if (potion == Potion.REVERSE) {
 		cloud_timer = global.reverse_duration;
+	} else if (potion == Potion.BLINKING) {
+		cloud_timer = global.blinking_duration;
 	}
 }

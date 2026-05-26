@@ -105,3 +105,20 @@ if (state == GameState.GAME && instance_exists(my_player) && my_player.blinded) 
 		draw_surface(surface, xx, yy);
 	}
 }
+
+// Evil Eye blink overlay
+if ((state == GameState.LOBBY || state == GameState.GAME) && instance_exists(my_player) && my_player.blinking) {
+	if (current_time % 2000 < 350) {
+		var cam = view_get_camera(0);
+		var xx = camera_get_view_x(cam);
+		var yy = camera_get_view_y(cam);
+		var w = camera_get_view_width(cam);
+		var h = camera_get_view_height(cam);
+		
+		draw_set_alpha(0.95);
+		draw_set_colour(c_black);
+		draw_rectangle(xx, yy, xx + w, yy + h, false);
+		draw_set_alpha(1);
+		draw_set_colour(c_white);
+	}
+}

@@ -171,7 +171,7 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 	}
 	
 	if (potion != Potion.NONE && keyboard_check_pressed(ord("F"))) {
-		if (potion == Potion.BLINDING || potion == Potion.FLAME || potion == Potion.REVERSE) {
+		if (array_contains(global.throwable_potions, potion)) {
 			var dir = point_direction(x, y - sprite_height / 2, mouse_x, mouse_y);
 			var force = 6 * METER;
 			var v_x = dcos(dir) * force;
@@ -183,7 +183,7 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
 			}
 		} else if (potion == Potion.CLEANSING) {
-			if (blinded || reversed) {
+			if (blinded || reversed || blinking) {
 				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
 			}
 		} else {
