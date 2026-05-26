@@ -98,3 +98,4 @@ make_visibile_timer = time_source_create (
 						);
 
 
+forced_horizontal_speed = 0;

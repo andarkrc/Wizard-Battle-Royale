@@ -317,7 +317,10 @@ damage_player = function(player_id, damage) {
 			y: y
 		});
 		sp_number++;
+        
 	}
+    
+    //spell_platforms[0].spell = Spell.SPREAD_SHOT;
 	
 	show_debug_message($"TOTAL OF {sp_number} platforms");
 	
@@ -370,3 +373,5 @@ generate_map = function() {
 		));
 	}
 }
+
+//init_spell_platforms();
