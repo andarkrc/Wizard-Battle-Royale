@@ -8,6 +8,7 @@ enum Spell {
     EARTH_SHAKE,
     TORNADO,
     SPREAD_SHOT,
+    ORBIT_ORB,
 	LAST,
 }
 
@@ -32,6 +33,7 @@ function spell_get_max_casts(spell) {
     casts[Spell.EARTH_SHAKE] = 2;
     casts[Spell.TORNADO] = 2;
     casts[Spell.SPREAD_SHOT] = 5;
+    casts[Spell.ORBIT_ORB] = 3;
 	
 	return casts[spell];
 }
@@ -49,6 +51,7 @@ function spell_get_damage(spell) {
     damage[Spell.EARTH_SHAKE] = 35;
     damage[Spell.TORNADO] = 20;
     damage[Spell.SPREAD_SHOT] = 10;
+    damage[Spell.ORBIT_ORB] = 25;
 
 	return damage[spell];
 }

@@ -334,6 +334,16 @@ cast_spell = function(data) {
                 }
             }
 			break;
+        
+        case Spell.ORBIT_ORB:
+			with (instance_create_layer(data.x, data.y, "Instances", oOrbitOrb)) {
+				horizontal_speed = dcos(data.direction) * move_speed;
+				vertical_speed = -dsin(data.direction) * move_speed;
+				caster_id = data.caster_id;
+				spell_id = data.spell_id;
+				image_angle = data.direction;
+			}
+			break;
 	
 		default:
 			break;
@@ -388,8 +398,8 @@ init_all_rooms = function() {
 }
 
 load_lobby = function() {
-	RoomLoader.DataInit(rmLobby);
-	lobby = RoomLoader.Load(rmLobby, 0, 0);
+	RoomLoader.DataInit(rmTest);
+	lobby = RoomLoader.Load(rmTest, 0, 0);
 }
 
 load_lobby();
