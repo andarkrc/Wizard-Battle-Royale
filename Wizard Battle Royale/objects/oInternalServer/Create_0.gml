@@ -320,7 +320,7 @@ damage_player = function(player_id, damage) {
         
 	}
     
-    spell_platforms[0].spell = Spell.ICE_SPIKE;
+    spell_platforms[0].spell = Spell.LIGHTNING_BOLT;
 	
 	show_debug_message($"TOTAL OF {sp_number} platforms");
 	
