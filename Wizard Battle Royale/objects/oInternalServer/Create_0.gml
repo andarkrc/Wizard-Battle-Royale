@@ -373,7 +373,7 @@ var _toateCamerele = [
     
     rmArenaLarge0, rmArenaLarge1,
     
-    rmWallHorizontal, rmWallVertical,
+    rmWallHorizontalSimple, rmWallVerticalSimple, rmWallHorizontalDouble, rmWallVerticalDouble,
     
     rmFallMedium0, rmFallSmall0
 ];

@@ -104,6 +104,39 @@ function CheckRoomCollision(_mapArray, _realX, _realY, _w, _h) {
     return false;
 }
 
+
+function CheckDoorOverlap(_mapArray, _entrancesMap, _targetDoor) {
+    var _margin = 10; 
+    var _targetX = _targetDoor.world_x;
+    var _targetY = _targetDoor.world_y;
+    var _parentRoom = _targetDoor.parent;
+
+    for (var i = 0; i < array_length(_mapArray); i++) {
+        var _node = _mapArray[i];
+        
+
+        if (_node == _parentRoom) continue; 
+
+        var _roomAsset = asset_get_index(_node.room_index);
+        var _roomData = _entrancesMap[? _roomAsset];
+        
+        if (_roomData == undefined) continue;
+        
+        var _doors = _roomData.doors;
+        for (var d = 0; d < array_length(_doors); d++) {
+            var _door = _doors[d];
+            
+            var _worldDoorX = _node.world_x + _door.x;
+            var _worldDoorY = _node.world_y + _door.y;
+            
+            if (abs(_targetX - _worldDoorX) <= _margin && abs(_targetY - _worldDoorY) <= _margin) {
+                return true; 
+            }
+        }
+    }
+    return false;
+}
+
 function GenerateRadialMap(_maxRooms, _entrancesMap) {
     var _mapArray = [];
     var _openDoors = [];   
@@ -138,8 +171,8 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
         rmArenaMedium4, rmArenaMedium5, rmArenaMedium6,
     ];
     
-    var _wallsHorizontal = [rmWallHorizontal];
-    var _wallsVertical   = [rmWallVertical];
+    var _wallsHorizontal = [rmWallHorizontalSimple, rmWallHorizontalDouble];
+    var _wallsVertical   = [rmWallVerticalSimple, rmWallVerticalDouble];
     
     var _specialFallRooms = [rmFallMedium0, rmFallSmall0];
     var _placedFallRoom = false;
@@ -170,6 +203,8 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
             world_x: _startNode.world_x + _door.x,
             world_y: _startNode.world_y + _door.y,
             side: _door.side,
+            width: _door.width,
+            height: _door.height,
             parent: _startNode
         });
     }
@@ -218,10 +253,8 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
                     var _realX = _tx + _candData.view_x;
                     var _realY = _ty + _candData.view_y;
                     
-                    // coliziune cu camerele reale
                     var _isColliding = CheckRoomCollision(_mapArray, _realX, _realY, _candData.view_w, _candData.view_h);
                     
-                    // coliziunea cu "zona interzisa" de sub un fall room
                     if (!_isColliding && array_length(_virtualBlockers) > 0) {
                         _isColliding = CheckRoomCollision(_virtualBlockers, _realX, _realY, _candData.view_w, _candData.view_h);
                     }
@@ -262,6 +295,8 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
                                 world_x: _tx + _candOut.x,
                                 world_y: _ty + _candOut.y,
                                 side: _candOut.side,
+                                width: _candOut.width,
+                                height: _candOut.height,
                                 parent: _newNode
                             });
                         }
@@ -331,48 +366,79 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
             if (_capPlaced) break;
         }
 
-        // Adaugare ziduri
+        // adaugare ziduri
         if (!_capPlaced) {
-            var _wallRoomID;
+            var _wallPool = [];
+
+            var _reqWidth = min(_targetDoor.width, _targetDoor.height); 
             
             if (_reqSide == RoomSide.TOP || _reqSide == RoomSide.BOTTOM) {
-                _wallRoomID = _wallsHorizontal[irandom(array_length(_wallsHorizontal) - 1)];
+                _wallPool = _wallsHorizontal;
             } else {
-                _wallRoomID = _wallsVertical[irandom(array_length(_wallsVertical) - 1)];
+                _wallPool = _wallsVertical;
             }
 
-            var _wallData = _entrancesMap[? _wallRoomID];
+            var _chosenWallRoomID = undefined;
+            var _chosenWallData = undefined;
+
+            // cautam o usa de grosimea cautata
+            for (var wp = 0; wp < array_length(_wallPool); wp++) {
+                var _testWallID = _wallPool[wp];
+                var _testWallData = _entrancesMap[? _testWallID];
+                
+                if (_testWallData == undefined) continue;
+                
+                var _wallDim = min(_testWallData.view_w, _testWallData.view_h);
+                
+                var _wallScale = _wallDim / 32;
+                var _reqScale = _reqWidth;
+                
+                if (abs(_wallScale - _reqScale) < 0.1) {
+                    _chosenWallRoomID = _testWallID;
+                    _chosenWallData = _testWallData;
+                    break; 
+                }
+            }
             
-            if (_wallData != undefined) {
-                var _w  = _wallData.view_w; 
-                var _h  = _wallData.view_h;
+            if (_chosenWallData != undefined) {
+                var _w  = _chosenWallData.view_w; 
+                var _h  = _chosenWallData.view_h;
 
                 var _offsetX = 0;
                 var _offsetY = 0;
 
-                if (_reqSide == RoomSide.RIGHT) {
+                if (_reqSide == RoomSide.LEFT) {
                     _offsetX = -_w; 
-                } else if (_reqSide == RoomSide.BOTTOM) {
-                    _offsetY = -_h; 
+                } else if (_reqSide == RoomSide.TOP) {
+                    _offsetY = - _h; 
                 }
 
                 var _finalX = _targetDoor.world_x + _offsetX;
                 var _finalY = _targetDoor.world_y + _offsetY;
 
-                var _rx = _finalX + _wallData.view_x;
-                var _ry = _finalY + _wallData.view_y;
-
-                var _wallNode = {
-                    room_index: room_get_name(_wallRoomID),
-                    world_x: _finalX,
-                    world_y: _finalY,
-                    real_x: _rx,
-                    real_y: _ry,
-                    width: _w,
-                    height: _h
-                };
+                // suprapunere cu usa altei camere care s a intamplat sa fie langa
+                var _doorOverlap = CheckDoorOverlap(_mapArray, _entrancesMap, _targetDoor);
                 
-                array_push(_mapArray, _wallNode);
+                if (!_doorOverlap) {
+                    var _rx = _finalX + _chosenWallData.view_x;
+                    var _ry = _finalY + _chosenWallData.view_y;
+
+                    var _wallNode = {
+                        room_index: room_get_name(_chosenWallRoomID),
+                        world_x: _finalX,
+                        world_y: _finalY,
+                        real_x: _rx,
+                        real_y: _ry,
+                        width: _w,
+                        height: _h
+                    };
+                    
+                    array_push(_mapArray, _wallNode);
+                } else {
+                    show_debug_message("Zid ignorat: S-a detectat suprapunere la " + string(_targetDoor.world_x) + ", " + string(_targetDoor.world_y));
+                }
+            } else {
+                show_debug_message("Nu s-a gasit un zid in array de dimensiunea: " + string(_reqWidth));
             }
         }
     }
@@ -386,7 +452,6 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
         sealed_doors: []
     };
 }
-
 
 function GenerateBestRadialMap(_maxRooms, _entrancesMap, _tries = 50, _corridorPenalty = 2000, _entranceBonus = 500, _squarenessPenalty = 2) {
     var _bestResult = undefined;
