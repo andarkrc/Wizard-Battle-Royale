@@ -1,4 +1,4 @@
-if (!enabled) exit;
+if (!enabled || !visible) exit;
 
 if (mouse_check_button_released(mb_left) && hovered)
 {

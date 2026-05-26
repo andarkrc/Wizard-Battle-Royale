@@ -3,6 +3,8 @@ event_inherited();
 
 parent = undefined;
 
+text_right = "";
+
 data = {};
 
 level = 1;

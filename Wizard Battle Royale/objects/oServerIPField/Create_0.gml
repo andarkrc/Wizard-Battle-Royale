@@ -1,7 +1,7 @@
 // Inherit the parent event
 event_inherited();
 
-ghost_text = "<IP>:<Port>";
+ghost_text = ">Enter server IP:PORT<";
 
 action = function() {
 	var tokens = string_split(text, ":");

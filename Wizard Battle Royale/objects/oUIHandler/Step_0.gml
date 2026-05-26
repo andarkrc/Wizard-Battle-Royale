@@ -25,6 +25,10 @@ if (window_has_focus()) {
 			flexpanel_calculate_layout(layer_get_flexpanel_node("JoinLobbyListMenu"), w, h, d);
 			flexpanel_calculate_layout(layer_get_flexpanel_node("JoinLobbyCodeMenu"), w, h, d);
 			flexpanel_calculate_layout(layer_get_flexpanel_node("JoinLobbyDirectMenu"), w, h, d);
+			with (oUIElement) {
+				// this is used to say hey window just resized
+				event_user(0);
+			}
 		}
 		
 		if (surface_exists(global.shadow_surface)) {
@@ -38,7 +42,7 @@ if (window_has_focus()) {
 	var my = device_mouse_y_to_gui(0);
 	
 	with (oUIElement) {
-		if (!enabled) continue;
+		if (!enabled || !visible) continue;
 		hovered = false;
 		var over = hover_check(mx, my);
 		

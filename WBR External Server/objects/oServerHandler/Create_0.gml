@@ -3,6 +3,8 @@ max_clients = 1000;
 
 server = network_create_server(network_socket_tcp, port, max_clients);
 
+socket_udp = network_create_socket_ext(network_socket_udp, 6100);
+
 while (server < 0 && port < 65535) {
 	port++;
 	server = network_create_server(network_socket_tcp, port, max_clients);
@@ -15,6 +17,8 @@ show_debug_message($"[SERVER] Started on port {port}");
 clients = [];
 
 lobbies = [];
+
+lobby_list_queue = [];
 
 client_id_to_lobby = ds_map_create();
 lobby_code_to_lobby = ds_map_create();
@@ -132,7 +136,7 @@ handle_join_lobby = function(sock, data) {
 	}
 	if (!ds_map_exists(lobby_code_to_lobby, data.code)) {
 		packet_send(sock, packet_create_server(NWTarget.SERVER, true, PacketType.HOST_INFO_CONNECTION_REJECTED,
-			{message: "Lobby doesn't exist."}));
+			{message: $"Lobby doesn't exist.: %{data.code}%"}));
 		return;
 	}
 	
@@ -162,6 +166,11 @@ handle_remove_from_lobby = function(sock, data) {
 	remove_from_lobby(data.player_id);
 }
 
-send_lobby_list = function(sock, data) {
-	
+exists_in_queue = function(ip, port) {
+	for (var i = 0; i < array_length(lobby_list_queue); i++) {
+		if (lobby_list_queue[i].ip == ip && lobby_list_queue[i].port == port) {
+			return  true;
+		}
+	}
+	return false;
 }
