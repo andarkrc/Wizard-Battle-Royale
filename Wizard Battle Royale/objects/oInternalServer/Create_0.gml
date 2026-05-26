@@ -370,13 +370,15 @@ var _toateCamerele = [
     rmCorridorMedium6, rmCorridorMedium7, rmCorridorMedium8, rmCorridorMedium9, rmCorridorMedium10, rmCorridorMedium11,
     rmCorridorMedium12, rmCorridorMedium13,  rmCorridorMedium14,
     
-    rmArenaMedium0, rmArenaMedium1, rmArenaMedium2, rmArenaMedium3, rmArenaMedium4, rmArenaMedium5, rmArenaMedium6,
+    rmArenaMedium0, rmArenaMedium1, rmArenaMedium2, rmArenaMedium3, rmArenaMedium4,
+    rmArenaMedium5, rmArenaMedium6, rmArenaMedium7,
     
     rmArenaLarge0, rmArenaLarge1,
     
     rmWallHorizontalSimple, rmWallVerticalSimple, rmWallHorizontalDouble, rmWallVerticalDouble,
     
-    rmFallMedium0, rmFallSmall0
+    rmFallMedium0, rmFallMedium1, rmFallMedium2, 
+    rmFallSmall0, rmFallSmall1, rmFallSmall2
 ];
 
 if (!variable_global_exists("intrariHarta")) {
@@ -388,9 +390,8 @@ generate_map = function() {
     
     var map_size = 15 + 2 * array_length(players);
     
-    var _mapResult = GenerateBestRadialMap(map_size, global.intrariHarta);
+    var dungeon_rooms = GenerateBestRadialMap(map_size, global.intrariHarta);
     
-    var dungeon_rooms = _mapResult.rooms;
     total_rooms = array_length(dungeon_rooms);
     
     for (var i = 0; i < total_rooms; i++) {

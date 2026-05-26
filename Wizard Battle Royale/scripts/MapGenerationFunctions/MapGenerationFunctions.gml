@@ -169,21 +169,22 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
         rmCorridorMedium11, rmCorridorMedium12, rmCorridorMedium13, rmCorridorMedium14,
         
         rmArenaMedium0, rmArenaMedium1, rmArenaMedium2, rmArenaMedium3,
-        rmArenaMedium4, rmArenaMedium5, rmArenaMedium6,
+        rmArenaMedium4, rmArenaMedium5, rmArenaMedium6, rmArenaMedium7,
     ];
     
     var _wallsHorizontal = [rmWallHorizontalSimple, rmWallHorizontalDouble];
     var _wallsVertical   = [rmWallVerticalSimple, rmWallVerticalDouble];
     
-    var _specialFallRooms = [rmFallMedium0, rmFallSmall0];
+    var _specialFallRooms = [rmFallMedium0, rmFallSmall0, rmFallSmall1, rmFallMedium1, 
+                             rmFallMedium2, rmFallSmall2];
     var _placedFallRoom = false;
 
     var _startRoomID = _startRooms[irandom(array_length(_startRooms) - 1)];
     var _startData = _entrancesMap[? _startRoomID];
     
     if (_startData == undefined) {
-        show_debug_message("EROARE FATALA: Camera de start " + room_get_name(_startRoomID) + " nu a fost precalculata!");
-        return { rooms: [], sealed_doors: [] };
+        show_debug_message("Camera de start " + room_get_name(_startRoomID) + " nu a fost precalculata!");
+        return [];
     }
     
     var _startNode = {
@@ -445,13 +446,10 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
     }
 
     if (!_placedFallRoom) {
-        return { rooms: [], sealed_doors: [] };
+        return [];
     }
 
-    return {
-        rooms: _mapArray,
-        sealed_doors: []
-    };
+    return _mapArray;
 }
 
 function GenerateBestRadialMap(_maxRooms, _entrancesMap, _tries = 50, _corridorPenalty = 2000, _entranceBonus = 500, _squarenessPenalty = 2) {
@@ -463,8 +461,7 @@ function GenerateBestRadialMap(_maxRooms, _entrancesMap, _tries = 50, _corridorP
 
     for (var i = 0; i < _tries; i++) {
 
-        var _currentResult = GenerateRadialMap(_maxRooms, _entrancesMap);
-        var _mapArray = _currentResult.rooms;
+        var _mapArray = GenerateRadialMap(_maxRooms, _entrancesMap);
         var _roomCount = array_length(_mapArray);
         
         if (_roomCount == 0) continue;
@@ -541,7 +538,7 @@ function GenerateBestRadialMap(_maxRooms, _entrancesMap, _tries = 50, _corridorP
 
         if (_totalScore < _bestScore) {
             _bestScore = _totalScore;
-            _bestResult = _currentResult;
+            _bestResult = _mapArray;
         }
     }
 
