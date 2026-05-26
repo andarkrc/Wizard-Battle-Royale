@@ -22,7 +22,7 @@ Player = function(id_) constructor {
 	hp = 100;
 	x = 664;
 	y = 588;
-	potion = Potion.DEVIL;
+	potion = Potion.NONE;
 	
 	devil_pact_active = false;
 	devil_pact_time = 0.0;

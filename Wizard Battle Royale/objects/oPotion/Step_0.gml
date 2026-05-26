@@ -13,7 +13,7 @@ if (broken) {
 		if (!cloud_hit_local) {
 			with (oPlayer) {
 				if (id_ == oClientHandler.client_id) {
-					if (point_distance(x, y, other.x, other.y) <= other.cloud_radius) {
+					if (collision_circle(other.x, other.y - 32, other.cloud_radius, id, false, false) != noone) {
 						other.cloud_hit_local = true;
 						packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: id_, potion_type: Potion.BLINDING}));
 					}
@@ -30,7 +30,7 @@ if (broken) {
 		if (!cloud_hit_local) {
 			with (oPlayer) {
 				if (id_ == oClientHandler.client_id) {
-					if (point_distance(x, y, other.x, other.y) <= other.cloud_radius) {
+					if (collision_circle(other.x, other.y - 32, other.cloud_radius, id, false, false) != noone) {
 						other.cloud_hit_local = true;
 						packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: id_, potion_type: Potion.REVERSE}));
 					}
@@ -47,7 +47,7 @@ if (broken) {
 		if (!cloud_hit_local) {
 			with (oPlayer) {
 				if (id_ == oClientHandler.client_id) {
-					if (point_distance(x, y, other.x, other.y) <= other.cloud_radius) {
+					if (collision_circle(other.x, other.y - 32, other.cloud_radius, id, false, false) != noone) {
 						other.cloud_hit_local = true;
 						packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: id_, potion_type: Potion.BLINKING}));
 					}
@@ -65,7 +65,7 @@ if (broken) {
 		
 		with (oPlayer) {
 			if (id_ == oClientHandler.client_id) {
-				if (point_distance(x, y, other.x, other.y) <= other.cloud_radius) {
+				if (collision_circle(other.x, other.y - 32, other.cloud_radius, id, false, false) != noone) {
 					if (!damaged && other.cloud_timer <= global.flame_duration - 2.0) { // Hit every 0.3s after 2s immunity
 						packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_FIRE_HIT, {}));
 					}
