@@ -5,6 +5,7 @@ enum Spell {
 	SHIELD,
     ICE_SPIKE,
     LIGHTNING_BOLT,
+    EARTH_SHAKE,
 	LAST,
 }
 
@@ -26,6 +27,7 @@ function spell_get_max_casts(spell) {
 	casts[Spell.SHIELD] = 1;
     casts[Spell.ICE_SPIKE] = 3;
     casts[Spell.LIGHTNING_BOLT] = 4;
+    casts[Spell.EARTH_SHAKE] = 2;
 	
 	return casts[spell];
 }
@@ -40,6 +42,7 @@ function spell_get_damage(spell) {
 	damage[Spell.WIND_SLASH] = 25;
     damage[Spell.ICE_SPIKE] = 20;
     damage[Spell.LIGHTNING_BOLT] = 15;
+    damage[Spell.EARTH_SHAKE] = 35;
 
 	return damage[spell];
 }
