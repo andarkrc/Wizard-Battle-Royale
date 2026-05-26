@@ -7,7 +7,7 @@ if (broken) {
 		if (random(1) < 150 * _dt) { // Spawn particles over time
 			var r = random(cloud_radius);
 			var dir = random(360);
-			part_particles_create(oGameplayHandler.particle_system, x + lengthdir_x(r, dir), y - 64 + lengthdir_y(r, dir), oGameplayHandler.pt_cloud, 1);
+			part_particles_create(oGameplayHandler.particle_system, x + lengthdir_x(r, dir), y - 64 + lengthdir_y(r, dir), oGameplayHandler.pt_cloud_purple, 1);
 		}
 		
 		if (!cloud_hit_local) {
@@ -21,6 +21,12 @@ if (broken) {
 			}
 		}
 	} else if (potion == Potion.REVERSE) {
+		if (random(1) < 150 * _dt) { // Spawn particles over time
+			var r = random(cloud_radius);
+			var dir = random(360);
+			part_particles_create(oGameplayHandler.particle_system, x + lengthdir_x(r, dir), y - 64 + lengthdir_y(r, dir), oGameplayHandler.pt_cloud_blue, 1);
+		}
+		
 		if (!cloud_hit_local) {
 			with (oPlayer) {
 				if (id_ == oClientHandler.client_id) {
@@ -32,6 +38,12 @@ if (broken) {
 			}
 		}
 	} else if (potion == Potion.BLINKING) {
+		if (random(1) < 150 * _dt) { // Spawn particles over time
+			var r = random(cloud_radius);
+			var dir = random(360);
+			part_particles_create(oGameplayHandler.particle_system, x + lengthdir_x(r, dir), y - 64 + lengthdir_y(r, dir), oGameplayHandler.pt_cloud_gold, 1);
+		}
+		
 		if (!cloud_hit_local) {
 			with (oPlayer) {
 				if (id_ == oClientHandler.client_id) {
@@ -140,7 +152,7 @@ if (thrown && can_be_collected && !broken) {
 		for (var i = 0; i < 60; i++) {
 			var r = random(cloud_radius);
 			var dir = random(360);
-			part_particles_create(oGameplayHandler.particle_system, x + lengthdir_x(r, dir), y - 64 + lengthdir_y(r, dir), oGameplayHandler.pt_cloud, 1);
+			part_particles_create(oGameplayHandler.particle_system, x + lengthdir_x(r, dir), y - 64 + lengthdir_y(r, dir), oGameplayHandler.pt_cloud_purple, 1);
 		}
 	} else if (potion == Potion.FLAME) {
 		cloud_timer = global.flame_duration;
@@ -158,7 +170,17 @@ if (thrown && can_be_collected && !broken) {
 		}
 	} else if (potion == Potion.REVERSE) {
 		cloud_timer = global.reverse_duration;
+		for (var i = 0; i < 60; i++) {
+			var r = random(cloud_radius);
+			var dir = random(360);
+			part_particles_create(oGameplayHandler.particle_system, x + lengthdir_x(r, dir), y - 64 + lengthdir_y(r, dir), oGameplayHandler.pt_cloud_blue, 1);
+		}
 	} else if (potion == Potion.BLINKING) {
 		cloud_timer = global.blinking_duration;
+		for (var i = 0; i < 60; i++) {
+			var r = random(cloud_radius);
+			var dir = random(360);
+			part_particles_create(oGameplayHandler.particle_system, x + lengthdir_x(r, dir), y - 64 + lengthdir_y(r, dir), oGameplayHandler.pt_cloud_gold, 1);
+		}
 	}
 }

@@ -2,15 +2,38 @@ player_refs = ds_map_create();
 
 particle_system = part_system_create_layer("Instances", false);
 
-pt_cloud = part_type_create();
-part_type_shape(pt_cloud, pt_shape_smoke);
-part_type_size(pt_cloud, 1.0, 1.5, 0.02, 0);
-part_type_color3(pt_cloud, c_purple, c_fuchsia, c_black);
-part_type_alpha3(pt_cloud, 1.0, 0.6, 0);
-part_type_life(pt_cloud, 40, 60);
-part_type_direction(pt_cloud, 0, 0, 0, 0);
-part_type_speed(pt_cloud, 0, 0, 0, 0);
-part_type_orientation(pt_cloud, 0, 360, 0, 0, false);
+pt_cloud_purple = part_type_create();
+part_type_shape(pt_cloud_purple, pt_shape_smoke);
+part_type_size(pt_cloud_purple, 1.0, 1.5, 0.02, 0);
+part_type_color3(pt_cloud_purple, c_purple, c_fuchsia, c_black);
+part_type_alpha3(pt_cloud_purple, 1.0, 0.6, 0);
+part_type_life(pt_cloud_purple, 40, 60);
+part_type_direction(pt_cloud_purple, 0, 0, 0, 0);
+part_type_speed(pt_cloud_purple, 0, 0, 0, 0);
+part_type_orientation(pt_cloud_purple, 0, 360, 0, 0, false);
+
+pt_cloud_blue = part_type_create();
+part_type_shape(pt_cloud_blue, pt_shape_smoke);
+part_type_size(pt_cloud_blue, 1.0, 1.5, 0.02, 0);
+part_type_color3(pt_cloud_blue, make_colour_rgb(0, 90, 180), make_colour_rgb(0, 45, 110), make_colour_rgb(0, 10, 40));
+part_type_alpha3(pt_cloud_blue, 1.0, 0.6, 0);
+part_type_life(pt_cloud_blue, 40, 60);
+part_type_direction(pt_cloud_blue, 0, 0, 0, 0);
+part_type_speed(pt_cloud_blue, 0, 0, 0, 0);
+part_type_orientation(pt_cloud_blue, 0, 360, 0, 0, false);
+
+pt_cloud_gold = part_type_create();
+part_type_shape(pt_cloud_gold, pt_shape_smoke);
+part_type_size(pt_cloud_gold, 1.0, 1.5, 0.02, 0);
+part_type_color3(pt_cloud_gold, make_colour_rgb(180, 120, 10), make_colour_rgb(110, 70, 0), make_colour_rgb(40, 20, 0));
+part_type_alpha3(pt_cloud_gold, 1.0, 0.6, 0);
+part_type_life(pt_cloud_gold, 40, 60);
+part_type_direction(pt_cloud_gold, 0, 0, 0, 0);
+part_type_speed(pt_cloud_gold, 0, 0, 0, 0);
+part_type_orientation(pt_cloud_gold, 0, 360, 0, 0, false);
+
+
+
 
 pt_fire = part_type_create();
 part_type_shape(pt_fire, pt_shape_smoke);

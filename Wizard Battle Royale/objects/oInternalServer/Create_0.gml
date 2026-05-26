@@ -22,7 +22,7 @@ Player = function(id_) constructor {
 	hp = 100;
 	x = 664;
 	y = 588;
-	potion = Potion.NONE;
+	potion = Potion.BLINKING;
 }
 
 /// @desc Fully syncs a newly joined player
