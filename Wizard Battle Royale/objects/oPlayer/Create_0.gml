@@ -84,6 +84,7 @@ drink_potion = function() {
 			blinded = false;
 			blind_opacity = 0;
 			time_source_stop(remove_blinding_timer);
+
 			if (reversed) {
 				reversed = false;
 				var camera = view_get_camera(0);
@@ -93,7 +94,7 @@ drink_potion = function() {
 			break;
 
 		case Potion.TEN_HP:
-			hp = min(hp + 10, 150);
+			hp = min(hp + 10, 100);
 			break;
 
 		case Potion.HEAL_HALF:
