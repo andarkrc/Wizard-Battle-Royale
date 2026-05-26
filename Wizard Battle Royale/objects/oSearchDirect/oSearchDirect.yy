@@ -39,7 +39,6 @@
   "spriteMaskId":null,
   "tags":[
     "GROUP SEARCH TYPE",
-    "UI ELEMENT",
   ],
   "visible":true,
 }
