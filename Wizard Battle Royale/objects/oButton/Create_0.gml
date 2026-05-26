@@ -1,3 +1,5 @@
+event_inherited();
+
 type = "";
 
 text = "";
@@ -11,4 +13,3 @@ click_action = function()
 {
 	// nothing to see
 }
-

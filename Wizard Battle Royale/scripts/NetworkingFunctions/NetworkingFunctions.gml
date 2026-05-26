@@ -327,6 +327,11 @@ function packet_send_multiple(sockets, packet)
 	buffer_delete(packet);
 }
 
+/// @desc Sends a packet to multiple sockets except a specified one.
+/// @desc THE PACKET WILL BE DELETED.
+/// @arg {Array<Id.Socket>} sockets
+/// @arg {Id.Buffer} packet
+/// @arg {Id.Socket} except
 function packet_send_multiple_except(sockets, packet, except)
 {
 	buffer_seek(packet, buffer_seek_end, 0);
@@ -340,6 +345,11 @@ function packet_send_multiple_except(sockets, packet, except)
 	buffer_delete(packet);
 }
 
+/// @desc Sends a packet to multiple sockets except a list of specified sockets.
+/// @desc THE PACKET WILL BE DELETED.
+/// @arg {Array<Id.Socket>} sockets
+/// @arg {Id.Buffer} packet
+/// @arg {Array<Id.Socket>} except
 function packet_send_multiple_except_list(sockets, packet, except)
 {
 	buffer_seek(packet, buffer_seek_end, 0);
@@ -350,6 +360,19 @@ function packet_send_multiple_except_list(sockets, packet, except)
 		network_send_packet(sockets[i], packet, len);
 	}
 
+	buffer_delete(packet);
+}
+
+/// @desc Sends a packet to a specified ip and port through udp.
+/// @desc THE PACKET WILL BE DELETED.
+/// @arg {d.Socket} socket
+/// @arg {String} ip
+/// @arg {Real} port
+/// @arg {Id.Buffer} packet
+function packet_send_udp(socket, ip, port, packet)
+{
+	buffer_seek(packet, buffer_seek_end, 0);
+	var sent = network_send_udp(socket, ip, port, packet, buffer_tell(packet));
 	buffer_delete(packet);
 }
 

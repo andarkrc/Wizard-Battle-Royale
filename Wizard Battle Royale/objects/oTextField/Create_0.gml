@@ -1,3 +1,5 @@
+event_inherited();
+
 type = "";
 
 font = global.default_font;
