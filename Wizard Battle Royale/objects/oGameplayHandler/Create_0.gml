@@ -45,6 +45,46 @@ part_type_direction(pt_fire, 85, 95, 0, 2);
 part_type_speed(pt_fire, 0.2, 0.5, 0, 0);
 part_type_blend(pt_fire, true);
 
+/// @desc Returns [color1, color2, color3] for particle effects based on potion type.
+/// @arg {Real} pot_type
+potion_get_particle_colors = function(pot_type) {
+	switch (pot_type) {
+		case Potion.SPEED:
+			return [make_colour_rgb(0, 200, 255), make_colour_rgb(0, 120, 200), make_colour_rgb(0, 40, 80)];
+		case Potion.INVISIBILITY:
+			return [make_colour_rgb(200, 255, 100), make_colour_rgb(150, 200, 50), make_colour_rgb(100, 150, 20)]; // verde-galbui
+		case Potion.LIMITS:
+			return [make_colour_rgb(230, 180, 255), make_colour_rgb(200, 130, 255), make_colour_rgb(150, 80, 200)]; // mov deschis
+		case Potion.DASHING:
+			return [make_colour_rgb(50, 255, 50), make_colour_rgb(20, 200, 20), make_colour_rgb(0, 100, 0)]; // verde mai verzui
+		case Potion.CLEANSING:
+			return [make_colour_rgb(255, 180, 200), make_colour_rgb(255, 130, 170), make_colour_rgb(200, 80, 120)]; // roz deschis
+		case Potion.TEN_HP:
+			return [make_colour_rgb(255, 255, 150), make_colour_rgb(255, 220, 100), make_colour_rgb(200, 180, 50)]; // galben deschis
+		case Potion.HEAL_HALF:
+			return [make_colour_rgb(0, 50, 150), make_colour_rgb(0, 30, 100), make_colour_rgb(0, 10, 50)]; // albastru inchis
+		case Potion.DECOY:
+			return [make_colour_rgb(255, 100, 255), make_colour_rgb(200, 50, 200), make_colour_rgb(150, 0, 150)]; // roz mov
+		case Potion.DEVIL:
+			return [c_red, c_lime, c_blue]; // curcubeu
+		default:
+			return [c_white, c_ltgray, c_dkgray];
+	}
+}
+
+/// @desc Emits psUsedPotion particles at a given position with potion-specific colors.
+/// @arg {Real} px
+/// @arg {Real} py
+/// @arg {Real} pot_type
+/// @arg {Real} count
+emit_potion_particles = function(px, py, pot_type, count) {
+	var particles = particle_get_type(psUsedPotion, 0);
+	var colors = potion_get_particle_colors(pot_type);
+	part_type_color3(particles, colors[0], colors[1], colors[2]);
+	part_type_size(particles, 0.05, 0.15, -0.005, 0); // Scale down the particles significantly
+	part_particles_create(particle_system, px, py, particles, count);
+}
+
 runtime_objects = [];
 
 create_player_if_doesnt_exist = function(id_) {

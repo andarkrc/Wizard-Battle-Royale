@@ -126,6 +126,12 @@ drink_potion = function() {
 		default:
 			break;
 	}
+	
+	// Emit particles when consuming a potion (non-throwable only)
+	if (!array_contains(global.throwable_potions, potion) && potion != Potion.NONE) {
+		oGameplayHandler.emit_potion_particles(x, y, potion, 15);
+	}
+	
 	potion = Potion.NONE;
 }
 
