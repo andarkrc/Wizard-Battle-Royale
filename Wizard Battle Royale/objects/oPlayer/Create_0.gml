@@ -94,6 +94,10 @@ drink_potion = function() {
 			hp = hp + ceil((100 - hp) / 2.0);
 			break;
 		
+		case Potion.DECOY:
+			// Effect handled via HOST_SYNC_DECOY_SPAWN callback
+			break;
+		
 		default:
 			break;
 	}

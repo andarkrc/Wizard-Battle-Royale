@@ -22,7 +22,7 @@ Player = function(id_) constructor {
 	hp = 100;
 	x = 664;
 	y = 588;
-	potion = Potion.NONE;
+	potion = Potion.DECOY;
 }
 
 /// @desc Fully syncs a newly joined player
@@ -225,6 +225,18 @@ client_request_consume_potion_callback = function(data) {
 				new_size: new_size 
 			}
 		))
+	}
+	
+	if (players_map[? data.sender_id].potion == Potion.DECOY) {
+		var decoy_dir = choose(-1, 1);
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_DECOY_SPAWN,
+			{
+				player_id: data.sender_id,
+				x: players_map[? data.sender_id].x,
+				y: players_map[? data.sender_id].y,
+				direction: decoy_dir
+			}
+		));
 	}
 	
 	players_map[? data.sender_id].potion = Potion.NONE;

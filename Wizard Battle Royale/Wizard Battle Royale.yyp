@@ -79,6 +79,7 @@
     {"id":{"name":"oCollisionBoxTopOnly","path":"objects/oCollisionBoxTopOnly/oCollisionBoxTopOnly.yy",},},
     {"id":{"name":"oCreateButton","path":"objects/oCreateButton/oCreateButton.yy",},},
     {"id":{"name":"oCreateLobbyButton","path":"objects/oCreateLobbyButton/oCreateLobbyButton.yy",},},
+    {"id":{"name":"oDecoy","path":"objects/oDecoy/oDecoy.yy",},},
     {"id":{"name":"oDirectConnectionSegment","path":"objects/oDirectConnectionSegment/oDirectConnectionSegment.yy",},},
     {"id":{"name":"oFireball","path":"objects/oFireball/oFireball.yy",},},
     {"id":{"name":"oGameplayHandler","path":"objects/oGameplayHandler/oGameplayHandler.yy",},},

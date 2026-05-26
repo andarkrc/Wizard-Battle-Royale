@@ -238,6 +238,26 @@ host_sync_potion_cloud_hit_callback = function(data) {
 	}
 }
 
+host_sync_decoy_spawn_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	var source_player = noone;
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			source_player = id;
+		}
+	}
+	
+	with (instance_create_layer(data.x, data.y, "Instances", oDecoy)) {
+		run_direction = data.direction;
+		image_xscale = (run_direction < 0) ? -image_scale : image_scale;
+		if (instance_exists(source_player)) {
+			source_name = source_player.name;
+			image_alpha = source_player.image_alpha;
+		}
+	}
+}
+
 host_sync_chest_open_callback = function(data) {
 	if (!check_host(data)) return;
 	
@@ -322,6 +342,7 @@ with (oClientHandler) {
 	subscribe(other, PacketType.HOST_INFO_GAME_START, other.host_info_game_start_callback);
 	subscribe(other, PacketType.HOST_SYNC_THROW_POTION, other.host_sync_throw_potion_callback);
 	subscribe(other, PacketType.HOST_SYNC_POTION_CLOUD_HIT, other.host_sync_potion_cloud_hit_callback);
+	subscribe(other, PacketType.HOST_SYNC_DECOY_SPAWN, other.host_sync_decoy_spawn_callback);
 }
 
 clean_runtime_objects = function() {
