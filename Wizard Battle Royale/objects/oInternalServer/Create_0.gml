@@ -373,7 +373,9 @@ var _toateCamerele = [
     
     rmArenaLarge0, rmArenaLarge1,
     
-    rmWallHorizontal, rmWallVertical
+    rmWallHorizontal, rmWallVertical,
+    
+    rmFallMedium0, rmFallSmall0
 ];
 
 if (!variable_global_exists("intrariHarta")) {

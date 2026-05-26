@@ -108,6 +108,9 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
     var _mapArray = [];
     var _openDoors = [];   
     var _sealedDoors = []; 
+    
+    // coliziuni cu zona "interzisa" de sub un fall room
+    var _virtualBlockers = []; 
 
     var _startRooms = [rmArenaLarge0, rmArenaLarge1];
     var _oneEnded = [rmLootSmall0, rmLootSmall4, rmLootSmall5, rmLootSmall10, rmLootSmall11, rmLootSmall12,
@@ -117,26 +120,37 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
     
     var _expansionRooms = [
         rmLootSmall1, rmLootSmall2, rmLootSmall3, rmLootSmall7, rmLootSmall8, rmLootSmall9,
+        
         rmLootMedium0, rmLootMedium1, rmLootMedium2, rmLootMedium3, rmLootMedium4, rmLootMedium5,
         rmLootMedium6,rmLootMedium7, rmLootMedium9, rmLootMedium10, rmLootMedium11,
+        
         rmCorridorSmall0, rmCorridorSmall1, rmCorridorSmall2, rmCorridorSmall3,
         rmCorridorSmall4, rmCorridorSmall5, rmCorridorSmall6, rmCorridorSmall7,
         rmCorridorSmall8, rmCorridorSmall9, rmCorridorSmall10, rmCorridorSmall11, rmCorridorSmall14, rmCorridorSmall18,
         rmCorridorSmall19, rmCorridorSmall20, rmCorridorSmall21, rmCorridorSmall22, 
+        
         rmCorridorMedium0, rmCorridorMedium1, rmCorridorMedium2,
         rmCorridorMedium3, rmCorridorMedium4, rmCorridorMedium5,rmCorridorMedium6,
         rmCorridorMedium7, rmCorridorMedium8, rmCorridorMedium9, rmCorridorMedium10,
         rmCorridorMedium11, rmCorridorMedium12, rmCorridorMedium13, rmCorridorMedium14,
+        
         rmArenaMedium0, rmArenaMedium1, rmArenaMedium2, rmArenaMedium3,
         rmArenaMedium4, rmArenaMedium5, rmArenaMedium6,
     ];
     
     var _wallsHorizontal = [rmWallHorizontal];
     var _wallsVertical   = [rmWallVertical];
+    
+    var _specialFallRooms = [rmFallMedium0, rmFallSmall0];
+    var _placedFallRoom = false;
 
-    // nodul de start
     var _startRoomID = _startRooms[irandom(array_length(_startRooms) - 1)];
     var _startData = _entrancesMap[? _startRoomID];
+    
+    if (_startData == undefined) {
+        show_debug_message("EROARE FATALA: Camera de start " + room_get_name(_startRoomID) + " nu a fost precalculata!");
+        return { rooms: [], sealed_doors: [] };
+    }
     
     var _startNode = {
         room_index: room_get_name(_startRoomID),
@@ -160,7 +174,6 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
         });
     }
 
-    // expansiune
     var _failsafe_loop = 0;
 
     while (array_length(_openDoors) > 0 && _failsafe_loop < 2000) {
@@ -176,12 +189,22 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
         } else {
             _currentPool = array_shuffle(_expansionRooms);
         }
+        
+        if (!_placedFallRoom && array_length(_mapArray) >= _maxRooms div 2) {
+            var _sfPool = array_shuffle(_specialFallRooms);
+            for (var sp = array_length(_sfPool) - 1; sp >= 0; sp--) {
+                array_insert(_currentPool, 0, _sfPool[sp]);
+            }
+        }
 
         var _placedSuccessfully = false;
 
         for (var c = 0; c < array_length(_currentPool); c++) {
             var _candRoomID = _currentPool[c];
             var _candData = _entrancesMap[? _candRoomID];
+            
+            if (_candData == undefined) continue; 
+            
             var _candDoors = _candData.doors;
             
             for (var dIn = 0; dIn < array_length(_candDoors); dIn++) {
@@ -195,8 +218,15 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
                     var _realX = _tx + _candData.view_x;
                     var _realY = _ty + _candData.view_y;
                     
-                    if (!CheckRoomCollision(_mapArray, _realX, _realY, _candData.view_w, _candData.view_h)) {
-                        
+                    // coliziune cu camerele reale
+                    var _isColliding = CheckRoomCollision(_mapArray, _realX, _realY, _candData.view_w, _candData.view_h);
+                    
+                    // coliziunea cu "zona interzisa" de sub un fall room
+                    if (!_isColliding && array_length(_virtualBlockers) > 0) {
+                        _isColliding = CheckRoomCollision(_virtualBlockers, _realX, _realY, _candData.view_w, _candData.view_h);
+                    }
+                    
+                    if (!_isColliding) {
                         var _newNode = {
                             room_index: room_get_name(_candRoomID),
                             world_x: _tx,
@@ -208,6 +238,22 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
                         };
                         array_push(_mapArray, _newNode);
                         
+                        if (!_placedFallRoom) {
+                            for (var sp = 0; sp < array_length(_specialFallRooms); sp++) {
+                                if (_candRoomID == _specialFallRooms[sp]) {
+                                    _placedFallRoom = true;
+                                    
+                                    array_push(_virtualBlockers, {
+                                        real_x: _realX,
+                                        real_y: _realY + _candData.view_h,
+                                        width: _candData.view_w,
+                                        height: 999999 
+                                    });
+                                    break;
+                                }
+                            }
+                        }
+
                         for (var dOut = 0; dOut < array_length(_candDoors); dOut++) {
                             if (dOut == dIn) continue; 
                             
@@ -233,7 +279,7 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
         }
     }
 
-    // incercam sa adaugam one ended
+    // Camere one ended (capete)
     for (var s = 0; s < array_length(_sealedDoors); s++) {
         var _targetDoor = _sealedDoors[s];
         var _reqSide = OppositeSide(_targetDoor.side);
@@ -244,6 +290,9 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
         for (var c = 0; c < array_length(_capPool); c++) {
             var _candRoomID = _capPool[c];
             var _candData = _entrancesMap[? _candRoomID];
+            
+            if (_candData == undefined) continue; 
+            
             var _candDoors = _candData.doors;
 
             for (var dIn = 0; dIn < array_length(_candDoors); dIn++) {
@@ -256,8 +305,13 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
                     var _realX = _tx + _candData.view_x;
                     var _realY = _ty + _candData.view_y;
 
-                    if (!CheckRoomCollision(_mapArray, _realX, _realY, _candData.view_w, _candData.view_h)) {
-                        
+                    var _isCollidingCap = CheckRoomCollision(_mapArray, _realX, _realY, _candData.view_w, _candData.view_h);
+                    
+                    if (!_isCollidingCap && array_length(_virtualBlockers) > 0) {
+                        _isCollidingCap = CheckRoomCollision(_virtualBlockers, _realX, _realY, _candData.view_w, _candData.view_h);
+                    }
+
+                    if (!_isCollidingCap) {
                         var _newNode = {
                             room_index: room_get_name(_candRoomID),
                             world_x: _tx,
@@ -277,7 +331,7 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
             if (_capPlaced) break;
         }
 
-        // adaugare ziduri
+        // Adaugare ziduri
         if (!_capPlaced) {
             var _wallRoomID;
             
@@ -288,40 +342,43 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
             }
 
             var _wallData = _entrancesMap[? _wallRoomID];
-            var _w  = _wallData.view_w; 
-            var _h  = _wallData.view_h;
-
-            // offset pentru zid
-            var _offsetX = 0;
-            var _offsetY = 0;
-
-
-            if (_reqSide == RoomSide.RIGHT) {
-                _offsetX = -_w; 
-            }
-
-            else if (_reqSide == RoomSide.BOTTOM) {
-                _offsetY = -_h; 
-            }
-
-            var _finalX = _targetDoor.world_x + _offsetX;
-            var _finalY = _targetDoor.world_y + _offsetY;
-
-            var _rx = _finalX + _wallData.view_x;
-            var _ry = _finalY + _wallData.view_y;
-
-            var _wallNode = {
-                room_index: room_get_name(_wallRoomID),
-                world_x: _finalX,
-                world_y: _finalY,
-                real_x: _rx,
-                real_y: _ry,
-                width: _w,
-                height: _h
-            };
             
-            array_push(_mapArray, _wallNode);
+            if (_wallData != undefined) {
+                var _w  = _wallData.view_w; 
+                var _h  = _wallData.view_h;
+
+                var _offsetX = 0;
+                var _offsetY = 0;
+
+                if (_reqSide == RoomSide.RIGHT) {
+                    _offsetX = -_w; 
+                } else if (_reqSide == RoomSide.BOTTOM) {
+                    _offsetY = -_h; 
+                }
+
+                var _finalX = _targetDoor.world_x + _offsetX;
+                var _finalY = _targetDoor.world_y + _offsetY;
+
+                var _rx = _finalX + _wallData.view_x;
+                var _ry = _finalY + _wallData.view_y;
+
+                var _wallNode = {
+                    room_index: room_get_name(_wallRoomID),
+                    world_x: _finalX,
+                    world_y: _finalY,
+                    real_x: _rx,
+                    real_y: _ry,
+                    width: _w,
+                    height: _h
+                };
+                
+                array_push(_mapArray, _wallNode);
+            }
         }
+    }
+
+    if (!_placedFallRoom) {
+        return { rooms: [], sealed_doors: [] };
     }
 
     return {
@@ -336,6 +393,7 @@ function GenerateBestRadialMap(_maxRooms, _entrancesMap, _tries = 50, _corridorP
     var _bestScore = 999999999;
     
     var _minArenaMedium = _maxRooms div 10; 
+    var _fallRoomKeyword = "rmFall";
 
     for (var i = 0; i < _tries; i++) {
 
@@ -349,6 +407,9 @@ function GenerateBestRadialMap(_maxRooms, _entrancesMap, _tries = 50, _corridorP
         var _corridorCount = 0;
         var _totalDoors = 0;
         
+        var _hasFallRoom = false;
+        var _fallRoomBottomY = -9999999;
+        
         for (var r = 0; r < _roomCount; r++) {
             var _node = _mapArray[r];
             
@@ -360,6 +421,14 @@ function GenerateBestRadialMap(_maxRooms, _entrancesMap, _tries = 50, _corridorP
                 _corridorCount++;
             }
 
+            if (string_pos(_fallRoomKeyword, _node.room_index) > 0) {
+                _hasFallRoom = true;
+                var _bottomEdge = _node.world_y + _node.height;
+                if (_bottomEdge > _fallRoomBottomY) {
+                    _fallRoomBottomY = _bottomEdge;
+                }
+            }
+
             var _roomAsset = asset_get_index(_node.room_index);
             var _roomData = _entrancesMap[? _roomAsset];
             
@@ -368,7 +437,7 @@ function GenerateBestRadialMap(_maxRooms, _entrancesMap, _tries = 50, _corridorP
             }
         }
 
-        if (_arenaCount < _minArenaMedium) {
+        if (_arenaCount < _minArenaMedium || !_hasFallRoom) {
             continue;
         }
 
@@ -391,14 +460,17 @@ function GenerateBestRadialMap(_maxRooms, _entrancesMap, _tries = 50, _corridorP
 
         var _mapWidth = _maxX - _minX;
         var _mapHeight = _maxY - _minY;
-
         var _sizeScore = _mapWidth + _mapHeight;
         
         var _aspectDifference = abs(_mapWidth - _mapHeight);
+        
+        var _distFromBottom = _maxY - _fallRoomBottomY;
+        var _bottomPlacementPenalty = _distFromBottom * 3; 
 
         var _totalScore = _sizeScore 
                         + (_aspectDifference * _squarenessPenalty) 
                         + (_corridorCount * _corridorPenalty) 
+                        + _bottomPlacementPenalty
                         - (_avgDoors * _entranceBonus);
 
         if (_totalScore < _bestScore) {
