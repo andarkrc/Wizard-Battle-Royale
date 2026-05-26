@@ -315,6 +315,19 @@ function packet_send_multiple_except_list(sockets, packet, except)
 	buffer_delete(packet);
 }
 
+/// @desc Sends a packet to a specified ip and port through udp.
+/// @desc THE PACKET WILL BE DELETED.
+/// @arg {d.Socket} socket
+/// @arg {String} ip
+/// @arg {Real} port
+/// @arg {Id.Buffer} packet
+function packet_send_udp(socket, ip, port, packet)
+{
+	buffer_seek(packet, buffer_seek_end, 0);
+	var sent = network_send_udp(socket, ip, port, packet, buffer_tell(packet));
+	buffer_delete(packet);
+}
+
 /// @desc Frees the memory used by a packet.
 /// @desc Wrapper over 'buffer_delete'.
 /// @arg {Id.Buffer} packet

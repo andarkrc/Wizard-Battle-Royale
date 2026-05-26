@@ -1,3 +1,5 @@
+event_inherited();
+
 type = "";
 
 min_value = 0;

@@ -8,11 +8,25 @@ click_action = function() {
 	deactivate_menus();
 	layer_set_visible("MainMenu", true);
 	layer_set_visible("JoinLobbyMenu", active);
-	layer_set_visible("JoinLobbyDirectMenu", active);
+	layer_set_visible("JoinLobbyListMenu", active);
+		
+	global.connection_type = "standard";
 	
-	global.connection_type = "direct";
+	global.lobby_code = "";
 	
-	with (oServerIPField) {
+	with (oLobbyList) {
+		scroll_offset = 0;
+	} 
+	
+	with (oLobbyNameFilterTextField) {
 		text = "";
+	}
+	
+	with (oHideFullLobbiesToggle) {
+		state = false;
+	}
+	
+	with (oLobbyHandler) {
+		request_new_lobbies();
 	}
 }

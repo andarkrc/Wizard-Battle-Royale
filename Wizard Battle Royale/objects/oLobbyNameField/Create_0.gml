@@ -1,7 +1,7 @@
 // Inherit the parent event
 event_inherited();
 
-ghost_text = "Lobby name"
+ghost_text = ">Type to change lobby name<";
 
 action = function() {
 	if (text != "") {

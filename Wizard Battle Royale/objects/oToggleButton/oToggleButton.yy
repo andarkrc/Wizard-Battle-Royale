@@ -13,7 +13,10 @@
     "name":"UI Elements",
     "path":"folders/Objects/UI/UI Elements.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"oUIElement",
+    "path":"objects/oUIElement/oUIElement.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

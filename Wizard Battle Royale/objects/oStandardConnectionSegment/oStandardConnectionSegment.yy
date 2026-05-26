@@ -38,7 +38,6 @@
   },
   "spriteMaskId":null,
   "tags":[
-    "UI ELEMENT",
     "GROUP CONNECTION TYPE",
   ],
   "visible":true,
