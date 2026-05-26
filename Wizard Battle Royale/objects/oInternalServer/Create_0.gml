@@ -363,7 +363,8 @@ var _toateCamerele = [
     rmCorridorSmall0, rmCorridorSmall1, rmCorridorSmall2, rmCorridorSmall3, rmCorridorSmall4, rmCorridorSmall5,
     rmCorridorSmall6, rmCorridorSmall7, rmCorridorSmall8, rmCorridorSmall9, rmCorridorSmall10, rmCorridorSmall11,
     rmCorridorSmall12, rmCorridorSmall13, rmCorridorSmall14, rmCorridorSmall15, rmCorridorSmall16, rmCorridorSmall17,
-    rmCorridorSmall18, rmCorridorSmall19, rmCorridorSmall20, rmCorridorSmall21, rmCorridorSmall22, 
+    rmCorridorSmall18, rmCorridorSmall19, rmCorridorSmall20, rmCorridorSmall21, rmCorridorSmall22,
+    rmCorridorSmall23, rmCorridorSmall24, 
     
     rmCorridorMedium0, rmCorridorMedium1, rmCorridorMedium2, rmCorridorMedium3, rmCorridorMedium4, rmCorridorMedium5,
     rmCorridorMedium6, rmCorridorMedium7, rmCorridorMedium8, rmCorridorMedium9, rmCorridorMedium10, rmCorridorMedium11,

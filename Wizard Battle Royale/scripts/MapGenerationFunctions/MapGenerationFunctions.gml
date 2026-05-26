@@ -161,6 +161,7 @@ function GenerateRadialMap(_maxRooms, _entrancesMap) {
         rmCorridorSmall4, rmCorridorSmall5, rmCorridorSmall6, rmCorridorSmall7,
         rmCorridorSmall8, rmCorridorSmall9, rmCorridorSmall10, rmCorridorSmall11, rmCorridorSmall14, rmCorridorSmall18,
         rmCorridorSmall19, rmCorridorSmall20, rmCorridorSmall21, rmCorridorSmall22, 
+        rmCorridorSmall23, rmCorridorSmall24, 
         
         rmCorridorMedium0, rmCorridorMedium1, rmCorridorMedium2,
         rmCorridorMedium3, rmCorridorMedium4, rmCorridorMedium5,rmCorridorMedium6,

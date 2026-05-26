@@ -35,8 +35,9 @@
       ],"depth":100,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Assets","properties":[],"resourceType":"GMRAssetLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRTileLayer":"","%Name":"Tiles","depth":200,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Tiles","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":15,"SerialiseWidth":15,"TileCompressedData":[
           -90,0,-14,92,24,91,63,27,35,36,50,27,35,36,79,79,35,36,79,100,78,27,75,27,27,96,27,27,97,-4,79,14,83,
-          79,78,50,27,27,76,27,37,27,27,96,79,99,-3,79,1,78,-10,66,1,67,-3,79,1,78,-10,0,5,80,79,98,79,78,-10,
-          0,5,80,49,79,48,78,-10,0,5,80,62,79,61,78,-10,0,5,80,34,79,96,78,
+          79,78,50,27,27,76,27,37,27,27,96,79,99,-3,79,1,78,-10,66,1,67,-3,79,16,78,805306386,805306385,805306386,
+          805306385,805306386,805306385,805306386,805306385,805306386,805306385,80,79,98,79,78,-10,0,5,80,49,79,
+          48,78,-10,0,5,80,62,79,61,78,-10,0,5,80,34,79,96,78,
         ],"TileDataFormat":1,},"tilesetId":{"name":"tsDungeon","path":"tilesets/tsDungeon/tsDungeon.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
   ],
   "name":"rmCorridorSmall1",

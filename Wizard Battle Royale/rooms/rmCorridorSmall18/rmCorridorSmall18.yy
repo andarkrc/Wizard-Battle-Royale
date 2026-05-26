@@ -39,8 +39,8 @@
     {"$GMRTileLayer":"","%Name":"Tiles","depth":200,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Tiles","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":15,"SerialiseWidth":15,"TileCompressedData":[
           5,80,79,79,84,78,-10,0,5,80,49,79,48,78,-10,0,5,80,62,79,61,78,-10,0,1,80,-3,79,1,78,-10,0,5,80,36,79,
           35,78,-10,0,1,80,-3,79,1,78,-10,0,5,80,83,79,79,78,-10,0,5,80,27,98,79,78,-10,0,5,80,46,27,27,78,-10,
-          0,5,80,27,27,76,78,-10,0,1,67,-3,27,1,91,-10,92,-3,27,1,88,-3,79,5,83,84,79,79,83,-3,79,-4,27,2,88,83,
-          -9,79,-4,27,-4,79,7,88,79,83,79,85,79,79,-15,66,
+          0,16,80,27,27,76,78,17,18,17,18,17,18,17,18,17,18,67,-3,27,1,91,-10,92,-3,27,1,88,-3,79,5,83,84,79,79,
+          83,-3,79,-4,27,2,88,83,-9,79,-4,27,-4,79,7,88,79,83,79,85,79,79,-15,66,
         ],"TileDataFormat":1,},"tilesetId":{"name":"tsDungeon","path":"tilesets/tsDungeon/tsDungeon.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
   ],
   "name":"rmCorridorSmall18",

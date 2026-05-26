@@ -158,6 +158,8 @@
     {"id":{"name":"rmCorridorSmall20","path":"rooms/rmCorridorSmall20/rmCorridorSmall20.yy",},},
     {"id":{"name":"rmCorridorSmall21","path":"rooms/rmCorridorSmall21/rmCorridorSmall21.yy",},},
     {"id":{"name":"rmCorridorSmall22","path":"rooms/rmCorridorSmall22/rmCorridorSmall22.yy",},},
+    {"id":{"name":"rmCorridorSmall23","path":"rooms/rmCorridorSmall23/rmCorridorSmall23.yy",},},
+    {"id":{"name":"rmCorridorSmall24","path":"rooms/rmCorridorSmall24/rmCorridorSmall24.yy",},},
     {"id":{"name":"rmCorridorSmall3","path":"rooms/rmCorridorSmall3/rmCorridorSmall3.yy",},},
     {"id":{"name":"rmCorridorSmall4","path":"rooms/rmCorridorSmall4/rmCorridorSmall4.yy",},},
     {"id":{"name":"rmCorridorSmall5","path":"rooms/rmCorridorSmall5/rmCorridorSmall5.yy",},},
@@ -381,6 +383,8 @@
     {"roomId":{"name":"rmFallSmall0","path":"rooms/rmFallSmall0/rmFallSmall0.yy",},},
     {"roomId":{"name":"rmWallHorizontalDouble","path":"rooms/rmWallHorizontalDouble/rmWallHorizontalDouble.yy",},},
     {"roomId":{"name":"rmWallVerticalDouble","path":"rooms/rmWallVerticalDouble/rmWallVerticalDouble.yy",},},
+    {"roomId":{"name":"rmCorridorSmall23","path":"rooms/rmCorridorSmall23/rmCorridorSmall23.yy",},},
+    {"roomId":{"name":"rmCorridorSmall24","path":"rooms/rmCorridorSmall24/rmCorridorSmall24.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[
