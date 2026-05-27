@@ -6,8 +6,8 @@ max_particle_life = 40;
 
 g = 0;
 
-image_xscale = 1.5;
-image_yscale = 1.5;
+image_xscale = 2.5;
+image_yscale = 2.5;
 
 max_scale = 2.5;
 growth_rate = 0.4;

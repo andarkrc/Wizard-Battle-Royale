@@ -3,7 +3,7 @@ event_inherited();
 
 text = "Refresh";
 
-level = 2;
+level = 0;
 
 click_action = function()
 {

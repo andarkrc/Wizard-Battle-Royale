@@ -124,7 +124,9 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_POSITION, {x: x, y: y}));
 	}
 	
-	if (mouse_check_button_pressed(mb_left) && selected_spell >= 0 && selected_spell < array_length(spells) && combat_active) {
+	var holding_throwable = (potion != Potion.NONE && array_contains(global.throwable_potions, potion));
+	
+	if (mouse_check_button_pressed(mb_left) && selected_spell >= 0 && selected_spell < array_length(spells) && combat_active && !holding_throwable) {
 		if (spells[selected_spell].type != Spell.NONE) {
 			var dir = point_direction(x, y - sprite_height / 2, mouse_x, mouse_y);
 			packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_SPELLCAST,
@@ -183,8 +185,29 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 		}
 	}
 	
+	if (potion != Potion.NONE && mouse_check_button_released(mb_right)) {
+		var target_x = mouse_x;
+		var target_y = mouse_y;
+		
+		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_THROW_POTION, {target_x: target_x, target_y: target_y}));
+	}
+	
 	if (potion != Potion.NONE && keyboard_check_pressed(ord("F"))) {
 		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
+	}
+	
+	if (devil_pact_active) {
+		devil_pact_time -= _dt;
+		if (devil_pact_time <= 0) {
+			devil_pact_active = false;
+			hp = min(hp + devil_pact_hp_taken, 100);
+			devil_pact_completed = true;
+		}
+	}
+	
+	if (devil_pact_completed && hp <= 50 && hp > 0) {
+		hp = 100;
+		devil_pact_completed = false;
 	}
 	
 	if (old_state != state) {
@@ -199,5 +222,7 @@ if (state == State.DASHING) {
 	part_type_scale(particles, image_xscale, image_yscale);
 	part_type_size(particles, 1, 1, 0, 0.05);
 	part_type_life(particles, 5, 10);
+	part_type_sprite(particles, sprite_dashing, false, false, false);
+	part_type_alpha3(particles, 0.25, 0.25, 0.25);
 	part_particles_create(oGameplayHandler.particle_system, x, y, particles, 1);
 }

@@ -2,6 +2,7 @@ id_ = -1;
 name = "";
 
 move_speed = 2.5 * METER;
+max_move_speed = 5.5 * METER;
 
 vertical_speed = 0;
 g = 20 * METER;
@@ -13,6 +14,8 @@ dash_speed = 2.5 * METER / dash_duration;
 dash_direction = 0;
 total_dashes = 1;
 current_dashes = 1;
+max_dashes = 5;
+
 
 hp = 100;
 
@@ -33,7 +36,7 @@ image_yscale = image_scale;
 
 state = State.IDLE;
 old_state = state;
-mask_index = sPlayerIdle;
+mask_index = sPlayerIdleRed;
 
 damaged = false;
 
@@ -53,8 +56,8 @@ drink_potion = function() {
 	switch (potion) {
 		case Potion.SPEED:
 			move_speed += 1 * METER;
-			if (move_speed > 5.5 * METER) {
-				move_speed = 5.5 * METER;
+			if (move_speed > max_move_speed) {
+				move_speed = max_move_speed;
 			}
 			break;
 		
@@ -70,8 +73,8 @@ drink_potion = function() {
 		
 		case Potion.DASHING:
 			total_dashes++;
-			if (total_dashes > 5) {
-				total_dashes = 5;
+			if (total_dashes > max_dashes) {
+				total_dashes = max_dashes;
 			}
 			break;
 		
@@ -79,10 +82,77 @@ drink_potion = function() {
 			// The effect is not handled here.
 			// Check the HOST_SYNC_SPELL_SLOT_NUMBER callback in game handler.
 			break;
+			
+		case Potion.CLEANSING:
+			blinded = false;
+			blind_opacity = 0;
+			time_source_stop(remove_blinding_timer);
+
+			if (reversed) {
+				reversed = false;
+				var camera = view_get_camera(0);
+				camera_set_view_angle(camera, 0);
+				time_source_stop(remove_reverse_timer);
+			}
+			if (blinking) {
+				blinking = false;
+				time_source_stop(remove_blinking_timer);
+			}
+			break;
+
+		case Potion.TEN_HP:
+			hp = min(hp + 10, 100);
+			break;
+
+		case Potion.HEAL_HALF:
+			hp = hp + ceil((100 - hp) / 2.0);
+			break;
+		
+		case Potion.DECOY:
+			// Effect handled via HOST_SYNC_DECOY_SPAWN callback
+			break;
+		
+		case Potion.BLINKING:
+			blinking = true;
+			time_source_stop(remove_blinking_timer);
+			time_source_start(remove_blinking_timer);
+			break;
+		
+		case Potion.BLINDING:
+			blinded = true;
+			blind_opacity = 1.0;
+			blind_time = 20.0;
+			time_source_stop(remove_blinding_timer);
+			time_source_start(remove_blinding_timer);
+			break;
+		
+		case Potion.REVERSE:
+			reversed = true;
+			var camera = view_get_camera(0);
+			camera_set_view_angle(camera, 180);
+			time_source_stop(remove_reverse_timer);
+			time_source_start(remove_reverse_timer);
+			break;
+		
+		case Potion.DEVIL:
+			if (hp >= 50 && !devil_pact_used) {
+				devil_pact_hp_taken = hp - 10;
+				hp = 10;
+				devil_pact_active = true;
+				devil_pact_time = 30.0;
+				devil_pact_used = true;
+			}
+			break;
 		
 		default:
 			break;
 	}
+	
+	// Emit particles when consuming a potion (non-throwable only)
+	if (!array_contains(global.throwable_potions, potion) && potion != Potion.NONE) {
+		oGameplayHandler.emit_potion_particles(x, y, potion, 15);
+	}
+	
 	potion = Potion.NONE;
 }
 
@@ -97,5 +167,64 @@ make_visibile_timer = time_source_create (
 						}
 						);
 
+blinded = false;
+blind_opacity = 20;
 
+remove_blinding_timer = time_source_create (
+						time_source_game,
+						global.blinding_effect_duration,
+						time_source_units_seconds,
+						function () {
+							blinded = false;
+						}
+						);
+
+reversed = false;
+
+remove_reverse_timer = time_source_create (
+						time_source_game,
+						global.reverse_effect_duration,
+						time_source_units_seconds,
+						function () {
+							reversed = false;
+							var camera = view_get_camera(0);
+							camera_set_view_angle(camera, 0);
+							with (oPotion) {
+								if (potion == Potion.REVERSE && broken) {
+									cloud_hit_local = false;
+								}
+							}
+						}
+						);
+
+blinking = false;
+
+remove_blinking_timer = time_source_create (
+						time_source_game,
+						global.blinking_effect_duration,
+						time_source_units_seconds,
+						function () {
+							blinking = false;
+							with (oPotion) {
+								if (potion == Potion.BLINKING && broken) {
+									cloud_hit_local = false;
+								}
+							}
+						}
+						);
+
+devil_pact_active = false;
+devil_pact_time = 0.0;
+devil_pact_hp_taken = 0.0;
+devil_pact_completed = false;
+devil_pact_used = false;
 forced_horizontal_speed = 0;
+
+sprite_breathing = sPlayerBreathingRed;
+sprite_idle = sPlayerIdleRed;
+sprite_running = sPlayerRunningRed;
+sprite_side_falling = sPlayerSideFallingRed;
+sprite_falling = sPlayerFallingRed;
+sprite_jumping = sPlayerJumpingRed;
+sprite_dashing = sPlayerSideFallingRed;
+sprite_death = sPlayerDeathRed;

@@ -29,3 +29,9 @@ global.player_name = "Player";
 // gameplay
 
 global.shadow_surface = -1;
+
+// game settings
+
+global.ray_tracing = true;
+global.sound_volume = 1;
+global.music_volume = 0.5;

@@ -2,7 +2,33 @@ player_refs = ds_map_create();
 
 particle_system = part_system_create_layer("Instances", false);
 
+pt_fire = part_type_create();
+part_type_shape(pt_fire, pt_shape_smoke);
+part_type_size(pt_fire, 0.6, 1.2, 0.01, 0.02); // Larger, thicker smoke
+part_type_color3(pt_fire, c_yellow, c_orange, c_maroon);
+part_type_alpha3(pt_fire, 0.5, 0.3, 0); // Smooth fade
+part_type_life(pt_fire, 40, 60); // Lasts longer so it doesn't flicker
+part_type_direction(pt_fire, 85, 95, 0, 2); 
+part_type_speed(pt_fire, 0.2, 0.5, 0, 0);
+part_type_blend(pt_fire, true);
+
+/// @desc Emits psUsedPotion particles at a given position with potion-specific colors.
+/// @arg {Real} px
+/// @arg {Real} py
+/// @arg {Real} pot_type
+/// @arg {Real} count
+emit_potion_particles = function(px, py, pot_type, count) {
+	var particles = particle_get_type(psDrunkPotion, 0);
+	var colors = potion_get_particle_colors(pot_type);
+	part_type_color3(particles, colors[0], colors[1], colors[2]);
+	part_type_size(particles, 0.05, 0.15, -0.005, 0); // Scale down the particles significantly
+	part_particles_create(particle_system, px, py, particles, count);
+}
+
 runtime_objects = [];
+followed_player = noone;
+free_cam = false;
+followed_player_idx = -1;
 
 create_player_if_doesnt_exist = function(id_) {
 	if (!ds_map_exists(player_refs, id_)) {
@@ -92,11 +118,19 @@ host_sync_spellhit_callback = function(data) {
 host_sync_spell_platform_callback = function(data) {
 	if (!check_host(data)) return;
 		
+	var found = false;
 	with (oSpellPlatform) {
 		if (id_ == data.id || (x == data.x && y == data.y)) {
 			id_ = data.id;
 			spell = data.spell;
+			found = true;
 		}
+	}
+	
+	if (!found) {
+		var new_plat = instance_create_layer(data.x, data.y, "Instances", oSpellPlatform);
+		new_plat.id_ = data.id;
+		new_plat.spell = data.spell;
 	}
 }
 
@@ -126,6 +160,20 @@ host_sync_player_hp_callback = function(data) {
 
 host_sync_player_died_callback = function(data) {
 	if (!check_host(data)) return;
+	
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			instance_destroy();
+		}
+	}
+	
+	ds_map_delete(player_refs, data.player_id);
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			instance_destroy();
+			instance_create_layer(x, y, "Instances", oPlayerDead);
+		}
+	}
 }
 
 host_sync_consume_potion_callback = function(data) {
@@ -168,6 +216,102 @@ host_sync_player_potion_callback = function(data) {
 	}
 }
 
+host_sync_potion_update_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	with (oPotion) {
+		if (id_ == data.potion_id) {
+			potion = data.potion_type;
+		}
+	}
+}
+
+host_sync_throw_potion_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	with (instance_create_layer(data.x, data.y, "Instances", oPotion)) {
+		potion = data.potion_type;
+		thrown = true;
+		thrower_id = data.thrower_id;
+		target_x = data.target_x;
+		target_y = data.target_y;
+		
+		var dx = target_x - x;
+		var dy = target_y - y;
+		var dy_math = -dy; // Math coordinates (positive UP)
+		
+		var _g = 10 * 64; // g = 10 * METER
+		
+		var d = point_distance(x, y, target_x, target_y);
+		var v = 6 * 64 + (d / 600.0) * (12 * 64);
+		if (v > 18 * 64) v = 18 * 64;
+		
+		var v_min_req = sqrt(_g * max(0, dy_math + d));
+		if (v < v_min_req * 1.05) {
+			v = v_min_req * 1.05;
+		}
+		
+		var v2 = v * v;
+		var v4 = v2 * v2;
+		
+		var root_term = v4 - _g * (_g * dx * dx + 2 * dy_math * v2);
+		
+		if (dx != 0 && root_term >= 0) {
+			// Target is reachable. Use the lower arc (- root)
+			var root = sqrt(root_term);
+			var angle_rad = arctan((v2 - root) / (_g * dx));
+			if (dx < 0) angle_rad += pi;
+			
+			horizontal_speed = v * cos(angle_rad);
+			vertical_speed = -v * sin(angle_rad);
+		} else {
+			// Target is out of reach or exactly vertical, throw straight towards it
+			var dir = point_direction(x, y, target_x, target_y);
+			horizontal_speed = dcos(dir) * v;
+			vertical_speed = -dsin(dir) * v;
+		}
+	}
+	
+	with (oPlayer) {
+		if (id_ == data.thrower_id) {
+			potion = Potion.NONE;
+		}
+	}
+}
+
+host_sync_potion_cloud_hit_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	with (oPlayer) {
+		if (id_ == data.target_id) {
+			var potion_in_hand = potion;
+			potion = data.potion_type;
+			drink_potion();
+			potion = potion_in_hand;
+		}
+	}
+}
+
+host_sync_decoy_spawn_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	var source_player = noone;
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			source_player = id;
+		}
+	}
+	
+	with (instance_create_layer(data.x, data.y, "Instances", oDecoy)) {
+		run_direction = data.direction;
+		image_xscale = (run_direction < 0) ? -image_scale : image_scale;
+		if (instance_exists(source_player)) {
+			source_name = source_player.name;
+			image_alpha = source_player.image_alpha;
+		}
+	}
+}
+
 host_sync_chest_open_callback = function(data) {
 	if (!check_host(data)) return;
 	
@@ -205,8 +349,6 @@ host_info_map_loading_callback = function(data) {
 	
 	lobby.Cleanup(false);
 	init_all_rooms();
-	
-	
 }
 
 host_info_dungeon_room_callback = function(data) {
@@ -225,6 +367,18 @@ host_info_game_start_callback = function(data) {
 	
 	with (oUIHandler) {
 		should_stretch_view = false;
+	}
+}
+
+host_info_client_disconnected_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	ds_map_delete(player_refs, data.client_id);
+	
+	with (oPlayer) {
+		if (id_ == data.client_id) {
+			instance_destroy();
+		}
 	}
 }
 
@@ -250,6 +404,11 @@ with (oClientHandler) {
 	subscribe(other, PacketType.HOST_INFO_MAP_LOADING, other.host_info_map_loading_callback);
 	subscribe(other, PacketType.HOST_INFO_DUNGEON_ROOM, other.host_info_dungeon_room_callback);
 	subscribe(other, PacketType.HOST_INFO_GAME_START, other.host_info_game_start_callback);
+	subscribe(other, PacketType.HOST_SYNC_THROW_POTION, other.host_sync_throw_potion_callback);
+	subscribe(other, PacketType.HOST_SYNC_POTION_CLOUD_HIT, other.host_sync_potion_cloud_hit_callback);
+	subscribe(other, PacketType.HOST_SYNC_DECOY_SPAWN, other.host_sync_decoy_spawn_callback);
+	subscribe(other, PacketType.HOST_SYNC_POTION_UPDATE, other.host_sync_potion_update_callback);
+	subscribe(other, PacketType.HOST_INFO_CLIENT_DISCONNECTED, other.host_info_client_disconnected_callback);
 }
 
 clean_runtime_objects = function() {

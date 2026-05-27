@@ -7,4 +7,4 @@ for (var i = 0; i < array_length(lobbies); i++) {
 }
 
 draw_set_halign(fa_right);
-draw_text(display_get_gui_width() - 16, 16, $"Port: {port}");
+draw_text(display_get_gui_width() - 16, 16, $"Ports: TCP-{port}, UDP-{udp_port}");

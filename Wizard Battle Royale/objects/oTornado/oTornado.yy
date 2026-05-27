@@ -38,5 +38,5 @@
     "path":"sprites/sTornado/sTornado.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

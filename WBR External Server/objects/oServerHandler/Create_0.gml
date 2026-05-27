@@ -3,16 +3,24 @@ max_clients = 1000;
 
 server = network_create_server(network_socket_tcp, port, max_clients);
 
-socket_udp = network_create_socket_ext(network_socket_udp, 6100);
+udp_port = 6100;
+socket_udp = network_create_socket_ext(network_socket_udp, udp_port);
 
 while (server < 0 && port < 65535) {
 	port++;
 	server = network_create_server(network_socket_tcp, port, max_clients);
 }
 
+while (socket_udp < 0 && udp_port < 65335) {
+	udp_port++;
+	socket_udp = network_create_socket_ext(network_socket_udp, udp_port);
+}
+
 if (server < 0) game_end();
 
-show_debug_message($"[SERVER] Started on port {port}");
+if (socket_udp < 0) game_end();
+
+show_debug_message($"[SERVER] Started on ports:  TCP-{port}, UDP-{udp_port}");
 
 clients = [];
 
