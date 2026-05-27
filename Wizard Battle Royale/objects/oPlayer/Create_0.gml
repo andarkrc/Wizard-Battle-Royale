@@ -228,3 +228,5 @@ sprite_falling = sPlayerFallingRed;
 sprite_jumping = sPlayerJumpingRed;
 sprite_dashing = sPlayerSideFallingRed;
 sprite_death = sPlayerDeathRed;
+
+hit_trap = false;

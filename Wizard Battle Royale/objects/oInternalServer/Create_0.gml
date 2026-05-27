@@ -464,6 +464,12 @@ client_request_potion_fire_hit_callback = function(data) {
 	damage_player(data.sender_id, 9999);
 }
 
+client_request_hit_trap_callback = function(data) {
+	if (!ds_map_exists(players_map, data.sender_id)) return;
+		
+	damage_player(data.sender_id, 9999);
+}
+
 with (oClientHandler) {
 	subscribe(other, PacketType.SV_INFO_CONNECTION_REQUEST, other.server_info_connection_request_callback);
 	subscribe(other, PacketType.SV_INFO_HOST, other.server_info_host_callback);
@@ -479,6 +485,7 @@ with (oClientHandler) {
 	subscribe(other, PacketType.CL_REQ_THROW_POTION, other.client_request_throw_potion_callback);
 	subscribe(other, PacketType.CL_REQ_POTION_CLOUD_HIT, other.client_request_potion_cloud_hit_callback);
 	subscribe(other, PacketType.CL_REQ_POTION_FIRE_HIT, other.client_request_potion_fire_hit_callback);
+	subscribe(other, PacketType.CL_REQ_HIT_TRAP, other.client_request_hit_trap_callback);
 }
 
 /// @desc Damages a player.

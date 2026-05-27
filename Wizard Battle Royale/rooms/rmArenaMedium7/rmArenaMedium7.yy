@@ -16,7 +16,6 @@
     {"name":"inst_6FF67F46_1_1_1_2_1","path":"rooms/rmArenaMedium7/rmArenaMedium7.yy",},
     {"name":"inst_643FE0F2_1_1_2_1","path":"rooms/rmArenaMedium7/rmArenaMedium7.yy",},
     {"name":"inst_459C840F1_2_1","path":"rooms/rmArenaMedium7/rmArenaMedium7.yy",},
-    {"name":"inst_7F8AFC6D1_2_1","path":"rooms/rmArenaMedium7/rmArenaMedium7.yy",},
     {"name":"inst_4A0648B8_1_1","path":"rooms/rmArenaMedium7/rmArenaMedium7.yy",},
     {"name":"inst_1A238905_1_1","path":"rooms/rmArenaMedium7/rmArenaMedium7.yy",},
     {"name":"inst_188A2FF1_1_1","path":"rooms/rmArenaMedium7/rmArenaMedium7.yy",},
@@ -26,6 +25,7 @@
     {"name":"inst_59D94FD9_1","path":"rooms/rmArenaMedium7/rmArenaMedium7.yy",},
     {"name":"inst_AA34FC0_1","path":"rooms/rmArenaMedium7/rmArenaMedium7.yy",},
     {"name":"inst_3F5B56C1_1","path":"rooms/rmArenaMedium7/rmArenaMedium7.yy",},
+    {"name":"inst_7F8AFC6D1_2_1","path":"rooms/rmArenaMedium7/rmArenaMedium7.yy",},
   ],
   "isDnd":false,
   "layers":[
