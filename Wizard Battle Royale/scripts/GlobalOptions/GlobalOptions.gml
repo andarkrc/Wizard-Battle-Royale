@@ -33,5 +33,5 @@ global.shadow_surface = -1;
 // game settings
 
 global.ray_tracing = false;
-global.sound_volume = 1;
-global.music_volume = 0.5;
+global.sound_volume = 0.5;
+global.music_volume = 0.25;

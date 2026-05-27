@@ -1,31 +1,31 @@
 switch (state) {
 	case State.JUMPING:
-		sprite_index = sPlayerJumping;
+		sprite_index = sPlayerJumpingRed;
 		break;
 	
 	case State.BREATHING:
-		sprite_index = sPlayerBreathing;
+		sprite_index = sPlayerBreathingRed;
 		break;
 	
 	case State.RUNNING:
-		sprite_index = sPlayerRunning;
+		sprite_index = sPlayerRunningRed;
 		break;
 		
 	case State.DASHING:
-		sprite_index = sPlayerSideFalling;
+		sprite_index = sPlayerSideFallingRed;
 		break;
 	
 	case State.FALLING:
-		sprite_index = sPlayerFalling;
+		sprite_index = sPlayerFallingRed;
 		break;
 	
 	case State.SIDE_FALLING:
-		sprite_index = sPlayerSideFalling;
+		sprite_index = sPlayerSideFallingRed;
 		break;
 	
 	case State.IDLE:
 	default:
-		sprite_index = sPlayerIdle;
+		sprite_index = sPlayerIdleRed;
 		break;
 }
 

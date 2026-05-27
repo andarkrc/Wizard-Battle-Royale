@@ -221,6 +221,10 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_STATE, {state: state, direction: image_xscale}));
 	}
 	
+	if (old_state != state && state == State.DASHING) {
+		dash_sound = audio_play_sound_at(sndDash, x, y, 0, 100, 300, 1, false, 1);
+	}
+	
 	old_state = state;
 }
 
@@ -232,4 +236,8 @@ if (state == State.DASHING) {
 	part_type_sprite(particles, sprite_dashing, false, false, false);
 	part_type_alpha3(particles, 0.25, 0.25, 0.25);
 	part_particles_create(oGameplayHandler.particle_system, x, y, particles, 1);
+}
+
+if (state == State.RUNNING && !audio_is_playing(walking_sound)) {
+	walking_sound = audio_play_sound_at(sndWalk, x, y, 0, 100, 300, 1, false, 1);
 }

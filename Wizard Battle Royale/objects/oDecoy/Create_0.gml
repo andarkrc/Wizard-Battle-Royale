@@ -16,7 +16,7 @@ image_yscale = image_scale;
 image_alpha = 0.6;
 
 state = State.RUNNING;
-mask_index = sPlayerIdle;
+mask_index = sPlayerIdleRed;
 
 lifetime = global.decoy_duration;
 next_dash_timer = random(1);

@@ -1,3 +1,4 @@
+event_inherited();
 move_speed = 3 * METER;
 
 vertical_speed = 0;

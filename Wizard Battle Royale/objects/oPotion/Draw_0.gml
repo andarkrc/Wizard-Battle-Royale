@@ -3,9 +3,6 @@ if (!broken) {
 	draw_self();
 }
 
-
-
-
 if (focused && can_be_collected && !thrown) {
 	draw_setup(,,fa_center, fa_bottom);
 	draw_text(x, y - sprite_height * 2, "<E>");

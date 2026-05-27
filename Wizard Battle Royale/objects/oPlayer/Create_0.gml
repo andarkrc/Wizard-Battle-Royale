@@ -230,3 +230,7 @@ sprite_dashing = sPlayerSideFallingRed;
 sprite_death = sPlayerDeathRed;
 
 hit_trap = false;
+
+walking_sound = -1;
+dash_sound = -1;
+drink_sound = -1;

@@ -4,3 +4,5 @@ with (oInternalServer) {
 		ds_map_delete(cast_spells, map_key);
 	}
 }
+
+spellhit_sound = audio_play_sound_at(sndSpellhit, x, y, 0, 100, 300, 1, false, 1);

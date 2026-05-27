@@ -89,6 +89,11 @@ host_sync_player_state_callback = function(data) {
 	if (!ds_map_exists(player_refs, data.player_id)) return;
 	player_refs[? data.player_id].state = data.state;
 	player_refs[? data.player_id].image_xscale = data.direction;
+	with (player_refs[? data.player_id]) {
+		if (state == State.DASHING) {
+			dash_sound = audio_play_sound_at(sndDash, x, y, 0, 100, 300, 1, false, 1);
+		}
+	}
 }
 
 host_sync_spellcast_callback = function(data) {
@@ -161,12 +166,6 @@ host_sync_player_hp_callback = function(data) {
 host_sync_player_died_callback = function(data) {
 	if (!check_host(data)) return;
 	
-	with (oPlayer) {
-		if (id_ == data.player_id) {
-			instance_destroy();
-		}
-	}
-	
 	ds_map_delete(player_refs, data.player_id);
 	with (oPlayer) {
 		if (id_ == data.player_id) {
@@ -183,6 +182,7 @@ host_sync_consume_potion_callback = function(data) {
 		if (id_ == data.player_id) {
 			potion = data.potion_type;
 			drink_potion();
+			drink_sound = audio_play_sound_at(sndDrink, x, y, 0, 100, 300, 1, false, 1);
 		}
 	}
 }

@@ -1,3 +1,4 @@
+event_inherited();
 orbit_angle = 0;
 rotation_speed = 450; 
 orbit_radius = 56; 

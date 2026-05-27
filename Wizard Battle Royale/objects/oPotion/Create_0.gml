@@ -34,3 +34,5 @@ request_loot = function() {
 }
 
 cloud_collision = ds_list_create();
+
+break_sound = -1;

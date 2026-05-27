@@ -32,6 +32,21 @@ if (state == GameState.GAME) {
 	}
 }
 
+if (state == GameState.GAME) {
+	var camera = view_get_camera(0);
+	var cw = camera_get_view_width(camera);
+	var ch = camera_get_view_height(camera);
+	audio_listener_position(camera_get_view_x(camera) + cw / 2, camera_get_view_y(camera) + ch / 2, -1);
+}
+
+if (state == GameState.LOBBY) {
+	with (oPlayer) {
+		if (id_ == oClientHandler.client_id) {
+			audio_listener_position(x, y, -1);
+		}
+	}
+}
+
 if (keyboard_check_pressed(ord("L"))) {
 	var layers = layer_get_all();
 	for (var i = 0; i < array_length(layers); i++) {
