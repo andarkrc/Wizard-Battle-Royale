@@ -68,9 +68,10 @@ if (state == GameState.PREGAME_LOADING) {
 			var ok = false;
 			show_debug_message($"Trying to spawn player {i}");
 			with (oPlayerSpawnPosition) {
-				if (random(1) < 0.1 && !ok) {
+				if (random(1) < 0.1 && !ok && my_player == noone) {
 					player.x = oPlayerSpawnPosition.x;
 					player.y = oPlayerSpawnPosition.y;
+					my_player = player.id;
 					packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_POSITION,
 						{
 							player_id: player.id,
