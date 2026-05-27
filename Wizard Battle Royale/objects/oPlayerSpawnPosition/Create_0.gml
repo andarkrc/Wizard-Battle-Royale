@@ -1,1 +1,1 @@
-my_player = noone;
+my_player = -1;

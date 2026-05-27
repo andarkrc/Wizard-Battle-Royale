@@ -68,9 +68,9 @@ if (state == GameState.PREGAME_LOADING) {
 			var ok = false;
 			show_debug_message($"Trying to spawn player {i}");
 			with (oPlayerSpawnPosition) {
-				if (random(1) < 0.1 && !ok && my_player == noone) {
-					player.x = oPlayerSpawnPosition.x;
-					player.y = oPlayerSpawnPosition.y;
+				if (random(1) < 0.1 && !ok && my_player == -1) {
+					player.x = x;
+					player.y = y;
 					my_player = player.id;
 					packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_POSITION,
 						{
@@ -81,15 +81,13 @@ if (state == GameState.PREGAME_LOADING) {
 						}
 					));
 					ok = true;
-					instance_destroy();
+					show_debug_message($"Spawning player {i} at {player.x}, {player.y}, spawn_platform {id}");
 				}
 			}
 			if (!ok) {
 				i--;
 			}
 		}
-		
-		instance_destroy(oPlayerSpawnPosition); 
 		
 		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_GAME_START));
 		state = GameState.GAME;
