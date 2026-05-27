@@ -35,7 +35,7 @@
   "origin":7,
   "parent":{
     "name":"Spells",
-    "path":"folders/Sounds/Sprites/Spells.yy",
+    "path":"folders/Sprites/Spells.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
