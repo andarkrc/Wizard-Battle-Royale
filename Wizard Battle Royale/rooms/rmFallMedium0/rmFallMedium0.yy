@@ -17,6 +17,8 @@
     {"name":"inst_1D1E50F3_3","path":"rooms/rmFallMedium0/rmFallMedium0.yy",},
     {"name":"inst_25F593F8_3","path":"rooms/rmFallMedium0/rmFallMedium0.yy",},
     {"name":"inst_7B4A1F68_3","path":"rooms/rmFallMedium0/rmFallMedium0.yy",},
+    {"name":"inst_C6D8A1A","path":"rooms/rmFallMedium0/rmFallMedium0.yy",},
+    {"name":"inst_6C778B3F","path":"rooms/rmFallMedium0/rmFallMedium0.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -32,6 +34,8 @@
         {"$GMRInstance":"v4","%Name":"inst_1D1E50F3_3","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_1D1E50F3_3","objectId":{"name":"oSpellPlatform","path":"objects/oSpellPlatform/oSpellPlatform.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":560.0,"y":208.0,},
         {"$GMRInstance":"v4","%Name":"inst_25F593F8_3","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_25F593F8_3","objectId":{"name":"oRoomEntrance","path":"objects/oRoomEntrance/oRoomEntrance.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":6.0,"x":0.0,"y":64.0,},
         {"$GMRInstance":"v4","%Name":"inst_7B4A1F68_3","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_7B4A1F68_3","objectId":{"name":"oRoomEntrance","path":"objects/oRoomEntrance/oRoomEntrance.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":6.0,"x":960.0,"y":64.0,},
+        {"$GMRInstance":"v4","%Name":"inst_C6D8A1A","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_C6D8A1A","objectId":{"name":"oSpikesSimple","path":"objects/oSpikesSimple/oSpikesSimple.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.5,"scaleY":1.0,"x":608.0,"y":768.0,},
+        {"$GMRInstance":"v4","%Name":"inst_6C778B3F","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_6C778B3F","objectId":{"name":"oSpikesSimple","path":"objects/oSpikesSimple/oSpikesSimple.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":0.75,"scaleY":1.0,"x":432.0,"y":288.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRAssetLayer":"","%Name":"Assets","assets":[
         {"$GMRSpriteGraphic":"v1","%Name":"graphic_2041EE26_1_4","animationSpeed":1.0,"colour":4294967295,"frozen":false,"headPosition":0.0,"ignore":false,"inheritedItemId":null,"inheritItemSettings":false,"name":"graphic_2041EE26_1_4","resourceType":"GMRSpriteGraphic","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"spriteId":{"name":"sSkull2","path":"sprites/sSkull2/sSkull2.yy",},"x":64.0,"y":128.0,},
