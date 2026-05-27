@@ -1,6 +1,6 @@
 {
   "$GMSprite":"v2",
-  "%Name":"sPlayerBreathing",
+  "%Name":"sPlayerBreathingRed",
   "bboxMode":2,
   "bbox_bottom":37,
   "bbox_left":17,
@@ -24,19 +24,19 @@
   "layers":[
     {"$GMImageLayer":"","%Name":"f5bb5689-9698-415d-8394-b1993f08815e","blendMode":0,"displayName":"default","isLocked":false,"name":"f5bb5689-9698-415d-8394-b1993f08815e","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"sPlayerBreathing",
+  "name":"sPlayerBreathingRed",
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Player Sprites",
-    "path":"folders/Sounds/Sprites/Player Sprites.yy",
+    "name":"RED",
+    "path":"folders/Sounds/Sprites/Player Sprites/RED.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"sPlayerBreathing",
+    "%Name":"sPlayerBreathingRed",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -60,7 +60,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"sPlayerBreathing",
+    "name":"sPlayerBreathingRed",
     "playback":1,
     "playbackSpeed":5.0,
     "playbackSpeedType":0,
@@ -72,16 +72,16 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"0661ae81-4171-4b4d-881b-1c4d13c70b50","path":"sprites/sPlayerBreathing/sPlayerBreathing.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"0661ae81-4171-4b4d-881b-1c4d13c70b50","path":"sprites/sPlayerBreathingRed/sPlayerBreathingRed.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"85c91381-a096-4ce5-aa33-5dce9c2f057b","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c5710faa-8d3e-44f9-a690-436f8acfb760","path":"sprites/sPlayerBreathing/sPlayerBreathing.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c5710faa-8d3e-44f9-a690-436f8acfb760","path":"sprites/sPlayerBreathingRed/sPlayerBreathingRed.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"2e3a672c-af11-4cc5-b8e8-5bfd31ba3752","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"ef5b7b72-f7ad-445e-8143-ceab55e5118b","path":"sprites/sPlayerBreathing/sPlayerBreathing.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"ef5b7b72-f7ad-445e-8143-ceab55e5118b","path":"sprites/sPlayerBreathingRed/sPlayerBreathingRed.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"0fb0e6fe-3104-4354-b74d-4cdc99b84984","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"1076c92e-c19b-43f7-b646-65c0a4e403b3","path":"sprites/sPlayerBreathing/sPlayerBreathing.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"1076c92e-c19b-43f7-b646-65c0a4e403b3","path":"sprites/sPlayerBreathingRed/sPlayerBreathingRed.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"725073eb-9fc7-422c-afa7-88f72b5b1f68","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],

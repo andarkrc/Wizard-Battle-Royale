@@ -150,7 +150,7 @@ client_request_spellcast_callback = function(data) {
 			spell_id: player_info.total_spells, 
 			spell_type: player_info.spells[data.slot_index].type,
 			x: players_map[? data.sender_id].x,
-			y: players_map[? data.sender_id].y - sprite_get_height(sPlayerIdle) / 2,
+			y: players_map[? data.sender_id].y - sprite_get_height(sPlayerIdleRed) / 2,
 			direction: data.direction
 		}));
 	
@@ -522,8 +522,6 @@ damage_player = function(player_id, damage) {
     
     //spell_platforms[0].spell = Spell.SPREAD_SHOT;
 	
-	show_debug_message($"TOTAL OF {sp_number} platforms");
-	
 	for (var i = 0; i < sp_number; i++) {
 		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_PLATFORM,
 			spell_platforms[i]
@@ -538,7 +536,6 @@ damage_player = function(player_id, damage) {
 		if (pot == Potion.DEVIL && random(1) > 0.3) {
 			pot = irandom_range(1, Potion.DEVIL - 1); // Reroll to other potions
 		}
-		pot = Potion.BLINDING;
 		array_push(other.chests, {
 			id: chest_number,
 			potion: pot,
@@ -547,8 +544,6 @@ damage_player = function(player_id, damage) {
 		});
 		chest_number++;
 	}
-	
-	show_debug_message($"TOTAL OF {chest_number} platforms");
 	
 	for (var i = 0; i < chest_number; i++) {
 		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_CHEST,
@@ -591,6 +586,8 @@ if (!variable_global_exists("intrariHarta")) {
     global.intrariHarta = PrecalculateRoomData(_toateCamerele);
 }
 
+ts_restock_consumables = time_source_create(time_source_game, 5 * 60, time_source_units_seconds, function(){init_chests();init_spell_platforms();}, [], -1);
+
 generate_map = function() {
     packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_MAP_LOADING));
     
@@ -615,5 +612,6 @@ generate_map = function() {
     }
 	
 	void_y = maxy + 1000;
+	time_source_start(ts_restock_consumables);
 }
 //init_spell_platforms();

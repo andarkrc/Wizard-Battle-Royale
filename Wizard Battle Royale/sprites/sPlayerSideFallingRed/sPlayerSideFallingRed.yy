@@ -1,6 +1,6 @@
 {
   "$GMSprite":"v2",
-  "%Name":"sPlayerSideFalling",
+  "%Name":"sPlayerSideFallingRed",
   "bboxMode":2,
   "bbox_bottom":37,
   "bbox_left":17,
@@ -21,19 +21,19 @@
   "layers":[
     {"$GMImageLayer":"","%Name":"a8e32ff5-f250-4776-8627-fb295b24d299","blendMode":0,"displayName":"default","isLocked":false,"name":"a8e32ff5-f250-4776-8627-fb295b24d299","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"sPlayerSideFalling",
+  "name":"sPlayerSideFallingRed",
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Player Sprites",
-    "path":"folders/Sounds/Sprites/Player Sprites.yy",
+    "name":"RED",
+    "path":"folders/Sounds/Sprites/Player Sprites/RED.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"sPlayerSideFalling",
+    "%Name":"sPlayerSideFallingRed",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -57,7 +57,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"sPlayerSideFalling",
+    "name":"sPlayerSideFallingRed",
     "playback":1,
     "playbackSpeed":30.0,
     "playbackSpeedType":0,
@@ -69,7 +69,7 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b7c11f9e-88ca-414b-9949-cd0b7a7b0138","path":"sprites/sPlayerSideFalling/sPlayerSideFalling.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b7c11f9e-88ca-414b-9949-cd0b7a7b0138","path":"sprites/sPlayerSideFallingRed/sPlayerSideFallingRed.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"0f5b7fd9-8219-485d-80a7-edec28d090e7","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],

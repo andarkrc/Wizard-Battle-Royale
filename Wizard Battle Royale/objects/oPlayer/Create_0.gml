@@ -36,7 +36,7 @@ image_yscale = image_scale;
 
 state = State.IDLE;
 old_state = state;
-mask_index = sPlayerIdle;
+mask_index = sPlayerIdleRed;
 
 damaged = false;
 
@@ -219,3 +219,12 @@ devil_pact_hp_taken = 0.0;
 devil_pact_completed = false;
 devil_pact_used = false;
 forced_horizontal_speed = 0;
+
+sprite_breathing = sPlayerBreathingRed;
+sprite_idle = sPlayerIdleRed;
+sprite_running = sPlayerRunningRed;
+sprite_side_falling = sPlayerSideFallingRed;
+sprite_falling = sPlayerFallingRed;
+sprite_jumping = sPlayerJumpingRed;
+sprite_dashing = sPlayerSideFallingRed;
+sprite_death = sPlayerDeathRed;

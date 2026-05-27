@@ -45,6 +45,10 @@ for (var i = 0; i < array_length(spell_cooldowns); i++) {
 	}
 }
 
+if (state != GameState.GAME && time_source_get_state(ts_restock_consumables) == time_source_state_active) {
+	time_source_stop(ts_restock_consumables);
+}
+
 if (keyboard_check_pressed(vk_enter) && state == GameState.LOBBY) {
 	state = GameState.PREGAME_LOADING;
 	show_debug_message("STARTED MAP GENERATION");

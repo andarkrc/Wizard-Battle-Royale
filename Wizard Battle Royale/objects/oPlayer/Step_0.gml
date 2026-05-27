@@ -222,5 +222,7 @@ if (state == State.DASHING) {
 	part_type_scale(particles, image_xscale, image_yscale);
 	part_type_size(particles, 1, 1, 0, 0.05);
 	part_type_life(particles, 5, 10);
+	part_type_sprite(particles, sprite_dashing, false, false, false);
+	part_type_alpha3(particles, 0.25, 0.25, 0.25);
 	part_particles_create(oGameplayHandler.particle_system, x, y, particles, 1);
 }

@@ -32,8 +32,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sPlayerDeath",
-    "path":"sprites/sPlayerDeath/sPlayerDeath.yy",
+    "name":"sPlayerDeathRed",
+    "path":"sprites/sPlayerDeathRed/sPlayerDeathRed.yy",
   },
   "spriteMaskId":null,
   "visible":true,

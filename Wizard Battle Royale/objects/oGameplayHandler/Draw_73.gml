@@ -1,4 +1,4 @@
-if (state == GameState.GAME && 0) {
+if (state == GameState.GAME && global.ray_tracing) {
 	// localized shadows
 	var cam = view_get_camera(0);
 	var xx = camera_get_view_x(cam);
@@ -91,7 +91,7 @@ if (ds_map_exists(player_refs, oClientHandler.client_id)) {
 			draw_clear_alpha(c_black, my_player.blind_opacity * 0.95);
 			
 			var px = my_player.x - xx;
-			var py = my_player.y - sprite_get_height(sPlayerIdle) / 2 - yy;
+			var py = my_player.y - sprite_get_height(sPlayerIdleRed) / 2 - yy;
 			var blind_radius = 200;
 			
 			gpu_set_blendmode(bm_subtract);

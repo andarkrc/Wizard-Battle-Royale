@@ -6,32 +6,32 @@ if (damaged) {
 
 switch (state) {
 	case State.JUMPING:
-		sprite_index = sPlayerJumping;
+		sprite_index = sprite_jumping;
 		break;
 	
 	case State.BREATHING:
-		sprite_index = sPlayerBreathing;
+		sprite_index = sprite_breathing;
 		break;
 	
 	case State.RUNNING:
-		sprite_index = sPlayerRunning;
+		sprite_index = sprite_running;
 		break;
 		
 	case State.DASHING:
-		sprite_index = sPlayerSideFalling;
+		sprite_index = sprite_dashing;
 		break;
 	
 	case State.FALLING:
-		sprite_index = sPlayerFalling;
+		sprite_index = sprite_falling;
 		break;
 	
 	case State.SIDE_FALLING:
-		sprite_index = sPlayerSideFalling;
+		sprite_index = sprite_side_falling;
 		break;
 	
 	case State.IDLE:
 	default:
-		sprite_index = sPlayerIdle;
+		sprite_index = sprite_idle;
 		break;
 }
 
