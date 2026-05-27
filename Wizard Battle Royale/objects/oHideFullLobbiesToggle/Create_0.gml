@@ -1,7 +1,7 @@
 // Inherit the parent event
 event_inherited();
 
-level = 2;
+level = 0;
 
 click_action = function() {
 	with (oLobbyList) {

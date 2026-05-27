@@ -1,4 +1,4 @@
-if (!enabled || !visible) exit;
+if (!enabled || !visible || !layer_get_visible(layer)) exit;
 
 if (last_buttons_number != array_length(buttons)) {
 	update_contents();

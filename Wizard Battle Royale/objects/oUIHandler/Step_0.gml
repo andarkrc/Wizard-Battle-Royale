@@ -42,7 +42,7 @@ if (window_has_focus()) {
 	var my = device_mouse_y_to_gui(0);
 	
 	with (oUIElement) {
-		if (!enabled || !visible) continue;
+		if (!enabled || !visible || !layer_get_visible(layer)) continue;
 		hovered = false;
 		var over = hover_check(mx, my);
 		

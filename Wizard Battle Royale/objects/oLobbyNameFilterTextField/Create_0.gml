@@ -3,7 +3,7 @@ event_inherited();
 
 ghost_text = ">Type to search lobbies<";
 
-level = 2;
+level = 0;
 
 action = function() {
 	with (oLobbyList) {
