@@ -1,18 +1,14 @@
-if (!enabled) exit;
-
-var mx = device_mouse_x_to_gui(0);
-var my = device_mouse_y_to_gui(0);
-
-hovered = point_in_rectangle(mx, my, x, y, x + sprite_width, y + sprite_height);
+if (!enabled || !visible || !layer_get_visible(layer)) exit;
 
 if (mouse_check_button_pressed(mb_left)) {
-	can_write = hovered;
     keyboard_string = "";
-	if (can_write) {
+	if (hovered) {
 		time_source_start(blink_state_timer);
-	} else {
+		can_write = true;
+	} else if (can_write) {
 		blink = true;
 		time_source_stop(blink_state_timer);
+		can_write = false;
 		action();
 	}
 }

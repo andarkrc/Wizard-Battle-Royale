@@ -1,4 +1,4 @@
-if (!enabled) exit;
+if (!enabled || !visible || !layer_get_visible(layer)) exit;
 
 var subimage = 0;
 if (hovered) subimage = 1;
