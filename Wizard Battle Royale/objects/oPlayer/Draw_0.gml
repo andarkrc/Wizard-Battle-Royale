@@ -44,7 +44,7 @@ draw_text(x, y - sprite_height / 2 - 20, name);
 if (potion != Potion.NONE) {
 	draw_sprite_ext(sPotions, potion, x, y, 1, 1, 0, c_white, image_alpha);
 	
-	if (array_contains(global.throwable_potions, potion) && mouse_check_button(mb_left) && id_ == oClientHandler.client_id) {
+	if (array_contains(global.throwable_potions, potion) && mouse_check_button(mb_right) && id_ == oClientHandler.client_id) {
 		var tx = mouse_x;
 		var ty = mouse_y;
 		var dx = tx - x;
