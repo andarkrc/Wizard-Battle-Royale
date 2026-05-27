@@ -185,13 +185,6 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 		}
 	}
 	
-	var spike_collision = collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, oSpikesSimple, false, false);
-	
-	if (spike_collision != noone && !hit_trap) {
-		hit_trap = true;
-		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_HIT_TRAP));
-	}
-	
 	if (potion != Potion.NONE && mouse_check_button_released(mb_right)) {
 		var target_x = mouse_x;
 		var target_y = mouse_y;

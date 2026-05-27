@@ -46,7 +46,7 @@
   "origin":0,
   "parent":{
     "name":"UI Sprites",
-    "path":"folders/Sprites/UI Sprites.yy",
+    "path":"folders/Sounds/Sprites/UI Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

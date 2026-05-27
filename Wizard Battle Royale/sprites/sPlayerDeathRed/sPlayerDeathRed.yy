@@ -32,7 +32,7 @@
   "origin":0,
   "parent":{
     "name":"RED",
-    "path":"folders/Sprites/Player Sprites/RED.yy",
+    "path":"folders/Sounds/Sprites/Player Sprites/RED.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
