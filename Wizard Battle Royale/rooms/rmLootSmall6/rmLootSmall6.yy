@@ -19,6 +19,7 @@
     {"name":"inst_54C5E8A","path":"rooms/rmLootSmall6/rmLootSmall6.yy",},
     {"name":"inst_549C33CD","path":"rooms/rmLootSmall6/rmLootSmall6.yy",},
     {"name":"inst_4E8E8D15","path":"rooms/rmLootSmall6/rmLootSmall6.yy",},
+    {"name":"inst_7BDD4DCF","path":"rooms/rmLootSmall6/rmLootSmall6.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -36,6 +37,7 @@
         {"$GMRInstance":"v4","%Name":"inst_54C5E8A","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_54C5E8A","objectId":{"name":"oChest","path":"objects/oChest/oChest.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":64.0,"y":160.0,},
         {"$GMRInstance":"v4","%Name":"inst_549C33CD","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_549C33CD","objectId":{"name":"oChest","path":"objects/oChest/oChest.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":160.0,"y":160.0,},
         {"$GMRInstance":"v4","%Name":"inst_4E8E8D15","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_4E8E8D15","objectId":{"name":"oRoomEntrance","path":"objects/oRoomEntrance/oRoomEntrance.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":6.0,"x":0.0,"y":352.0,},
+        {"$GMRInstance":"v4","%Name":"inst_7BDD4DCF","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_7BDD4DCF","objectId":{"name":"oSpikesSimple","path":"objects/oSpikesSimple/oSpikesSimple.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.5,"scaleY":1.0,"x":352.0,"y":416.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRAssetLayer":"","%Name":"Assets","assets":[
         {"$GMRSpriteGraphic":"v1","%Name":"graphic_24C39B56_3","animationSpeed":1.0,"colour":4294967295,"frozen":false,"headPosition":0.0,"ignore":false,"inheritedItemId":null,"inheritItemSettings":false,"name":"graphic_24C39B56_3","resourceType":"GMRSpriteGraphic","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"spriteId":{"name":"sBrokenChain1","path":"sprites/sBrokenChain1/sBrokenChain1.yy",},"x":320.0,"y":64.0,},

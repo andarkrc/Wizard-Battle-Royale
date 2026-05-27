@@ -22,6 +22,7 @@
     {"name":"inst_4515A34B","path":"rooms/rmCorridorSmall4/rmCorridorSmall4.yy",},
     {"name":"inst_511E178","path":"rooms/rmCorridorSmall4/rmCorridorSmall4.yy",},
     {"name":"inst_409906A5","path":"rooms/rmCorridorSmall4/rmCorridorSmall4.yy",},
+    {"name":"inst_52C1BB2F","path":"rooms/rmCorridorSmall4/rmCorridorSmall4.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -42,6 +43,7 @@
         {"$GMRInstance":"v4","%Name":"inst_4515A34B","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_4515A34B","objectId":{"name":"oCollisionBox","path":"objects/oCollisionBox/oCollisionBox.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":4.0,"scaleY":2.0,"x":224.0,"y":224.0,},
         {"$GMRInstance":"v4","%Name":"inst_511E178","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_511E178","objectId":{"name":"oRoomEntrance","path":"objects/oRoomEntrance/oRoomEntrance.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":6.0,"scaleY":1.0,"x":192.0,"y":0.0,},
         {"$GMRInstance":"v4","%Name":"inst_409906A5","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_409906A5","objectId":{"name":"oRoomEntrance","path":"objects/oRoomEntrance/oRoomEntrance.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":6.0,"scaleY":1.0,"x":192.0,"y":480.0,},
+        {"$GMRInstance":"v4","%Name":"inst_52C1BB2F","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_52C1BB2F","objectId":{"name":"oPlayerSpawnPosition","path":"objects/oPlayerSpawnPosition/oPlayerSpawnPosition.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":128.0,"y":256.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRAssetLayer":"","%Name":"Assets","assets":[
         {"$GMRSpriteGraphic":"v1","%Name":"graphic_75E2BDAA1_1","animationSpeed":1.0,"colour":4294967295,"frozen":false,"headPosition":0.0,"ignore":false,"inheritedItemId":null,"inheritItemSettings":false,"name":"graphic_75E2BDAA1_1","resourceType":"GMRSpriteGraphic","resourceVersion":"2.0","rotation":0.0,"scaleX":0.5,"scaleY":1.0,"spriteId":{"name":"sSpiderWeb","path":"sprites/sSpiderWeb/sSpiderWeb.yy",},"x":64.0,"y":192.0,},

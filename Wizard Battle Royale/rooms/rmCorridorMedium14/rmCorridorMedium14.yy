@@ -21,6 +21,7 @@
     {"name":"inst_486BFEC1_2","path":"rooms/rmCorridorMedium14/rmCorridorMedium14.yy",},
     {"name":"inst_3C441111","path":"rooms/rmCorridorMedium14/rmCorridorMedium14.yy",},
     {"name":"inst_51D48877","path":"rooms/rmCorridorMedium14/rmCorridorMedium14.yy",},
+    {"name":"inst_368BBEB","path":"rooms/rmCorridorMedium14/rmCorridorMedium14.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -40,6 +41,7 @@
         {"$GMRInstance":"v4","%Name":"inst_486BFEC1_2","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_486BFEC1_2","objectId":{"name":"oRoomEntrance","path":"objects/oRoomEntrance/oRoomEntrance.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":6.0,"x":960.0,"y":704.0,},
         {"$GMRInstance":"v4","%Name":"inst_3C441111","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_3C441111","objectId":{"name":"oCollisionBox","path":"objects/oCollisionBox/oCollisionBox.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":12.0,"scaleY":2.0,"x":0.0,"y":800.0,},
         {"$GMRInstance":"v4","%Name":"inst_51D48877","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_51D48877","objectId":{"name":"oRoomEntrance","path":"objects/oRoomEntrance/oRoomEntrance.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":6.0,"scaleY":1.0,"x":192.0,"y":832.0,},
+        {"$GMRInstance":"v4","%Name":"inst_368BBEB","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_368BBEB","objectId":{"name":"oPlayerSpawnPosition","path":"objects/oPlayerSpawnPosition/oPlayerSpawnPosition.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":208.0,"y":560.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRAssetLayer":"","%Name":"Assets","assets":[
         {"$GMRSpriteGraphic":"v1","%Name":"graphic_2FEDD03C2_1_1_2_2","animationSpeed":1.0,"colour":4294967295,"frozen":false,"headPosition":0.0,"ignore":false,"inheritedItemId":null,"inheritItemSettings":false,"name":"graphic_2FEDD03C2_1_1_2_2","resourceType":"GMRSpriteGraphic","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"spriteId":{"name":"sVase2","path":"sprites/sVase2/sVase2.yy",},"x":256.0,"y":96.0,},

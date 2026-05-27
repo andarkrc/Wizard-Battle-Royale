@@ -15,6 +15,7 @@
     {"name":"inst_56891814","path":"rooms/rmCorridorMedium7/rmCorridorMedium7.yy",},
     {"name":"inst_4B9BBCCA","path":"rooms/rmCorridorMedium7/rmCorridorMedium7.yy",},
     {"name":"inst_2129F2FB","path":"rooms/rmCorridorMedium7/rmCorridorMedium7.yy",},
+    {"name":"inst_6E7D8C66","path":"rooms/rmCorridorMedium7/rmCorridorMedium7.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -28,6 +29,7 @@
         {"$GMRInstance":"v4","%Name":"inst_56891814","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_56891814","objectId":{"name":"oCollisionBox","path":"objects/oCollisionBox/oCollisionBox.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":2.0,"scaleY":14.0,"x":768.0,"y":192.0,},
         {"$GMRInstance":"v4","%Name":"inst_4B9BBCCA","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_4B9BBCCA","objectId":{"name":"oCollisionBox","path":"objects/oCollisionBox/oCollisionBox.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":2.0,"scaleY":4.0,"x":736.0,"y":384.0,},
         {"$GMRInstance":"v4","%Name":"inst_2129F2FB","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_2129F2FB","objectId":{"name":"oRoomEntrance","path":"objects/oRoomEntrance/oRoomEntrance.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":6.0,"scaleY":1.0,"x":672.0,"y":192.0,},
+        {"$GMRInstance":"v4","%Name":"inst_6E7D8C66","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_6E7D8C66","objectId":{"name":"oPlayerSpawnPosition","path":"objects/oPlayerSpawnPosition/oPlayerSpawnPosition.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":528.0,"y":496.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRAssetLayer":"","%Name":"Assets","assets":[
         {"$GMRSpriteGraphic":"v1","%Name":"graphic_C96F4B6_2","animationSpeed":1.0,"colour":4294967295,"frozen":false,"headPosition":0.0,"ignore":false,"inheritedItemId":null,"inheritItemSettings":false,"name":"graphic_C96F4B6_2","resourceType":"GMRSpriteGraphic","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"spriteId":{"name":"sBrokenChain3","path":"sprites/sBrokenChain3/sBrokenChain3.yy",},"x":64.0,"y":448.0,},
