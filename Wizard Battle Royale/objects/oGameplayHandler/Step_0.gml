@@ -6,7 +6,7 @@ if (state == GameState.GAME) {
 	}
 	if (!instance_exists(followed_player)) {
 		var all_players = ds_map_keys_to_array(player_refs);
-		if (array_length(all_players != 0)) {
+		if (array_length(all_players) != 0) {
 			followed_player = player_refs[? all_players[0]];
 			followed_player_idx = 0;
 			free_cam = true;

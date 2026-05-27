@@ -167,6 +167,7 @@ host_sync_player_died_callback = function(data) {
 	if (!check_host(data)) return;
 	
 	ds_map_delete(player_refs, data.player_id);
+
 	with (oPlayer) {
 		if (id_ == data.player_id) {
 			instance_destroy();
@@ -374,10 +375,11 @@ host_info_client_disconnected_callback = function(data) {
 	if (!check_host(data)) return;
 	
 	ds_map_delete(player_refs, data.client_id);
-	
+	show_debug_message($"DISCONNECTED player {data.client_id}");
 	with (oPlayer) {
 		if (id_ == data.client_id) {
 			instance_destroy();
+			show_debug_message("foundhim");
 		}
 	}
 }
