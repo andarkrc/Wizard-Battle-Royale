@@ -16,6 +16,8 @@ potions = ds_map_create();
 
 total_potions = 0;
 
+state = GameState.LOBBY;
+
 Player = function(id_) constructor {
 	id = id_;
 	name = "";
@@ -66,6 +68,34 @@ server_info_connection_request_callback = function(data) {
 
 server_info_client_disconnected = function(data) {
 	// now we know that a player disconnected.
+	switch (state) {
+		case GameState.LOBBY:
+		case GameState.POSTGAME:
+		case GameState.PREGAME_LOADING:
+			packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_CLIENT_DISCONNECTED,
+			{client_id: data.client_id}));
+			break;
+		default:
+			packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_DIED,
+			{player_id: data.client_id}));
+			packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_CLIENT_DISCONNECTED,
+			{client_id: data.client_id}));
+			break;
+	}
+	// let's remove the player now:
+	var idx = -1;
+	for (var i = 0; i < array_length(players); i++) {
+		if (players[i].id == data.client_id) {
+			idx = i;
+			break;
+		}
+	}
+	if (idx != -1) {
+		array_delete(players, idx, 1);
+	}
+	ds_map_delete(players_map, data.client_id);
+	ds_map_delete(players_spell_info, data.client_id);
+
 }
 
 client_info_player_name_callback = function(data) {
@@ -351,8 +381,6 @@ damage_player = function(player_id, damage) {
 			));
 	}
 }
-
-state = GameState.LOBBY;
 
 total_rooms = 0;
 

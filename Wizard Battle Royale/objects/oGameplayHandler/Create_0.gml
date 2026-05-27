@@ -3,6 +3,9 @@ player_refs = ds_map_create();
 particle_system = part_system_create_layer("Instances", false);
 
 runtime_objects = [];
+followed_player = noone;
+free_cam = false;
+followed_player_idx = -1;
 
 create_player_if_doesnt_exist = function(id_) {
 	if (!ds_map_exists(player_refs, id_)) {
@@ -126,6 +129,14 @@ host_sync_player_hp_callback = function(data) {
 
 host_sync_player_died_callback = function(data) {
 	if (!check_host(data)) return;
+		
+	ds_map_delete(player_refs, data.player_id);
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			instance_destroy();
+			instance_create_layer(x, y, "Instances", oPlayerDead);
+		}
+	}
 }
 
 host_sync_consume_potion_callback = function(data) {
@@ -205,8 +216,6 @@ host_info_map_loading_callback = function(data) {
 	
 	lobby.Cleanup(false);
 	init_all_rooms();
-	
-	
 }
 
 host_info_dungeon_room_callback = function(data) {
@@ -225,6 +234,18 @@ host_info_game_start_callback = function(data) {
 	
 	with (oUIHandler) {
 		should_stretch_view = false;
+	}
+}
+
+host_info_client_disconnected_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	ds_map_delete(player_refs, data.client_id);
+	
+	with (oPlayer) {
+		if (id_ == data.client_id) {
+			instance_destroy();
+		}
 	}
 }
 
@@ -250,6 +271,7 @@ with (oClientHandler) {
 	subscribe(other, PacketType.HOST_INFO_MAP_LOADING, other.host_info_map_loading_callback);
 	subscribe(other, PacketType.HOST_INFO_DUNGEON_ROOM, other.host_info_dungeon_room_callback);
 	subscribe(other, PacketType.HOST_INFO_GAME_START, other.host_info_game_start_callback);
+	subscribe(other, PacketType.HOST_INFO_CLIENT_DISCONNECTED, other.host_info_client_disconnected_callback);
 }
 
 clean_runtime_objects = function() {
