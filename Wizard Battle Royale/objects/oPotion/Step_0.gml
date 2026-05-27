@@ -10,15 +10,21 @@ if (broken) {
 			part_particles_create(oGameplayHandler.particle_system, x + lengthdir_x(r, dir), y - 64 + lengthdir_y(r, dir), oGameplayHandler.pt_cloud_purple, 1);
 		}
 		
-		if (!cloud_hit_local) {
-			with (oPlayer) {
-				if (id_ == oClientHandler.client_id) {
-					if (collision_circle(other.x, other.y - 32, other.cloud_radius, id, false, false) != noone) {
-						other.cloud_hit_local = true;
-						packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: id_, potion_type: Potion.BLINDING}));
-					}
+		var _in_cloud = false;
+		with (oPlayer) {
+			if (id_ == oClientHandler.client_id) {
+				if (collision_circle(other.x, other.y - 32, other.cloud_radius, id, false, false) != noone) {
+					_in_cloud = true;
 				}
 			}
+		}
+		if (_in_cloud) {
+			if (!cloud_hit_local) {
+				cloud_hit_local = true;
+				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: oClientHandler.client_id, potion_type: Potion.BLINDING}));
+			}
+		} else {
+			cloud_hit_local = false;
 		}
 	} else if (potion == Potion.REVERSE) {
 		if (random(1) < 150 * _dt) { // Spawn particles over time
@@ -27,15 +33,21 @@ if (broken) {
 			part_particles_create(oGameplayHandler.particle_system, x + lengthdir_x(r, dir), y - 64 + lengthdir_y(r, dir), oGameplayHandler.pt_cloud_blue, 1);
 		}
 		
-		if (!cloud_hit_local) {
-			with (oPlayer) {
-				if (id_ == oClientHandler.client_id) {
-					if (collision_circle(other.x, other.y - 32, other.cloud_radius, id, false, false) != noone) {
-						other.cloud_hit_local = true;
-						packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: id_, potion_type: Potion.REVERSE}));
-					}
+		var _in_cloud = false;
+		with (oPlayer) {
+			if (id_ == oClientHandler.client_id) {
+				if (collision_circle(other.x, other.y - 32, other.cloud_radius, id, false, false) != noone) {
+					_in_cloud = true;
 				}
 			}
+		}
+		if (_in_cloud) {
+			if (!cloud_hit_local) {
+				cloud_hit_local = true;
+				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: oClientHandler.client_id, potion_type: Potion.REVERSE}));
+			}
+		} else {
+			cloud_hit_local = false;
 		}
 	} else if (potion == Potion.BLINKING) {
 		if (random(1) < 150 * _dt) { // Spawn particles over time
@@ -44,15 +56,21 @@ if (broken) {
 			part_particles_create(oGameplayHandler.particle_system, x + lengthdir_x(r, dir), y - 64 + lengthdir_y(r, dir), oGameplayHandler.pt_cloud_gold, 1);
 		}
 		
-		if (!cloud_hit_local) {
-			with (oPlayer) {
-				if (id_ == oClientHandler.client_id) {
-					if (collision_circle(other.x, other.y - 32, other.cloud_radius, id, false, false) != noone) {
-						other.cloud_hit_local = true;
-						packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: id_, potion_type: Potion.BLINKING}));
-					}
+		var _in_cloud = false;
+		with (oPlayer) {
+			if (id_ == oClientHandler.client_id) {
+				if (collision_circle(other.x, other.y - 32, other.cloud_radius, id, false, false) != noone) {
+					_in_cloud = true;
 				}
 			}
+		}
+		if (_in_cloud) {
+			if (!cloud_hit_local) {
+				cloud_hit_local = true;
+				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_POTION_CLOUD_HIT, {target_id: oClientHandler.client_id, potion_type: Potion.BLINKING}));
+			}
+		} else {
+			cloud_hit_local = false;
 		}
 	} else if (potion == Potion.FLAME) {
 		if (random(1) < 300 * _dt) { // Spawn lots of fire particles smoothly
