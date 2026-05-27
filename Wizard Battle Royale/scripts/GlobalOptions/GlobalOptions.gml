@@ -11,7 +11,7 @@ global.server_port = 6000;
 global.connection_type = "direct";
 global.connection_role = "";
 
-global.external_server_ip = "10.103.128.51";
+global.external_server_ip = "10.41.131.13";
 global.external_server_port = 6100;
 
 global.external_server_port_udp = 6100;
