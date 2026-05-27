@@ -18,6 +18,8 @@ total_potions = 0;
 
 state = GameState.LOBBY;
 
+void_y = 100000;
+
 Player = function(id_) constructor {
 	id = id_;
 	name = "";
@@ -112,7 +114,12 @@ client_info_player_name_callback = function(data) {
 client_info_player_position_callback = function(data) {
 	players_map[? data.sender_id].x = data.x;
 	players_map[? data.sender_id].y = data.y;
+	
+
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_POSITION, {player_id: data.sender_id, x: data.x, y: data.y, accepted: true}));
+	if (data.y > void_y) {
+		damage_player(data.sender_id, 100);
+	} 
 }
 
 client_info_player_state_callback = function(data) {
@@ -261,6 +268,34 @@ client_request_consume_potion_callback = function(data) {
 		}
 	));
 	
+	if (pot_type == Potion.FLAME) {
+		var idx = -1;
+		var info = players_spell_info[? data.sender_id];
+		
+		for (var i = 0; i < array_length(info.spells); i++) {
+			if (info.spells[i].type == Spell.NONE) {
+				idx = i;
+				break;
+			}
+		}
+		
+		if (idx == -1) {
+			return;
+		}
+		
+		info.spells[idx].type = Spell.FIREBALL;
+		info.spells[idx].casts_remaining = spell_get_max_casts(Spell.FIREBALL);
+		
+		packet_send(oClientHandler.client, packet_create(data.sender_id, PacketType.HOST_SYNC_SPELL_SLOT,
+		{
+			player_id: data.sender_id, 
+			slot_index: idx, 
+			spell: players_spell_info[? data.sender_id].spells[idx].type,
+			casts: players_spell_info[? data.sender_id].spells[idx].casts_remaining,
+			cooldown: -1
+		}));
+	}
+	
 	if (pot_type == Potion.LIMITS) {
 		var new_size = irandom_range(1, 5);
 		resize_spell_slots(players_spell_info[? data.sender_id].spells, new_size);
@@ -376,7 +411,6 @@ client_request_throw_potion_callback = function(data) {
 }
 
 client_request_potion_cloud_hit_callback = function(data) {
-	if (!ds_map_exists(players_map, data.sender_id)) return;
 	if (!ds_map_exists(players_map, data.target_id)) return;
 	
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_POTION_CLOUD_HIT,
@@ -385,6 +419,42 @@ client_request_potion_cloud_hit_callback = function(data) {
 			potion_type: data.potion_type
 		}
 	));
+	
+	var pot_type = data.potion_type;
+	
+	if (pot_type == Potion.LIMITS) {
+		var new_size = irandom_range(1, 5);
+		resize_spell_slots(players_spell_info[? data.target_id].spells, new_size);
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_SLOT_NUMBER,
+			{
+				player_id: data.target_id,
+				new_size: new_size 
+			}
+		))
+	}
+	
+	if (pot_type == Potion.DECOY) {
+		var decoy_dir = choose(-1, 1);
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_DECOY_SPAWN,
+			{
+				player_id: data.target_id,
+				x: players_map[? data.target_id].x,
+				y: players_map[? data.target_id].y,
+				direction: decoy_dir
+			}
+		));
+	}
+	
+	var p = players_map[? data.target_id];
+	if (pot_type == Potion.DEVIL) {
+		p.devil_pact_hp_taken = p.hp - 10;
+		p.hp = 10;
+		p.devil_pact_active = true;
+		p.devil_pact_time = 30.0;
+		p.devil_pact_used = true;
+		damage_player(data.target_id, 0); // Trigger host broadcast to sync HP to 10
+	}
+	
 }
 
 client_request_potion_fire_hit_callback = function(data) {
@@ -468,6 +538,7 @@ damage_player = function(player_id, damage) {
 		if (pot == Potion.DEVIL && random(1) > 0.3) {
 			pot = irandom_range(1, Potion.DEVIL - 1); // Reroll to other potions
 		}
+		pot = Potion.BLINDING;
 		array_push(other.chests, {
 			id: chest_number,
 			potion: pot,
@@ -529,6 +600,7 @@ generate_map = function() {
     
     total_rooms = array_length(dungeon_rooms);
     
+	var maxy = -100;
     for (var i = 0; i < total_rooms; i++) {
         packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_DUNGEON_ROOM,
             {
@@ -537,6 +609,11 @@ generate_map = function() {
                 world_y: dungeon_rooms[i].world_y
             }
         ));
+		if (dungeon_rooms[i].world_y + dungeon_rooms[i].height > maxy) {
+			maxy = dungeon_rooms[i].world_y + dungeon_rooms[i].height;
+		}
     }
+	
+	void_y = maxy + 1000;
 }
 //init_spell_platforms();

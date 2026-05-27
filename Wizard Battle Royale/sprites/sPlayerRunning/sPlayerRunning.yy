@@ -31,7 +31,7 @@
   "origin":4,
   "parent":{
     "name":"Player Sprites",
-    "path":"folders/Sprites/Player Sprites.yy",
+    "path":"folders/Sounds/Sprites/Player Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

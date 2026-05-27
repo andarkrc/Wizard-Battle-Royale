@@ -26,7 +26,7 @@
   "origin":0,
   "parent":{
     "name":"DungeonAssets",
-    "path":"folders/Sprites/DungeonAssets.yy",
+    "path":"folders/Sounds/Sprites/DungeonAssets.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

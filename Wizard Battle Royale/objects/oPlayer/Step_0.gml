@@ -185,43 +185,15 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 		}
 	}
 	
+	if (potion != Potion.NONE && mouse_check_button_released(mb_right)) {
+		var target_x = mouse_x;
+		var target_y = mouse_y;
+		
+		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_THROW_POTION, {target_x: target_x, target_y: target_y}));
+	}
+	
 	if (potion != Potion.NONE && keyboard_check_pressed(ord("F"))) {
-		if (array_contains(global.throwable_potions, potion)) {
-			var target_x = mouse_x;
-			var target_y = mouse_y;
-			
-			packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_THROW_POTION, {target_x: target_x, target_y: target_y}));
-		} else if (potion == Potion.TEN_HP || potion == Potion.HEAL_HALF) {
-			if (hp < 100) {
-				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
-			}
-		} else if (potion == Potion.CLEANSING) {
-			if (blinded || reversed || blinking) {
-				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
-			}
-		} else if (potion == Potion.DEVIL) {
-			if (hp >= 50 && !devil_pact_used) {
-				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
-			}
-		} else if (potion == Potion.SPEED) {
-			if (move_speed < max_move_speed) {
-				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
-			}
-		} else if (potion == Potion.INVISIBILITY) {
-			if (image_alpha == 1) {
-				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
-			}
-		} else if (potion == Potion.DASHING) {
-			if (total_dashes < max_dashes) {
-				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
-			}
-		} else if (potion == Potion.LIMITS) {
-			if (array_length(spells) < max_spell_count) {
-				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
-			}
-		} else {
-			packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
-		}
+		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
 	}
 	
 	if (devil_pact_active) {

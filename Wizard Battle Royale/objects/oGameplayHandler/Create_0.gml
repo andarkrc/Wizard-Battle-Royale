@@ -2,36 +2,6 @@ player_refs = ds_map_create();
 
 particle_system = part_system_create_layer("Instances", false);
 
-pt_cloud_purple = part_type_create();
-part_type_shape(pt_cloud_purple, pt_shape_smoke);
-part_type_size(pt_cloud_purple, 1.0, 1.5, 0.02, 0);
-part_type_color3(pt_cloud_purple, c_yellow, c_orange, make_colour_rgb(200, 100, 0)); // orange
-part_type_alpha3(pt_cloud_purple, 0.6, 0.3, 0);
-part_type_life(pt_cloud_purple, 40, 60);
-part_type_direction(pt_cloud_purple, 0, 0, 0, 0);
-part_type_speed(pt_cloud_purple, 0, 0, 0, 0);
-part_type_orientation(pt_cloud_purple, 0, 360, 0, 0, false);
-
-pt_cloud_blue = part_type_create();
-part_type_shape(pt_cloud_blue, pt_shape_smoke);
-part_type_size(pt_cloud_blue, 1.0, 1.5, 0.02, 0);
-part_type_color3(pt_cloud_blue, make_colour_rgb(220, 170, 180), make_colour_rgb(180, 130, 150), make_colour_rgb(140, 100, 120)); // grayish pink
-part_type_alpha3(pt_cloud_blue, 0.6, 0.3, 0);
-part_type_life(pt_cloud_blue, 40, 60);
-part_type_direction(pt_cloud_blue, 0, 0, 0, 0);
-part_type_speed(pt_cloud_blue, 0, 0, 0, 0);
-part_type_orientation(pt_cloud_blue, 0, 360, 0, 0, false);
-
-pt_cloud_gold = part_type_create();
-part_type_shape(pt_cloud_gold, pt_shape_smoke);
-part_type_size(pt_cloud_gold, 1.0, 1.5, 0.02, 0);
-part_type_color3(pt_cloud_gold, c_aqua, make_colour_rgb(64, 224, 208), c_teal); // turquoise
-part_type_alpha3(pt_cloud_gold, 0.6, 0.3, 0);
-part_type_life(pt_cloud_gold, 40, 60);
-part_type_direction(pt_cloud_gold, 0, 0, 0, 0);
-part_type_speed(pt_cloud_gold, 0, 0, 0, 0);
-part_type_orientation(pt_cloud_gold, 0, 360, 0, 0, false);
-
 pt_fire = part_type_create();
 part_type_shape(pt_fire, pt_shape_smoke);
 part_type_size(pt_fire, 0.6, 1.2, 0.01, 0.02); // Larger, thicker smoke
@@ -41,33 +11,6 @@ part_type_life(pt_fire, 40, 60); // Lasts longer so it doesn't flicker
 part_type_direction(pt_fire, 85, 95, 0, 2); 
 part_type_speed(pt_fire, 0.2, 0.5, 0, 0);
 part_type_blend(pt_fire, true);
-
-/// @desc Returns [color1, color2, color3] for particle effects based on potion type.
-/// @arg {Real} pot_type
-potion_get_particle_colors = function(pot_type) {
-	switch (pot_type) {
-		case Potion.SPEED:
-			return [make_colour_rgb(0, 200, 255), make_colour_rgb(0, 120, 200), make_colour_rgb(0, 40, 80)];
-		case Potion.INVISIBILITY:
-			return [make_colour_rgb(200, 255, 100), make_colour_rgb(150, 200, 50), make_colour_rgb(100, 150, 20)]; // verde-galbui
-		case Potion.LIMITS:
-			return [make_colour_rgb(230, 180, 255), make_colour_rgb(200, 130, 255), make_colour_rgb(150, 80, 200)]; // mov deschis
-		case Potion.DASHING:
-			return [make_colour_rgb(50, 255, 50), make_colour_rgb(20, 200, 20), make_colour_rgb(0, 100, 0)]; // verde mai verzui
-		case Potion.CLEANSING:
-			return [make_colour_rgb(255, 180, 200), make_colour_rgb(255, 130, 170), make_colour_rgb(200, 80, 120)]; // roz deschis
-		case Potion.TEN_HP:
-			return [make_colour_rgb(255, 255, 150), make_colour_rgb(255, 220, 100), make_colour_rgb(200, 180, 50)]; // galben deschis
-		case Potion.HEAL_HALF:
-			return [make_colour_rgb(0, 50, 150), make_colour_rgb(0, 30, 100), make_colour_rgb(0, 10, 50)]; // albastru inchis
-		case Potion.DECOY:
-			return [make_colour_rgb(255, 100, 255), make_colour_rgb(200, 50, 200), make_colour_rgb(150, 0, 150)]; // roz mov
-		case Potion.DEVIL:
-			return [c_red, c_lime, c_blue]; // curcubeu
-		default:
-			return [c_white, c_ltgray, c_dkgray];
-	}
-}
 
 /// @desc Emits psUsedPotion particles at a given position with potion-specific colors.
 /// @arg {Real} px
@@ -221,7 +164,9 @@ host_sync_player_died_callback = function(data) {
 	with (oPlayer) {
 		if (id_ == data.player_id) {
 			instance_destroy();
-		
+		}
+	}
+	
 	ds_map_delete(player_refs, data.player_id);
 	with (oPlayer) {
 		if (id_ == data.player_id) {
@@ -339,29 +284,10 @@ host_sync_potion_cloud_hit_callback = function(data) {
 	
 	with (oPlayer) {
 		if (id_ == data.target_id) {
-			if (data.potion_type == Potion.BLINDING) {
-				if (id_ == oClientHandler.client_id) {
-					blinded = true;
-					blind_opacity = 1.0;
-					blind_time = 20.0;
-					time_source_stop(remove_blinding_timer);
-					time_source_start(remove_blinding_timer);
-				}
-			} else if (data.potion_type == Potion.REVERSE) {
-				if (id_ == oClientHandler.client_id) {
-					reversed = true;
-					var camera = view_get_camera(0);
-					camera_set_view_angle(camera, 180);
-					time_source_stop(remove_reverse_timer);
-					time_source_start(remove_reverse_timer);
-				}
-			} else if (data.potion_type == Potion.BLINKING) {
-				if (id_ == oClientHandler.client_id) {
-					blinking = true;
-					time_source_stop(remove_blinking_timer);
-					time_source_start(remove_blinking_timer);
-				}
-			}
+			var potion_in_hand = potion;
+			potion = data.potion_type;
+			drink_potion();
+			potion = potion_in_hand;
 		}
 	}
 }

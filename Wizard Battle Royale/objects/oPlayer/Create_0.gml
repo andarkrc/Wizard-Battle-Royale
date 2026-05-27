@@ -113,7 +113,25 @@ drink_potion = function() {
 			break;
 		
 		case Potion.BLINKING:
-			// Effect handled via cloud hit callback (throwable)
+			blinking = true;
+			time_source_stop(remove_blinking_timer);
+			time_source_start(remove_blinking_timer);
+			break;
+		
+		case Potion.BLINDING:
+			blinded = true;
+			blind_opacity = 1.0;
+			blind_time = 20.0;
+			time_source_stop(remove_blinding_timer);
+			time_source_start(remove_blinding_timer);
+			break;
+		
+		case Potion.REVERSE:
+			reversed = true;
+			var camera = view_get_camera(0);
+			camera_set_view_angle(camera, 180);
+			time_source_stop(remove_reverse_timer);
+			time_source_start(remove_reverse_timer);
 			break;
 		
 		case Potion.DEVIL:

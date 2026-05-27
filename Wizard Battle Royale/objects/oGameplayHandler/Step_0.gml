@@ -1,6 +1,4 @@
 if (state == GameState.GAME) {
-	var my_player = player_refs[? oClientHandler.client_id];
-	if (instance_exists(my_player)) {
 	if (followed_player == noone) {
 		if (ds_map_exists(player_refs, oClientHandler.client_id)) {
 			followed_player = player_refs[? oClientHandler.client_id];
@@ -30,7 +28,7 @@ if (state == GameState.GAME) {
 		var camera = view_get_camera(0);
 		var cw = camera_get_view_width(camera);
 		var ch = camera_get_view_height(camera);
-		camera_set_view_pos(camera, my_player.x - cw / 2, my_player.y - ch / 2);
+		camera_set_view_pos(camera, followed_player.x - cw / 2, followed_player.y - ch / 2);
 	}
 }
 

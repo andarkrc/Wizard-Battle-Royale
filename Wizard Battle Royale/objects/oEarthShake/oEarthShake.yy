@@ -39,5 +39,5 @@
     "path":"sprites/sFireballCollision/sFireballCollision.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

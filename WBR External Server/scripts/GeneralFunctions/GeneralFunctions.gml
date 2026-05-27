@@ -2,7 +2,7 @@
 /// @return {String} code
 function generateLobbyCode() {
 	var code = "";
-	var code_length = 2;
+	var code_length = 8;
 	for (var i = 0; i < code_length; i++) {
 		var letter_type = choose(1, 2, 3);
 		
@@ -15,7 +15,7 @@ function generateLobbyCode() {
 				code += chr(irandom_range(65, 90));
 				break;
 			
-			case 3 :
+			case 3 : // lower case letter
 			default :
 				code += chr(irandom_range(97, 122));
 				break;	  

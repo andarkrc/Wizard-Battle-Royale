@@ -39,7 +39,7 @@
   "origin":4,
   "parent":{
     "name":"Potions",
-    "path":"folders/Sprites/Potions.yy",
+    "path":"folders/Sounds/Sprites/Potions.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
