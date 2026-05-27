@@ -335,9 +335,9 @@ client_request_throw_potion_callback = function(data) {
 		{
 			thrower_id: data.sender_id,
 			x: players_map[? data.sender_id].x,
-			y: players_map[? data.sender_id].y - sprite_get_height(sPlayerIdle) / 2,
-			v_x: data.v_x,
-			v_y: data.v_y,
+			y: players_map[? data.sender_id].y,
+			target_x: data.target_x,
+			target_y: data.target_y,
 			potion_type: p
 		}
 	));

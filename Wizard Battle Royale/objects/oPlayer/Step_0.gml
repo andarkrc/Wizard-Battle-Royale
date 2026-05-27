@@ -111,7 +111,9 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_POSITION, {x: x, y: y}));
 	}
 	
-	if (mouse_check_button_pressed(mb_left) && selected_spell >= 0 && selected_spell < array_length(spells) && combat_active) {
+	var holding_throwable = (potion != Potion.NONE && array_contains(global.throwable_potions, potion));
+	
+	if (mouse_check_button_pressed(mb_left) && selected_spell >= 0 && selected_spell < array_length(spells) && combat_active && !holding_throwable) {
 		if (spells[selected_spell].type != Spell.NONE) {
 			var dir = point_direction(x, y - sprite_height / 2, mouse_x, mouse_y);
 			packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_SPELLCAST,
@@ -172,12 +174,10 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 	
 	if (potion != Potion.NONE && keyboard_check_pressed(ord("F"))) {
 		if (array_contains(global.throwable_potions, potion)) {
-			var dir = point_direction(x, y - sprite_height / 2, mouse_x, mouse_y);
-			var force = 6 * METER;
-			var v_x = dcos(dir) * force;
-			var v_y = -dsin(dir) * force;
+			var target_x = mouse_x;
+			var target_y = mouse_y;
 			
-			packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_THROW_POTION, {v_x: v_x, v_y: v_y}));
+			packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_THROW_POTION, {target_x: target_x, target_y: target_y}));
 		} else if (potion == Potion.TEN_HP || potion = Potion.HEAL_HALF) {
 			if (hp < 100) {
 				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));

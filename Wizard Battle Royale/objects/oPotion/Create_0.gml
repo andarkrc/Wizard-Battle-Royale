@@ -24,6 +24,10 @@ broken = false;
 cloud_timer = 3.0;
 cloud_hit_local = false;
 
+target_x = -1;
+target_y = -1;
+seeking_target = false;
+
 pt_cloud_purple = part_type_create();
 part_type_shape(pt_cloud_purple, pt_shape_smoke);
 part_type_size(pt_cloud_purple, 0.5, 1.5, 0.02, 0);

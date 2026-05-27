@@ -78,7 +78,7 @@ potion_get_particle_colors = function(pot_type) {
 /// @arg {Real} pot_type
 /// @arg {Real} count
 emit_potion_particles = function(px, py, pot_type, count) {
-	var particles = particle_get_type(psUsedPotion, 0);
+	var particles = particle_get_type(psDrunkPotion, 0);
 	var colors = potion_get_particle_colors(pot_type);
 	part_type_color3(particles, colors[0], colors[1], colors[2]);
 	part_type_size(particles, 0.05, 0.15, -0.005, 0); // Scale down the particles significantly
@@ -282,8 +282,43 @@ host_sync_throw_potion_callback = function(data) {
 		potion = data.potion_type;
 		thrown = true;
 		thrower_id = data.thrower_id;
-		horizontal_speed = data.v_x;
-		vertical_speed = data.v_y;
+		target_x = data.target_x;
+		target_y = data.target_y;
+		
+		var dx = target_x - x;
+		var dy = target_y - y;
+		var dy_math = -dy; // Math coordinates (positive UP)
+		
+		var _g = 10 * 64; // g = 10 * METER
+		
+		var d = point_distance(x, y, target_x, target_y);
+		var v = 6 * 64 + (d / 600.0) * (12 * 64);
+		if (v > 18 * 64) v = 18 * 64;
+		
+		var v_min_req = sqrt(_g * max(0, dy_math + d));
+		if (v < v_min_req * 1.05) {
+			v = v_min_req * 1.05;
+		}
+		
+		var v2 = v * v;
+		var v4 = v2 * v2;
+		
+		var root_term = v4 - _g * (_g * dx * dx + 2 * dy_math * v2);
+		
+		if (dx != 0 && root_term >= 0) {
+			// Target is reachable. Use the lower arc (- root)
+			var root = sqrt(root_term);
+			var angle_rad = arctan((v2 - root) / (_g * dx));
+			if (dx < 0) angle_rad += pi;
+			
+			horizontal_speed = v * cos(angle_rad);
+			vertical_speed = -v * sin(angle_rad);
+		} else {
+			// Target is out of reach or exactly vertical, throw straight towards it
+			var dir = point_direction(x, y, target_x, target_y);
+			horizontal_speed = dcos(dir) * v;
+			vertical_speed = -dsin(dir) * v;
+		}
 	}
 	
 	with (oPlayer) {
