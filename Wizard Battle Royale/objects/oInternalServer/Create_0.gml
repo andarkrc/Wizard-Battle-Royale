@@ -527,7 +527,7 @@ damage_player = function(player_id, damage) {
         
 	}
     
-    //spell_platforms[0].spell = Spell.ORBIT_ORB;
+    //spell_platforms[0].spell = Spell.SHIELD;
 	
 	for (var i = 0; i < sp_number; i++) {
 		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_PLATFORM,

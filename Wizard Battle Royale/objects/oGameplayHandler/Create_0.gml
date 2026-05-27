@@ -503,6 +503,16 @@ cast_spell = function(data) {
 				image_angle = data.direction;
 			}
 			break;
+        
+        case Spell.SHIELD:
+			with (instance_create_layer(data.x, data.y, "Instances", oShield)) {
+				horizontal_speed = dcos(data.direction) * move_speed;
+				vertical_speed = -dsin(data.direction) * move_speed;
+				caster_id = data.caster_id;
+				spell_id = data.spell_id;
+				image_angle = data.direction;
+			}
+			break;
 	
 		default:
 			break;
