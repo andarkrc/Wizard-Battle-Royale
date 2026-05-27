@@ -2,6 +2,7 @@ id_ = -1;
 name = "";
 
 move_speed = 2.5 * METER;
+max_move_speed = 5.5 * METER;
 
 vertical_speed = 0;
 g = 20 * METER;
@@ -13,6 +14,7 @@ dash_speed = 2.5 * METER / dash_duration;
 dash_direction = 0;
 total_dashes = 1;
 current_dashes = 1;
+max_dashes = 5;
 
 hp = 100;
 
@@ -53,8 +55,8 @@ drink_potion = function() {
 	switch (potion) {
 		case Potion.SPEED:
 			move_speed += 1 * METER;
-			if (move_speed > 5.5 * METER) {
-				move_speed = 5.5 * METER;
+			if (move_speed > max_move_speed) {
+				move_speed = max_move_speed;
 			}
 			break;
 		
@@ -70,8 +72,8 @@ drink_potion = function() {
 		
 		case Potion.DASHING:
 			total_dashes++;
-			if (total_dashes > 5) {
-				total_dashes = 5;
+			if (total_dashes > max_dashes) {
+				total_dashes = max_dashes;
 			}
 			break;
 		

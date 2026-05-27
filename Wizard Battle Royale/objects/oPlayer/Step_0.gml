@@ -178,7 +178,7 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 			var target_y = mouse_y;
 			
 			packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_THROW_POTION, {target_x: target_x, target_y: target_y}));
-		} else if (potion == Potion.TEN_HP || potion = Potion.HEAL_HALF) {
+		} else if (potion == Potion.TEN_HP || potion == Potion.HEAL_HALF) {
 			if (hp < 100) {
 				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
 			}
@@ -188,6 +188,22 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 			}
 		} else if (potion == Potion.DEVIL) {
 			if (hp >= 50 && !devil_pact_used) {
+				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
+			}
+		} else if (potion == Potion.SPEED) {
+			if (move_speed < max_move_speed) {
+				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
+			}
+		} else if (potion == Potion.INVISIBILITY) {
+			if (image_alpha == 1) {
+				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
+			}
+		} else if (potion == Potion.DASHING) {
+			if (total_dashes < max_dashes) {
+				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
+			}
+		} else if (potion == Potion.LIMITS) {
+			if (array_length(spells) < max_spell_count) {
 				packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_REQ_CONSUME_POTION));
 			}
 		} else {
