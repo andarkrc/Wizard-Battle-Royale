@@ -1,4 +1,6 @@
 if (state == GameState.GAME) {
+	var my_player = player_refs[? oClientHandler.client_id];
+	if (instance_exists(my_player)) {
 	if (followed_player == noone) {
 		if (ds_map_exists(player_refs, oClientHandler.client_id)) {
 			followed_player = player_refs[? oClientHandler.client_id];

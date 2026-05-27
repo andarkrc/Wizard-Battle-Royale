@@ -1,4 +1,24 @@
 var _dt = delta_time / 1000000;
+
+for (var i = 0; i < array_length(players); i++) {
+	var p = players[i];
+	if (p.devil_pact_active) {
+		p.devil_pact_time -= _dt;
+		if (p.devil_pact_time <= 0) {
+			p.devil_pact_active = false;
+			p.hp = min(p.hp + p.devil_pact_hp_taken, 100);
+			p.devil_pact_completed = true;
+			damage_player(p.id, 0); // Sync HP refund
+		}
+	}
+	
+	if (p.devil_pact_completed && p.hp <= 50 && p.hp > 0) {
+		p.hp = 100;
+		p.devil_pact_completed = false;
+		damage_player(p.id, 0); // Sync 100 HP heal
+	}
+}
+
 for (var i = 0; i < array_length(spell_cooldowns); i++) {
 	var info = spell_cooldowns[i];
 	if (!ds_map_exists(players_map, info.caster_id)) {
@@ -40,6 +60,7 @@ if (state == GameState.PREGAME_LOADING) {
 		
 		for (var i = 0; i < array_length(players); i++) {
 			var player = players[i];
+			
 			var ok = false;
 			show_debug_message($"Trying to spawn player {i}");
 			with (oPlayerSpawnPosition) {

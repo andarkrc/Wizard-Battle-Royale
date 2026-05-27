@@ -25,6 +25,12 @@ Player = function(id_) constructor {
 	x = 664;
 	y = 588;
 	potion = Potion.NONE;
+	
+	devil_pact_active = false;
+	devil_pact_time = 0.0;
+	devil_pact_hp_taken = 0.0;
+	devil_pact_completed = false;
+	devil_pact_used = false;
 }
 
 /// @desc Fully syncs a newly joined player
@@ -238,15 +244,24 @@ client_request_consume_potion_callback = function(data) {
 	if (!ds_map_exists(players_map, data.sender_id)) return;
 		
 	if (players_map[? data.sender_id].potion == Potion.NONE) return;
+	
+	var p = players_map[? data.sender_id];
+	var pot_type = p.potion;
+	
+	if (pot_type == Potion.DEVIL) {
+		if (p.hp < 50 || p.devil_pact_used) {
+			return;
+		}
+	}
 		
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_CONSUME_POTION,
 		{
 			player_id: data.sender_id,
-			potion_type: players_map[? data.sender_id].potion	
+			potion_type: pot_type	
 		}
 	));
 	
-	if (players_map[? data.sender_id].potion == Potion.LIMITS) {
+	if (pot_type == Potion.LIMITS) {
 		var new_size = irandom_range(1, 5);
 		resize_spell_slots(players_spell_info[? data.sender_id].spells, new_size);
 		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_SLOT_NUMBER,
@@ -257,7 +272,28 @@ client_request_consume_potion_callback = function(data) {
 		))
 	}
 	
-	players_map[? data.sender_id].potion = Potion.NONE;
+	if (pot_type == Potion.DECOY) {
+		var decoy_dir = choose(-1, 1);
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_DECOY_SPAWN,
+			{
+				player_id: data.sender_id,
+				x: players_map[? data.sender_id].x,
+				y: players_map[? data.sender_id].y,
+				direction: decoy_dir
+			}
+		));
+	}
+	
+	if (pot_type == Potion.DEVIL) {
+		p.devil_pact_hp_taken = p.hp - 10;
+		p.hp = 10;
+		p.devil_pact_active = true;
+		p.devil_pact_time = 30.0;
+		p.devil_pact_used = true;
+		damage_player(data.sender_id, 0); // Trigger host broadcast to sync HP to 10
+	}
+	
+	p.potion = Potion.NONE;
 }
 
 client_request_chest_open_callback = function(data) {
@@ -282,19 +318,80 @@ client_request_chest_open_callback = function(data) {
 client_request_potion_get_callback = function(data) {
 	if (!ds_map_exists(players_map, data.sender_id)) return;
 	if (!ds_map_exists(potions, data.id)) return;
-		
-	if (players_map[? data.sender_id].potion != Potion.NONE) return;
 
 	var new_potion = potions[? data.id];
-	players_map[? data.sender_id].potion = new_potion;
+	var old_potion = players_map[? data.sender_id].potion;
 	
-	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_POTION,
+	if (old_potion != Potion.NONE) {
+		// Swap: update the ground potion to the player's old potion
+		potions[? data.id] = old_potion;
+		players_map[? data.sender_id].potion = new_potion;
+		
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_POTION,
+			{
+				player_id: data.sender_id,
+				potion_type: new_potion,
+				potion_to_destroy: -1
+			}
+		));
+		
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_POTION_UPDATE,
+			{
+				potion_id: data.id,
+				potion_type: old_potion
+			}
+		));
+	} else {
+		// Normal pickup: no potion held
+		players_map[? data.sender_id].potion = new_potion;
+		
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_POTION,
+			{
+				player_id: data.sender_id,
+				potion_type: new_potion,
+				potion_to_destroy: data.id	
+			}
+		));
+	}
+}
+
+client_request_throw_potion_callback = function(data) {
+	if (!ds_map_exists(players_map, data.sender_id)) return;
+		
+	var p = players_map[? data.sender_id].potion;
+	if (!array_contains(global.throwable_potions, p)) return;
+	
+	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_THROW_POTION,
 		{
-			player_id: data.sender_id,
-			potion_type: new_potion,
-			potion_to_destroy: data.id	
+			thrower_id: data.sender_id,
+			x: players_map[? data.sender_id].x,
+			y: players_map[? data.sender_id].y,
+			target_x: data.target_x,
+			target_y: data.target_y,
+			potion_type: p
 		}
 	));
+	
+	players_map[? data.sender_id].potion = Potion.NONE;
+}
+
+client_request_potion_cloud_hit_callback = function(data) {
+	if (!ds_map_exists(players_map, data.sender_id)) return;
+	if (!ds_map_exists(players_map, data.target_id)) return;
+	
+	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_POTION_CLOUD_HIT,
+		{
+			target_id: data.target_id,
+			potion_type: data.potion_type
+		}
+	));
+}
+
+client_request_potion_fire_hit_callback = function(data) {
+	if (!ds_map_exists(players_map, data.sender_id)) return;
+	
+	// Fire deals instant death
+	damage_player(data.sender_id, 9999);
 }
 
 with (oClientHandler) {
@@ -309,6 +406,9 @@ with (oClientHandler) {
 	subscribe(other, PacketType.CL_REQ_CONSUME_POTION, other.client_request_consume_potion_callback);
 	subscribe(other, PacketType.CL_REQ_CHEST_OPEN, other.client_request_chest_open_callback);
 	subscribe(other, PacketType.CL_REQ_POTION_GET, other.client_request_potion_get_callback);
+	subscribe(other, PacketType.CL_REQ_THROW_POTION, other.client_request_throw_potion_callback);
+	subscribe(other, PacketType.CL_REQ_POTION_CLOUD_HIT, other.client_request_potion_cloud_hit_callback);
+	subscribe(other, PacketType.CL_REQ_POTION_FIRE_HIT, other.client_request_potion_fire_hit_callback);
 }
 
 /// @desc Damages a player.
@@ -364,9 +464,13 @@ damage_player = function(player_id, damage) {
  init_chests = function() {
 	var chest_number = 0;
 	with (oChest) {
+		var pot = irandom_range(1, Potion.LAST - 1);
+		if (pot == Potion.DEVIL && random(1) > 0.3) {
+			pot = irandom_range(1, Potion.DEVIL - 1); // Reroll to other potions
+		}
 		array_push(other.chests, {
 			id: chest_number,
-			potion: irandom_range(1, Potion.LAST - 1),
+			potion: pot,
 			x: x,
 			y: y,
 		});

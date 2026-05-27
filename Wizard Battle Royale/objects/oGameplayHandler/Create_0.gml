@@ -2,6 +2,86 @@ player_refs = ds_map_create();
 
 particle_system = part_system_create_layer("Instances", false);
 
+pt_cloud_purple = part_type_create();
+part_type_shape(pt_cloud_purple, pt_shape_smoke);
+part_type_size(pt_cloud_purple, 1.0, 1.5, 0.02, 0);
+part_type_color3(pt_cloud_purple, c_yellow, c_orange, make_colour_rgb(200, 100, 0)); // orange
+part_type_alpha3(pt_cloud_purple, 0.6, 0.3, 0);
+part_type_life(pt_cloud_purple, 40, 60);
+part_type_direction(pt_cloud_purple, 0, 0, 0, 0);
+part_type_speed(pt_cloud_purple, 0, 0, 0, 0);
+part_type_orientation(pt_cloud_purple, 0, 360, 0, 0, false);
+
+pt_cloud_blue = part_type_create();
+part_type_shape(pt_cloud_blue, pt_shape_smoke);
+part_type_size(pt_cloud_blue, 1.0, 1.5, 0.02, 0);
+part_type_color3(pt_cloud_blue, make_colour_rgb(220, 170, 180), make_colour_rgb(180, 130, 150), make_colour_rgb(140, 100, 120)); // grayish pink
+part_type_alpha3(pt_cloud_blue, 0.6, 0.3, 0);
+part_type_life(pt_cloud_blue, 40, 60);
+part_type_direction(pt_cloud_blue, 0, 0, 0, 0);
+part_type_speed(pt_cloud_blue, 0, 0, 0, 0);
+part_type_orientation(pt_cloud_blue, 0, 360, 0, 0, false);
+
+pt_cloud_gold = part_type_create();
+part_type_shape(pt_cloud_gold, pt_shape_smoke);
+part_type_size(pt_cloud_gold, 1.0, 1.5, 0.02, 0);
+part_type_color3(pt_cloud_gold, c_aqua, make_colour_rgb(64, 224, 208), c_teal); // turquoise
+part_type_alpha3(pt_cloud_gold, 0.6, 0.3, 0);
+part_type_life(pt_cloud_gold, 40, 60);
+part_type_direction(pt_cloud_gold, 0, 0, 0, 0);
+part_type_speed(pt_cloud_gold, 0, 0, 0, 0);
+part_type_orientation(pt_cloud_gold, 0, 360, 0, 0, false);
+
+pt_fire = part_type_create();
+part_type_shape(pt_fire, pt_shape_smoke);
+part_type_size(pt_fire, 0.6, 1.2, 0.01, 0.02); // Larger, thicker smoke
+part_type_color3(pt_fire, c_yellow, c_orange, c_maroon);
+part_type_alpha3(pt_fire, 0.5, 0.3, 0); // Smooth fade
+part_type_life(pt_fire, 40, 60); // Lasts longer so it doesn't flicker
+part_type_direction(pt_fire, 85, 95, 0, 2); 
+part_type_speed(pt_fire, 0.2, 0.5, 0, 0);
+part_type_blend(pt_fire, true);
+
+/// @desc Returns [color1, color2, color3] for particle effects based on potion type.
+/// @arg {Real} pot_type
+potion_get_particle_colors = function(pot_type) {
+	switch (pot_type) {
+		case Potion.SPEED:
+			return [make_colour_rgb(0, 200, 255), make_colour_rgb(0, 120, 200), make_colour_rgb(0, 40, 80)];
+		case Potion.INVISIBILITY:
+			return [make_colour_rgb(200, 255, 100), make_colour_rgb(150, 200, 50), make_colour_rgb(100, 150, 20)]; // verde-galbui
+		case Potion.LIMITS:
+			return [make_colour_rgb(230, 180, 255), make_colour_rgb(200, 130, 255), make_colour_rgb(150, 80, 200)]; // mov deschis
+		case Potion.DASHING:
+			return [make_colour_rgb(50, 255, 50), make_colour_rgb(20, 200, 20), make_colour_rgb(0, 100, 0)]; // verde mai verzui
+		case Potion.CLEANSING:
+			return [make_colour_rgb(255, 180, 200), make_colour_rgb(255, 130, 170), make_colour_rgb(200, 80, 120)]; // roz deschis
+		case Potion.TEN_HP:
+			return [make_colour_rgb(255, 255, 150), make_colour_rgb(255, 220, 100), make_colour_rgb(200, 180, 50)]; // galben deschis
+		case Potion.HEAL_HALF:
+			return [make_colour_rgb(0, 50, 150), make_colour_rgb(0, 30, 100), make_colour_rgb(0, 10, 50)]; // albastru inchis
+		case Potion.DECOY:
+			return [make_colour_rgb(255, 100, 255), make_colour_rgb(200, 50, 200), make_colour_rgb(150, 0, 150)]; // roz mov
+		case Potion.DEVIL:
+			return [c_red, c_lime, c_blue]; // curcubeu
+		default:
+			return [c_white, c_ltgray, c_dkgray];
+	}
+}
+
+/// @desc Emits psUsedPotion particles at a given position with potion-specific colors.
+/// @arg {Real} px
+/// @arg {Real} py
+/// @arg {Real} pot_type
+/// @arg {Real} count
+emit_potion_particles = function(px, py, pot_type, count) {
+	var particles = particle_get_type(psDrunkPotion, 0);
+	var colors = potion_get_particle_colors(pot_type);
+	part_type_color3(particles, colors[0], colors[1], colors[2]);
+	part_type_size(particles, 0.05, 0.15, -0.005, 0); // Scale down the particles significantly
+	part_particles_create(particle_system, px, py, particles, count);
+}
+
 runtime_objects = [];
 followed_player = noone;
 free_cam = false;
@@ -95,11 +175,19 @@ host_sync_spellhit_callback = function(data) {
 host_sync_spell_platform_callback = function(data) {
 	if (!check_host(data)) return;
 		
+	var found = false;
 	with (oSpellPlatform) {
 		if (id_ == data.id || (x == data.x && y == data.y)) {
 			id_ = data.id;
 			spell = data.spell;
+			found = true;
 		}
+	}
+	
+	if (!found) {
+		var new_plat = instance_create_layer(data.x, data.y, "Instances", oSpellPlatform);
+		new_plat.id_ = data.id;
+		new_plat.spell = data.spell;
 	}
 }
 
@@ -129,6 +217,10 @@ host_sync_player_hp_callback = function(data) {
 
 host_sync_player_died_callback = function(data) {
 	if (!check_host(data)) return;
+	
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			instance_destroy();
 		
 	ds_map_delete(player_refs, data.player_id);
 	with (oPlayer) {
@@ -175,6 +267,121 @@ host_sync_player_potion_callback = function(data) {
 			if (id_ == data.potion_to_destroy) {
 				instance_destroy();
 			}
+		}
+	}
+}
+
+host_sync_potion_update_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	with (oPotion) {
+		if (id_ == data.potion_id) {
+			potion = data.potion_type;
+		}
+	}
+}
+
+host_sync_throw_potion_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	with (instance_create_layer(data.x, data.y, "Instances", oPotion)) {
+		potion = data.potion_type;
+		thrown = true;
+		thrower_id = data.thrower_id;
+		target_x = data.target_x;
+		target_y = data.target_y;
+		
+		var dx = target_x - x;
+		var dy = target_y - y;
+		var dy_math = -dy; // Math coordinates (positive UP)
+		
+		var _g = 10 * 64; // g = 10 * METER
+		
+		var d = point_distance(x, y, target_x, target_y);
+		var v = 6 * 64 + (d / 600.0) * (12 * 64);
+		if (v > 18 * 64) v = 18 * 64;
+		
+		var v_min_req = sqrt(_g * max(0, dy_math + d));
+		if (v < v_min_req * 1.05) {
+			v = v_min_req * 1.05;
+		}
+		
+		var v2 = v * v;
+		var v4 = v2 * v2;
+		
+		var root_term = v4 - _g * (_g * dx * dx + 2 * dy_math * v2);
+		
+		if (dx != 0 && root_term >= 0) {
+			// Target is reachable. Use the lower arc (- root)
+			var root = sqrt(root_term);
+			var angle_rad = arctan((v2 - root) / (_g * dx));
+			if (dx < 0) angle_rad += pi;
+			
+			horizontal_speed = v * cos(angle_rad);
+			vertical_speed = -v * sin(angle_rad);
+		} else {
+			// Target is out of reach or exactly vertical, throw straight towards it
+			var dir = point_direction(x, y, target_x, target_y);
+			horizontal_speed = dcos(dir) * v;
+			vertical_speed = -dsin(dir) * v;
+		}
+	}
+	
+	with (oPlayer) {
+		if (id_ == data.thrower_id) {
+			potion = Potion.NONE;
+		}
+	}
+}
+
+host_sync_potion_cloud_hit_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	with (oPlayer) {
+		if (id_ == data.target_id) {
+			if (data.potion_type == Potion.BLINDING) {
+				if (id_ == oClientHandler.client_id) {
+					blinded = true;
+					blind_opacity = 1.0;
+					blind_time = 20.0;
+					time_source_stop(remove_blinding_timer);
+					time_source_start(remove_blinding_timer);
+				}
+			} else if (data.potion_type == Potion.REVERSE) {
+				if (id_ == oClientHandler.client_id) {
+					reversed = true;
+					var camera = view_get_camera(0);
+					camera_set_view_angle(camera, 180);
+					time_source_stop(remove_reverse_timer);
+					time_source_start(remove_reverse_timer);
+				}
+			} else if (data.potion_type == Potion.BLINKING) {
+				if (id_ == oClientHandler.client_id) {
+					blinking = true;
+					time_source_stop(remove_blinking_timer);
+					time_source_start(remove_blinking_timer);
+				}
+			}
+		}
+	}
+}
+
+host_sync_decoy_spawn_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	var source_player = noone;
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			source_player = id;
+		}
+	}
+	
+	with (instance_create_layer(data.x, data.y, "Instances", oDecoy)) {
+		run_direction = data.direction;
+		image_xscale = (run_direction < 0) ? -image_scale : image_scale;
+		if (instance_exists(source_player)) {
+			source_name = source_player.name;
+			image_alpha = source_player.image_alpha;
 		}
 	}
 }
@@ -271,6 +478,10 @@ with (oClientHandler) {
 	subscribe(other, PacketType.HOST_INFO_MAP_LOADING, other.host_info_map_loading_callback);
 	subscribe(other, PacketType.HOST_INFO_DUNGEON_ROOM, other.host_info_dungeon_room_callback);
 	subscribe(other, PacketType.HOST_INFO_GAME_START, other.host_info_game_start_callback);
+	subscribe(other, PacketType.HOST_SYNC_THROW_POTION, other.host_sync_throw_potion_callback);
+	subscribe(other, PacketType.HOST_SYNC_POTION_CLOUD_HIT, other.host_sync_potion_cloud_hit_callback);
+	subscribe(other, PacketType.HOST_SYNC_DECOY_SPAWN, other.host_sync_decoy_spawn_callback);
+	subscribe(other, PacketType.HOST_SYNC_POTION_UPDATE, other.host_sync_potion_update_callback);
 	subscribe(other, PacketType.HOST_INFO_CLIENT_DISCONNECTED, other.host_info_client_disconnected_callback);
 }
 
