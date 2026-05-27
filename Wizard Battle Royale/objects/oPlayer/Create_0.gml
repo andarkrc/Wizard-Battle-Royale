@@ -14,6 +14,7 @@ dash_direction = 0;
 total_dashes = 1;
 current_dashes = 1;
 
+
 hp = 100;
 
 enum State {
