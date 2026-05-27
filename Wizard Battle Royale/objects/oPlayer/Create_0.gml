@@ -16,6 +16,7 @@ total_dashes = 1;
 current_dashes = 1;
 max_dashes = 5;
 
+
 hp = 100;
 
 enum State {
@@ -199,3 +200,4 @@ devil_pact_time = 0.0;
 devil_pact_hp_taken = 0.0;
 devil_pact_completed = false;
 devil_pact_used = false;
+forced_horizontal_speed = 0;

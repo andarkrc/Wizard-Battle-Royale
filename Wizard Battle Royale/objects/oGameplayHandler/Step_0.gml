@@ -1,6 +1,32 @@
 if (state == GameState.GAME) {
 	var my_player = player_refs[? oClientHandler.client_id];
 	if (instance_exists(my_player)) {
+	if (followed_player == noone) {
+		if (ds_map_exists(player_refs, oClientHandler.client_id)) {
+			followed_player = player_refs[? oClientHandler.client_id];
+		}
+	}
+	if (!instance_exists(followed_player)) {
+		var all_players = ds_map_keys_to_array(player_refs);
+		if (array_length(all_players != 0)) {
+			followed_player = player_refs[? all_players[0]];
+			followed_player_idx = 0;
+			free_cam = true;
+		}
+	}
+	
+	if (free_cam) {
+		var next_player = keyboard_check_pressed(ord("D")) - keyboard_check_pressed(ord("A"));
+		if (next_player != 0) {
+			var all_players = ds_map_keys_to_array(player_refs);
+			if (array_length(all_players) != 0) {
+				followed_player_idx = modulo(followed_player_idx + next_player, array_length(all_players));
+				followed_player = player_refs[? all_players[followed_player_idx]];
+			}
+		}
+	}
+	
+	if (instance_exists(followed_player)) {
 		var camera = view_get_camera(0);
 		var cw = camera_get_view_width(camera);
 		var ch = camera_get_view_height(camera);

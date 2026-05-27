@@ -11,7 +11,7 @@ if (async_load[? "id"] == server)
 
 // Check if it's a data event && if the sender is from my clients list
 if (async_load[? "type"] == network_type_data && 
-	array_contains(clients, async_load[? "id"]))
+	(async_load[? "id"] == socket_udp || array_contains(clients, async_load[? "id"])))
 {
 	var sock = async_load[? "id"];
 	var packet = async_load[? "buffer"];
@@ -40,7 +40,8 @@ if (async_load[? "type"] == network_type_data &&
 					break;
 				
 				case PacketType.CL_REQ_LOBBY_LIST:
-					send_lobby_list(sock, data);
+					if (exists_in_queue(async_load[? "ip"], async_load[? "port"])) break;
+					array_push(lobby_list_queue, {ip: async_load[? "ip"], port: async_load[? "port"], idx: 0});
 					break;
 				
 				case PacketType.HOST_REQ_REMOVE_FROM_LOBBY:

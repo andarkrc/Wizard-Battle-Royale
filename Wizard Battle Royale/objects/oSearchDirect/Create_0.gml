@@ -3,8 +3,6 @@ event_inherited();
 
 text = "Direct";
 
-selected = true;
-
 click_action = function() {
 	var reset = !layer_get_visible("JoinLobbyDirectMenu");
 	deactivate_menus();

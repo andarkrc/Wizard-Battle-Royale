@@ -83,6 +83,9 @@ emit_potion_particles = function(px, py, pot_type, count) {
 }
 
 runtime_objects = [];
+followed_player = noone;
+free_cam = false;
+followed_player_idx = -1;
 
 create_player_if_doesnt_exist = function(id_) {
 	if (!ds_map_exists(player_refs, id_)) {
@@ -218,6 +221,12 @@ host_sync_player_died_callback = function(data) {
 	with (oPlayer) {
 		if (id_ == data.player_id) {
 			instance_destroy();
+		
+	ds_map_delete(player_refs, data.player_id);
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			instance_destroy();
+			instance_create_layer(x, y, "Instances", oPlayerDead);
 		}
 	}
 }
@@ -414,8 +423,6 @@ host_info_map_loading_callback = function(data) {
 	
 	lobby.Cleanup(false);
 	init_all_rooms();
-	
-	
 }
 
 host_info_dungeon_room_callback = function(data) {
@@ -434,6 +441,18 @@ host_info_game_start_callback = function(data) {
 	
 	with (oUIHandler) {
 		should_stretch_view = false;
+	}
+}
+
+host_info_client_disconnected_callback = function(data) {
+	if (!check_host(data)) return;
+	
+	ds_map_delete(player_refs, data.client_id);
+	
+	with (oPlayer) {
+		if (id_ == data.client_id) {
+			instance_destroy();
+		}
 	}
 }
 
@@ -463,6 +482,7 @@ with (oClientHandler) {
 	subscribe(other, PacketType.HOST_SYNC_POTION_CLOUD_HIT, other.host_sync_potion_cloud_hit_callback);
 	subscribe(other, PacketType.HOST_SYNC_DECOY_SPAWN, other.host_sync_decoy_spawn_callback);
 	subscribe(other, PacketType.HOST_SYNC_POTION_UPDATE, other.host_sync_potion_update_callback);
+	subscribe(other, PacketType.HOST_INFO_CLIENT_DISCONNECTED, other.host_info_client_disconnected_callback);
 }
 
 clean_runtime_objects = function() {
@@ -496,6 +516,56 @@ cast_spell = function(data) {
 				spell_id = data.spell_id;
 				image_angle = data.direction;
 			}
+			break;
+        
+        case Spell.ICE_SPIKE:
+			with (instance_create_layer(data.x, data.y, "Instances", oIceSpike)) {
+				horizontal_speed = dcos(data.direction) * move_speed;
+				vertical_speed = -dsin(data.direction) * move_speed;
+				caster_id = data.caster_id;
+				spell_id = data.spell_id;
+			}
+			break;
+        
+        case Spell.LIGHTNING_BOLT:
+			with (instance_create_layer(data.x, data.y, "Instances", oLightningBolt)) {
+				horizontal_speed = dcos(data.direction) * move_speed;
+				vertical_speed = -dsin(data.direction) * move_speed;
+				caster_id = data.caster_id;
+				spell_id = data.spell_id;
+				image_angle = data.direction;
+			}
+			break;
+        
+        case Spell.EARTH_SHAKE:
+			with (instance_create_layer(data.x, data.y, "Instances", oEarthShake)) {
+				horizontal_speed = dcos(data.direction) * move_speed;
+				vertical_speed = -dsin(data.direction) * move_speed;
+				caster_id = data.caster_id;
+				spell_id = data.spell_id;
+				image_angle = data.direction;
+			}
+			break;
+        
+        case Spell.TORNADO:
+			with (instance_create_layer(data.x, data.y, "Instances", oTornado)) {
+				horizontal_speed = dcos(data.direction) * move_speed;
+				vertical_speed = -dsin(data.direction) * move_speed;
+				caster_id = data.caster_id;
+				spell_id = data.spell_id;
+			}
+			break;
+        
+        case Spell.SPREAD_SHOT:
+            for (var i = -20; i <= 20; i += 10) {
+     			with (instance_create_layer(data.x, data.y, "Instances", oSpreadShot)) {
+     				horizontal_speed = dcos(data.direction + i) * move_speed;
+     				vertical_speed = -dsin(data.direction + i) * move_speed;
+     				caster_id = data.caster_id;
+     				spell_id = data.spell_id;
+     				image_angle = data.direction; 
+                }
+            }
 			break;
 	
 		default:

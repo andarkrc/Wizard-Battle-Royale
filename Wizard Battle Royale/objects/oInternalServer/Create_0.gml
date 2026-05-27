@@ -16,6 +16,8 @@ potions = ds_map_create();
 
 total_potions = 0;
 
+state = GameState.LOBBY;
+
 Player = function(id_) constructor {
 	id = id_;
 	name = "";
@@ -72,6 +74,34 @@ server_info_connection_request_callback = function(data) {
 
 server_info_client_disconnected = function(data) {
 	// now we know that a player disconnected.
+	switch (state) {
+		case GameState.LOBBY:
+		case GameState.POSTGAME:
+		case GameState.PREGAME_LOADING:
+			packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_CLIENT_DISCONNECTED,
+			{client_id: data.client_id}));
+			break;
+		default:
+			packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_DIED,
+			{player_id: data.client_id}));
+			packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_CLIENT_DISCONNECTED,
+			{client_id: data.client_id}));
+			break;
+	}
+	// let's remove the player now:
+	var idx = -1;
+	for (var i = 0; i < array_length(players); i++) {
+		if (players[i].id == data.client_id) {
+			idx = i;
+			break;
+		}
+	}
+	if (idx != -1) {
+		array_delete(players, idx, 1);
+	}
+	ds_map_delete(players_map, data.client_id);
+	ds_map_delete(players_spell_info, data.client_id);
+
 }
 
 client_info_player_name_callback = function(data) {
@@ -417,7 +447,10 @@ damage_player = function(player_id, damage) {
 			y: y
 		});
 		sp_number++;
+        
 	}
+    
+    //spell_platforms[0].spell = Spell.SPREAD_SHOT;
 	
 	show_debug_message($"TOTAL OF {sp_number} platforms");
 	
@@ -453,24 +486,57 @@ damage_player = function(player_id, damage) {
 	}
 }
 
-state = GameState.LOBBY;
-
 total_rooms = 0;
 
-generate_map = function() {
-	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_MAP_LOADING));
-	
-	var map_size = 5 + array_length(players);
-	var dungeon_rooms = GenerateBestGridMap(10, 5); // cus its bugged
-	
-	total_rooms = array_length(dungeon_rooms);
-	for (var i = 0; i < array_length(dungeon_rooms); i++) {
-		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_DUNGEON_ROOM,
-			{
-				room_index: dungeon_rooms[i].room_index,
-				world_x: dungeon_rooms[i].world_x,
-				world_y: dungeon_rooms[i].world_y
-			}
-		));
-	}
+var _toateCamerele = [
+    rmLootSmall0, rmLootSmall1, rmLootSmall2, rmLootSmall3, rmLootSmall4, rmLootSmall5, rmLootSmall6,
+    rmLootSmall7, rmLootSmall8, rmLootSmall9, rmLootSmall10, rmLootSmall11, rmLootSmall12,
+    
+    rmLootMedium0, rmLootMedium1, rmLootMedium2, rmLootMedium3, rmLootMedium4, rmLootMedium5,
+    rmLootMedium6, rmLootMedium7, rmLootMedium8, rmLootMedium9, rmLootMedium10, rmLootMedium11,
+    
+    rmCorridorSmall0, rmCorridorSmall1, rmCorridorSmall2, rmCorridorSmall3, rmCorridorSmall4, rmCorridorSmall5,
+    rmCorridorSmall6, rmCorridorSmall7, rmCorridorSmall8, rmCorridorSmall9, rmCorridorSmall10, rmCorridorSmall11,
+    rmCorridorSmall12, rmCorridorSmall13, rmCorridorSmall14, rmCorridorSmall15, rmCorridorSmall16, rmCorridorSmall17,
+    rmCorridorSmall18, rmCorridorSmall19, rmCorridorSmall20, rmCorridorSmall21, rmCorridorSmall22,
+    rmCorridorSmall23, rmCorridorSmall24, 
+    
+    rmCorridorMedium0, rmCorridorMedium1, rmCorridorMedium2, rmCorridorMedium3, rmCorridorMedium4, rmCorridorMedium5,
+    rmCorridorMedium6, rmCorridorMedium7, rmCorridorMedium8, rmCorridorMedium9, rmCorridorMedium10, rmCorridorMedium11,
+    rmCorridorMedium12, rmCorridorMedium13,  rmCorridorMedium14,
+    
+    rmArenaMedium0, rmArenaMedium1, rmArenaMedium2, rmArenaMedium3, rmArenaMedium4,
+    rmArenaMedium5, rmArenaMedium6, rmArenaMedium7,
+    
+    rmArenaLarge0, rmArenaLarge1,
+    
+    rmWallHorizontalSimple, rmWallVerticalSimple, rmWallHorizontalDouble, rmWallVerticalDouble,
+    
+    rmFallMedium0, rmFallMedium1, rmFallMedium2, 
+    rmFallSmall0, rmFallSmall1, rmFallSmall2
+];
+
+if (!variable_global_exists("intrariHarta")) {
+    global.intrariHarta = PrecalculateRoomData(_toateCamerele);
 }
+
+generate_map = function() {
+    packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_MAP_LOADING));
+    
+    var map_size = 15 + 2 * array_length(players);
+    
+    var dungeon_rooms = GenerateBestRadialMap(map_size, global.intrariHarta);
+    
+    total_rooms = array_length(dungeon_rooms);
+    
+    for (var i = 0; i < total_rooms; i++) {
+        packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_INFO_DUNGEON_ROOM,
+            {
+                room_index: dungeon_rooms[i].room_index, 
+                world_x: dungeon_rooms[i].world_x,
+                world_y: dungeon_rooms[i].world_y
+            }
+        ));
+    }
+}
+//init_spell_platforms();

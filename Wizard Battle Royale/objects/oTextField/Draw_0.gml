@@ -6,7 +6,7 @@ var display_text = text;
 draw_setup(c_white, 1, fa_center, fa_middle, font);
 if (text == "") {
 	display_text = ghost_text;
-	draw_setup(c_white, 0.8, fa_center, fa_middle);
+	draw_setup(#00FFBB, 0.6, fa_center, fa_middle);
 }
 
 

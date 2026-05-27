@@ -79,3 +79,13 @@ function ray_cast_hit_point(x, y, dir, max_dist, object) {
 	
 	return p;
 }
+
+/// @desc Computes the mathematical modulo.
+/// @arg {Real} n
+/// @arg {Real} k
+/// @return {Real} 
+function modulo(n, k)
+{
+	var res = n % k;
+	return (res < 0) ? res + k : res;
+}
