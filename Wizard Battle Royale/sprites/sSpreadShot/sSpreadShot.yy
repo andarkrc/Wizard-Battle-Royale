@@ -26,7 +26,7 @@
   "origin":4,
   "parent":{
     "name":"In Game",
-    "path":"folders/Sounds/Sprites/Spells/In Game.yy",
+    "path":"folders/Sprites/Spells/In Game.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
