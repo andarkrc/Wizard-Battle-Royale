@@ -485,6 +485,7 @@ with (oClientHandler) {
 	subscribe(other, PacketType.CL_REQ_THROW_POTION, other.client_request_throw_potion_callback);
 	subscribe(other, PacketType.CL_REQ_POTION_CLOUD_HIT, other.client_request_potion_cloud_hit_callback);
 	subscribe(other, PacketType.CL_REQ_POTION_FIRE_HIT, other.client_request_potion_fire_hit_callback);
+	subscribe(other, PacketType.CL_REQ_HIT_TRAP, other.client_request_hit_trap_callback);
 }
 
 /// @desc Damages a player.
