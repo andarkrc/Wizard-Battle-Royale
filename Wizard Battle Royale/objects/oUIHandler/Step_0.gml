@@ -25,6 +25,7 @@ if (window_has_focus()) {
 			flexpanel_calculate_layout(layer_get_flexpanel_node("JoinLobbyListMenu"), w, h, d);
 			flexpanel_calculate_layout(layer_get_flexpanel_node("JoinLobbyCodeMenu"), w, h, d);
 			flexpanel_calculate_layout(layer_get_flexpanel_node("JoinLobbyDirectMenu"), w, h, d);
+			flexpanel_calculate_layout(layer_get_flexpanel_node("PopupLayer"), w, h, d);
 			with (oUIElement) {
 				// this is used to say hey window just resized
 				event_user(0);
@@ -52,7 +53,18 @@ if (window_has_focus()) {
 			}
 		}
 	}
+	
 	if (hovered_element != noone) {
 		hovered_element.hovered = true;
 	}
+	
+	if (active_popup != noone) {
+		if (!instance_exists(active_popup)) {
+			active_popup = noone;
+		}
+	}
+	
+	if (active_popup == noone && array_length(popup_queue) != 0) {
+		activate_popup();
+	} 
 }

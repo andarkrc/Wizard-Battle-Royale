@@ -8,8 +8,11 @@ while (server < 0 && port < 65535) {
 	server = network_create_server(network_socket_tcp, port, max_clients);
 }
 
-if (server < 0) game_end();
-
-show_debug_message($"[SERVER] Started on port {port}");
+if (server < 0) {
+	oUIHandler.add_popup("Unknown Error", "For some reason, the internal server could not start.");
+	room_goto(rmMainMenu);
+} else {
+	oUIHandler.add_popup($"Server PORT: {port}", "Have Fun! (:", PopupType.INFO);
+}
 
 clients = [];

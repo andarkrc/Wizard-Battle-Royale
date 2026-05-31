@@ -106,5 +106,5 @@ can_be_collected = (horizontal_speed == 0 && vertical_speed == 0);
 if (thrown && !can_be_collected && !broken && hit_something) {
 	broken = true;
 	can_be_collected = false;
-	break_sound = audio_play_sound_at(sndPotionBreak, x, y, 0, 100 ,300, 20, false, 1);
+	break_sound = audio_play_sound_at(sndPotionBreak, x, y, 0, global.fallof_ref, global.fallof_max, 1, false, 1);
 }

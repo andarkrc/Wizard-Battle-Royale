@@ -5,4 +5,4 @@ with (oInternalServer) {
 	}
 }
 
-spellhit_sound = audio_play_sound_at(sndSpellhit, x, y, 0, 100, 300, 1, false, 1);
+spellhit_sound = audio_play_sound_at(sndSpellhit, x, y, 0, global.fallof_ref, global.fallof_max, 1, false, 1);

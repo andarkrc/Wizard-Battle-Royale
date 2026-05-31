@@ -222,7 +222,7 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 	}
 	
 	if (old_state != state && state == State.DASHING) {
-		dash_sound = audio_play_sound_at(sndDash, x, y, 0, 100, 300, 1, false, 1);
+		dash_sound = audio_play_sound_at(sndDash, x, y, 0, global.fallof_ref, global.fallof_max, 1, false, 1);
 	}
 	
 	old_state = state;
@@ -239,5 +239,5 @@ if (state == State.DASHING) {
 }
 
 if (state == State.RUNNING && !audio_is_playing(walking_sound)) {
-	walking_sound = audio_play_sound_at(sndWalk, x, y, 0, 100, 300, 1, false, 1);
+	walking_sound = audio_play_sound_at(sndWalk, x, y, 0, global.fallof_ref, global.fallof_max, 1, false, 1);
 }

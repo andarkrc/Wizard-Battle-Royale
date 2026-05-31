@@ -15,8 +15,22 @@ if (global.connection_type == "direct") {
 	}
 }
 
-
-if (is_connected < 0) room_goto(rmMainMenu);
+if (is_connected < 0) {
+	switch (global.connection_type) {
+		case "direct":
+			oUIHandler.add_popup("Connection Error", "Check the server's IP and PORT.");
+			break;
+		
+		case "standard":
+			oUIHandler.add_popup("Connection Error", "Lobby manager is not online. Try again later.");
+			break;
+		
+		default:
+			oUIHandler.add_popup("Unknown Error", $"Connection type <{global.connection_type}> is unknown.");
+			break;
+	}
+	room_goto(rmMainMenu);
+}
 
 client_id = -1;
 is_host = false;
@@ -25,7 +39,8 @@ ping_received = true;
 var keep_alive_callback = function()
 {
 	if (ping_received == false) {
-		show_debug_message($"No longer connected to server");
+		oUIHandler.add_popup("Connection Timeout", "The session is no longer active.");
+		room_goto(rmMainMenu);
 	}
 	ping_received = false;
 	

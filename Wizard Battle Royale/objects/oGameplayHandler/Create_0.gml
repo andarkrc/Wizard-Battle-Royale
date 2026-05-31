@@ -44,13 +44,13 @@ check_host = function (data) {
 
 server_info_host_disconnected_callback = function(data) {
 	if (!check_host(data)) return;
-	show_debug_message("HOST DISCONNECTED. RETURNING TO MAIN MENU.");
+	oUIHandler.add_popup("Session terminated", "Host disconnected. Returning to main menu...");
 	room_goto(rmMainMenu);
 }
 
 host_info_connection_rejected_callback = function(data) {
 	if (!check_host(data)) return;
-	show_debug_message($"CONNECTION REJECTED: {data.message}");
+	oUIHandler.add_popup("Connection Rejected", $"Reason: {data.message}");
 	room_goto(rmMainMenu);
 }
 
@@ -72,6 +72,7 @@ host_info_connection_accepted_callback = function(data) {
 
 host_sync_player_name_callback = function(data) {
 	if (!check_host(data)) return;
+	if (!ds_map_exists(player_refs, data.player_id)) return;
 	player_refs[? data.player_id].name = data.name;
 }
 
@@ -91,7 +92,7 @@ host_sync_player_state_callback = function(data) {
 	player_refs[? data.player_id].image_xscale = data.direction;
 	with (player_refs[? data.player_id]) {
 		if (state == State.DASHING) {
-			dash_sound = audio_play_sound_at(sndDash, x, y, 0, 100, 300, 1, false, 1);
+			dash_sound = audio_play_sound_at(sndDash, x, y, 0, global.fallof_ref, global.fallof_max, 1, false, 1);
 		}
 	}
 }
@@ -183,7 +184,7 @@ host_sync_consume_potion_callback = function(data) {
 		if (id_ == data.player_id) {
 			potion = data.potion_type;
 			drink_potion();
-			drink_sound = audio_play_sound_at(sndDrink, x, y, 0, 100, 300, 1, false, 1);
+			drink_sound = audio_play_sound_at(sndDrink, x, y, 0, global.fallof_ref, global.fallof_max, 1, false, 1);
 		}
 	}
 }
