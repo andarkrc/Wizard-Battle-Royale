@@ -92,6 +92,7 @@
     {"id":{"name":"oDecoy","path":"objects/oDecoy/oDecoy.yy",},},
     {"id":{"name":"oDirectConnectionSegment","path":"objects/oDirectConnectionSegment/oDirectConnectionSegment.yy",},},
     {"id":{"name":"oEarthShake","path":"objects/oEarthShake/oEarthShake.yy",},},
+    {"id":{"name":"oEntity","path":"objects/oEntity/oEntity.yy",},},
     {"id":{"name":"oFireball","path":"objects/oFireball/oFireball.yy",},},
     {"id":{"name":"oFullscreenToggle","path":"objects/oFullscreenToggle/oFullscreenToggle.yy",},},
     {"id":{"name":"oGameplayHandler","path":"objects/oGameplayHandler/oGameplayHandler.yy",},},

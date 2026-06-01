@@ -1,13 +1,12 @@
+event_inherited();
+
 id_ = -1;
 name = "";
 
+jump_power = 6.5 * METER;
+
 move_speed = 2.5 * METER;
-max_move_speed = 5.5 * METER;
-
-vertical_speed = 0;
-g = 20 * METER;
-
-jump_power = 6 * METER;
+max_move_speed = 7.5 * METER;
 
 dash_duration = 0.25;
 dash_speed = 2.5 * METER / dash_duration;
@@ -234,3 +233,26 @@ hit_trap = false;
 walking_sound = -1;
 dash_sound = -1;
 drink_sound = -1;
+
+dash = function(dir) {
+	state = State.DASHING;
+	current_dashes -= 1;
+	dash_direction = dir;
+	vertical_override = -dsin(dir) * dash_speed;
+	horizontal_override = dcos(dir) * dash_speed;
+	override_horizontal = true;
+	override_vertical = true;
+	can_collide_with_top_only = false;
+	call_later(dash_duration, time_source_units_seconds,
+		function() {
+			state = State.FALLING;
+			vertical_override = 0;
+			horizontal_override = 0;
+			vertical_speed = 0;
+			horizontal_speed = 0;
+			can_collide_with_top_only = true;
+			override_horizontal = false;
+			override_vertical = false;
+		}
+	);
+}

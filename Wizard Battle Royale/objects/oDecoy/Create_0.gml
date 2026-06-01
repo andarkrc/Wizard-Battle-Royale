@@ -1,10 +1,9 @@
+event_inherited();
 run_direction = 1; // Will be set on spawn: -1 (left) or 1 (right)
 source_name = "";  // Copy of the spawning player's name
 
 move_speed = 2.5 * METER;
 
-vertical_speed = 0;
-g = 20 * METER;
 
 dash_duration = 0.25;
 dash_speed = 2.5 * METER / dash_duration;
@@ -21,5 +20,6 @@ mask_index = sPlayerIdleRed;
 lifetime = global.decoy_duration;
 next_dash_timer = random(1);
 is_dashing = false;
-jump_power = 6 * METER;
+jump_power = 6.5 * METER;
 next_jump_timer = random(1);
+override_horizontal = true;

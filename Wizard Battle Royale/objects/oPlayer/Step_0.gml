@@ -1,3 +1,12 @@
+var collisions_top = [oCollisionBox, oCollisionBoxTopOnly];
+	
+var collision_down = collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom + 1, collisions_top, false, false);
+
+if (state != State.DASHING) {
+	override_horizontal = false;
+	override_vertical = false;
+}
+
 if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGAME_LOADING) {
 	var _dt = delta_time / 1000000;
 	var movement_inactive = (state == State.DASHING);
@@ -8,90 +17,27 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 	var input_ny = keyboard_check(ord("W"));
 	var input_x = input_px - input_nx;
 	var input_y = input_py - input_ny;
-	var collisions_side = [];
-	var collisions_vertical = [];
 	
-	input_x = input_x * !movement_inactive;
-	input_y = input_y * !movement_inactive;
-
-	var collisions_all = [oCollisionBox, oCollisionBoxTopOnly]
-	var collisions_full = oCollisionBox;
-	var collisions_top = [oCollisionBox, oCollisionBoxTopOnly];
-		
-	if (vertical_speed > 0) {
-		var collision_vertical = collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + vertical_speed * _dt, collisions_top, false, true);
-		if (collision_vertical != noone) {
-			while (collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + 1, collisions_top, false, false) == noone) {
-				y += 1;
-			}
-			vertical_speed = 0;
-		}
-	} else if (vertical_speed < 0) {
-		var collision_vertical = collision_rectangle(bbox_left, bbox_top + vertical_speed * _dt, bbox_right, bbox_top, collisions_full, false, false);
-		if (collision_vertical != noone) {
-			while (collision_rectangle(bbox_left, bbox_top - 1, bbox_right, bbox_top, collisions_full, false, false) == noone) {
-				y -= 1;
-			}
-			vertical_speed = 0;
-		}
-	}
-	var tornado = collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, oTornado, false, false);
-    forced_horizontal_speed = 0;
-    
-    if (tornado != noone) {
-        var extra_vspeed = random_range(tornado.player_interaction_speed_min, tornado.player_interaction_speed_max);
-        var extra_hspeed = random_range(tornado.player_interaction_speed_min, tornado.player_interaction_speed_max);
-        vertical_speed = tornado.vertical_speed - extra_vspeed;
-        forced_horizontal_speed = tornado.horizontal_speed + extra_hspeed;
-    }
-    
-	var distance_horizontal = input_x * move_speed * _dt;
-    if (forced_horizontal_speed != 0) {
-        distance_horizontal = forced_horizontal_speed * _dt;
-    }
-    
-	var distance_vertical = vertical_speed * _dt;
-	if (state == State.DASHING) {
-		distance_horizontal = dash_speed * dcos(dash_direction) * _dt;
-		distance_vertical = dash_speed * dsin(-dash_direction) * _dt;
-	}
+	input_x *= !movement_inactive;
+	input_y *= !movement_inactive;
 	
-	var collisions = move_and_collide(distance_horizontal, distance_vertical, oCollisionBox);
-	
-	if (vertical_speed < 0 && array_length(collisions_vertical) != 0) {
-		vertical_speed = 0;
-	}
-	
-	var collision_down = collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + 1, collisions_top, false, true);
-	
-	if (collision_down == noone) {
-		vertical_speed += g * _dt;
-	} else {
-		vertical_speed = 0;
-		current_dashes = total_dashes;
-		if (state != State.DASHING) {
-			while (collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, collisions_all, false, false) != noone) {
-				y -= 1;
-			}
-		}
+	horizontal_speed = 0;
+	if (input_x != 0) {
+		horizontal_speed = input_x * move_speed;
 	}
 	
 	if (keyboard_check_pressed(vk_shift) && !movement_inactive && current_dashes > 0) {
 		if (collision_down == noone || (collision_down.object_index == oCollisionBoxTopOnly && input_y > 0)) {
-			state = State.DASHING;
-			current_dashes -= 1;
-			if (input_x == 0 && input_y == 0) {
-				dash_direction = 90;
-			} else {
-				dash_direction = point_direction(0, 0, input_x, input_y);
+			var dir = 90;
+			if (input_x != 0 || input_y != 0) {
+				dir = darctan2(-input_y, input_x);
 			}
-			call_later(dash_duration, time_source_units_seconds,
-				function() {
-					state = State.FALLING;
-					vertical_speed = 0;
-				}
-			);
+			dash(dir);
 		}
+	}
+	
+	if (collision_down && state != State.DASHING) {
+		current_dashes = total_dashes;
 	}
 	
 	if (keyboard_check_pressed(vk_space) && !movement_inactive) {
@@ -99,29 +45,6 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 			vertical_speed = -jump_power;
 			state = State.JUMPING;
 		}
-	}
-	
-	if (state  == State.DASHING) {
-		
-	}
-	else if (collision_down == noone && state != State.JUMPING) {
-		state = (input_x != 0) ? State.SIDE_FALLING : State.FALLING;
-	} else {
-		if (input_x != 0) {
-			state = State.RUNNING;
-		} else {
-			state = State.IDLE;
-		}
-	}
-	
-	if (state == State.RUNNING || state == State.SIDE_FALLING || state == State.DASHING) {
-		image_xscale = (distance_horizontal < 0) ? -image_scale : image_scale;
-	} else {
-		image_xscale = image_scale;
-	}
-	
-	if (array_length(collisions_side) == 0 || array_length(collisions_vertical) != 0) {
-		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_POSITION, {x: x, y: y}));
 	}
 	
 	var holding_throwable = (potion != Potion.NONE && array_contains(global.throwable_potions, potion));
@@ -225,7 +148,33 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 		dash_sound = audio_play_sound_at(sndDash, x, y, 0, global.fallof_ref, global.fallof_max, 1, false, 1);
 	}
 	
+	if (horizontal_speed != 0 || vertical_speed != 0) {
+		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_POSITION, {x: x, y: y}));
+	}
+	
 	old_state = state;
+}
+
+// after input detection move the player
+move();
+
+if (state  == State.DASHING) {
+	
+}
+else if (collision_down == noone && state != State.JUMPING) {
+	state = (horizontal_speed != 0) ? State.SIDE_FALLING : State.FALLING;
+} else {
+	if (horizontal_speed != 0) {
+		state = State.RUNNING;
+	} else {
+		state = State.IDLE;
+	}
+}
+
+if (state == State.RUNNING || state == State.SIDE_FALLING || state == State.DASHING) {
+	image_xscale = (horizontal_speed < 0) ? -image_scale : image_scale;
+} else {
+	image_xscale = image_scale;
 }
 
 if (state == State.DASHING) {

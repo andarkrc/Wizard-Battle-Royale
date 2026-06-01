@@ -1,6 +1,4 @@
-vertical_speed = 0;
-g = 20 * METER;
-
+event_inherited();
 image_scale = 1.5;
 
 image_xscale = image_scale;

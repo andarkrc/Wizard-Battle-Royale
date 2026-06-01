@@ -12,7 +12,10 @@
     "name":"Spells",
     "path":"folders/Objects/Spells.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"oEntity",
+    "path":"objects/oEntity/oEntity.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

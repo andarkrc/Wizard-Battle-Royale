@@ -1,3 +1,5 @@
+event_inherited();
+
 caster_id = -1;
 spell_id = -1;
 

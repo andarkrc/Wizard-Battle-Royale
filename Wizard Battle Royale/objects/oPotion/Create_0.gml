@@ -1,11 +1,7 @@
+event_inherited();
+
 id_ = -1;
 potion = Potion.NONE;
-
-g = 10 * METER;
-
-horizontal_speed = 0;
-
-vertical_speed = 0;
 
 image_speed = 0;
 

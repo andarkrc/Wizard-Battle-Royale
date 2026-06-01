@@ -46,57 +46,22 @@ if (broken) {
 	exit; // Do not execute movement code while broken
 }
 
-var collisions_all = [oCollisionBox, oCollisionBoxTopOnly]
-var collisions_full = oCollisionBox;
-var collisions_top = [oCollisionBox, oCollisionBoxTopOnly];
-		
-var hit_vertical = false;
-if (vertical_speed > 0) {
-	var collision_vertical = collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + vertical_speed * _dt, collisions_top, false, true);
-	if (collision_vertical != noone) {
-		hit_vertical = true;
-		while (collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + 1, collisions_top, false, false) == noone) {
-			y += 1;
-		}
-		vertical_speed = 0;
-	}
-} else if (vertical_speed < 0) {
-	var collision_vertical = collision_rectangle(bbox_left, bbox_top + vertical_speed * _dt, bbox_right, bbox_top, collisions_full, false, false);
-	if (collision_vertical != noone) {
-		hit_vertical = true;
-		while (collision_rectangle(bbox_left, bbox_top - 1, bbox_right, bbox_top, collisions_full, false, false) == noone) {
-			y -= 1;
-		}
-		vertical_speed = 0;
-	}
-}
-
-var distance_horizontal = horizontal_speed * _dt;
-var distance_vertical = vertical_speed * _dt;
-
-var collisions = move_and_collide(distance_horizontal, distance_vertical, oCollisionBox);
-	
-var collision_down = collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + 1, collisions_top, false, true);
-	
-if (collision_down == noone) {
-	vertical_speed += g * _dt;
-} else {
-	vertical_speed = 0;
-}
+move();
 
 var hit_something = false;
 if (thrown) {
-	if (hit_vertical || collision_down != noone || array_length(collisions) > 0) {
+	if (collision_rectangle(bbox_left - 1, bbox_top - 1, bbox_right + 1, bbox_bottom + 1, [oCollisionBox, oCollisionBoxTopOnly], false, false)) {
 		hit_something = true;
 	}
 	
 	var collided_players = ds_list_create();
-	var collision_no = collision_rectangle_list(bbox_left, bbox_top, bbox_right, bbox_bottom, oPlayer, false, false, collided_players, false);
-	for (var i = 0; i < collision_no; i++) {
-		if (collided_players[| i].id_ != thrower_id) {
-			hit_something = true;
-			break;
+	var col_no = collision_rectangle_list(bbox_left - 1, bbox_top - 1, bbox_right + 1, bbox_bottom + 1, oPlayer, false, false, collided_players, false);
+	for (var i = 0; i < col_no; i++) {
+		if (collided_players[| i].id_ == thrower_id) {
+			continue;
 		}
+		hit_something = true;
+		break;
 	}
 	ds_list_destroy(collided_players);
 }

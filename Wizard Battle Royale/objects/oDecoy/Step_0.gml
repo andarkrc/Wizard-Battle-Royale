@@ -7,52 +7,22 @@ if (lifetime <= 0) {
 	return;
 }
 
-// Collision setup
-var collisions_all = [oCollisionBox, oCollisionBoxTopOnly];
-var collisions_full = oCollisionBox;
 var collisions_top = [oCollisionBox, oCollisionBoxTopOnly];
 
-// Vertical collision
-if (vertical_speed > 0) {
-	var collision_vertical = collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + vertical_speed * _dt, collisions_top, false, true);
-	if (collision_vertical != noone) {
-		while (collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + 1, collisions_top, false, false) == noone) {
-			y += 1;
-		}
-		vertical_speed = 0;
-	}
-} else if (vertical_speed < 0) {
-	var collision_vertical = collision_rectangle(bbox_left, bbox_top + vertical_speed * _dt, bbox_right, bbox_top, collisions_full, false, false);
-	if (collision_vertical != noone) {
-		while (collision_rectangle(bbox_left, bbox_top - 1, bbox_right, bbox_top, collisions_full, false, false) == noone) {
-			y -= 1;
-		}
-		vertical_speed = 0;
-	}
-}
+var collision_down = collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + 1, collisions_top, false, false);
+
 
 // Movement
-var distance_horizontal = run_direction * move_speed * _dt;
-var distance_vertical = vertical_speed * _dt;
-if (is_dashing) {
-	distance_horizontal = run_direction * dash_speed * _dt;
-	distance_vertical = 0;
-}
-
-var collisions = move_and_collide(distance_horizontal, distance_vertical, oCollisionBox);
-
-// Ground check
-var collision_down = collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + 1, collisions_top, false, true);
-
-if (collision_down == noone) {
-	vertical_speed += g * _dt;
+if (!is_dashing) {
+	horizontal_override = run_direction * move_speed;
 } else {
-	vertical_speed = 0;
-	if (!is_dashing) {
-		while (collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, collisions_all, false, false) != noone) {
-			y -= 1;
-		}
-	}
+	horizontal_override = run_direction * dash_speed;
+}
+if (is_dashing) {
+	vertical_override = 0;
+	override_vertical = true;
+} else {
+	override_vertical = false;
 }
 
 // On ground: count down jump timer, then jump
@@ -82,6 +52,9 @@ if (!is_dashing && collision_down == noone) {
 		);
 	}
 }
+
+move();
+
 // State management
 if (state == State.DASHING) {
 	// Keep dashing state
