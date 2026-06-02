@@ -14,10 +14,10 @@ global.server_port = 6000;
 global.connection_type = "direct";
 global.connection_role = "";
 
-global.external_server_ip = "localhost";
-global.external_server_port = 6100;
+global.external_server_ip = "0.tcp.ngrok.io";
+global.external_server_port = 15839;
 
-global.external_server_port_udp = 6100;
+global.external_server_port_udp = 15839;
 
 // lobby settings
 global.lobby_name = "";

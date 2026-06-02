@@ -1,3 +1,4 @@
+var _dt = delta_time / 1000000;
 var collisions_top = [oCollisionBox, oCollisionBoxTopOnly];
 	
 var collision_down = collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom + 1, collisions_top, false, false);
@@ -8,7 +9,6 @@ if (state != State.DASHING) {
 }
 
 if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGAME_LOADING) {
-	var _dt = delta_time / 1000000;
 	var movement_inactive = (state == State.DASHING);
 	combat_active = (oGameplayHandler.state == GameState.GAME) || 1;
 	var input_px = keyboard_check(ord("D"));
@@ -46,6 +46,11 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 			state = State.JUMPING;
 		}
 	}
+	
+	var old_x = x;
+	var old_y = y;
+	
+	move();
 	
 	var holding_throwable = (potion != Potion.NONE && array_contains(global.throwable_potions, potion));
 	
@@ -140,41 +145,52 @@ if (id_ == oClientHandler.client_id && oGameplayHandler.state != GameState.PREGA
 		devil_pact_completed = false;
 	}
 	
-	if (old_state != state) {
-		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_STATE, {state: state, direction: image_xscale}));
-	}
-	
-	if (old_state != state && state == State.DASHING) {
-		dash_sound = audio_play_sound_at(sndDash, x, y, 0, global.fallof_ref, global.fallof_max, 1, false, 1);
-	}
-	
-	if (horizontal_speed != 0 || vertical_speed != 0) {
+	if (old_x != x || old_y != y) {
 		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_POSITION, {x: x, y: y}));
+	}
+	
+	if (state  == State.DASHING) {
+	
+	}
+	else if (collision_down == noone && state != State.JUMPING) {
+		state = (horizontal_speed != 0) ? State.SIDE_FALLING : State.FALLING;
+	} else {
+		if (horizontal_speed != 0) {
+			state = State.RUNNING;
+		} else {
+			state = State.IDLE;
+		}
+	}
+	
+	var old_image_xscale = image_xscale;
+	if (state == State.RUNNING || state == State.SIDE_FALLING || state == State.DASHING) {
+		image_xscale = (horizontal_speed < 0) ? -image_scale : image_scale;
+	} else {
+		image_xscale = image_scale;
+	}
+	
+	if (old_state != state || image_xscale != old_image_xscale) {
+		packet_send(oClientHandler.client, packet_create(NWTarget.HOST, PacketType.CL_INFO_PLAYER_STATE, {state: state, direction: image_xscale}));
 	}
 	
 	old_state = state;
 }
 
-// after input detection move the player
-move();
+// move to target
 
-if (state  == State.DASHING) {
+if (is_moving_to_target) {
+	var target_dir = point_direction(x, y, move_target_x, move_target_y);
 	
-}
-else if (collision_down == noone && state != State.JUMPING) {
-	state = (horizontal_speed != 0) ? State.SIDE_FALLING : State.FALLING;
-} else {
-	if (horizontal_speed != 0) {
-		state = State.RUNNING;
+	var movement_speed = (state == State.DASHING) ? dash_speed : move_speed;
+	
+	if (abs(x - move_target_x) < 1 || abs(y - move_target_y) < 1) {
+		x = move_target_x;
+		y = move_target_y;
+		is_moving_to_target = false;
 	} else {
-		state = State.IDLE;
+		x += movement_speed * _dt;
+		y += movement_speed * _dt
 	}
-}
-
-if (state == State.RUNNING || state == State.SIDE_FALLING || state == State.DASHING) {
-	image_xscale = (horizontal_speed < 0) ? -image_scale : image_scale;
-} else {
-	image_xscale = image_scale;
 }
 
 if (state == State.DASHING) {

@@ -80,8 +80,26 @@ host_sync_player_position_callback = function(data) {
 	if (!check_host(data)) return;
 	if (data.player_id == oClientHandler.client_id && data.accepted) return;
 	if (!ds_map_exists(player_refs, data.player_id)) return;
-	player_refs[? data.player_id].x = data.x;
-	player_refs[? data.player_id].y = data.y;
+	
+	if (!data.accepted) {
+		player_refs[? data.player_id].x = data.x;
+		player_refs[? data.player_id].y = data.y;
+		player_refs[? data.player_id].is_moving_to_target = false;
+		
+		return;
+	}
+	
+	with (oPlayer) {
+		if (id_ == data.player_id) {
+			if (is_moving_to_target) {
+				x = move_target_x;
+				y = move_target_y;
+			}
+			move_target_x = data.x;
+			move_target_y = data.y;
+			is_moving_to_target = true;
+		}
+	}
 }
 
 host_sync_player_state_callback = function(data) {
@@ -385,6 +403,11 @@ host_info_client_disconnected_callback = function(data) {
 	}
 }
 
+server_info_lobby_code_callback = function(data) {
+	if (!check_host(data)) return;
+	oUIHandler.add_popup($"Lobby code: {global.lobby_code}", "Have Fun! (:", PopupType.INFO);
+}
+
 with (oClientHandler) {
 	subscribe(other, PacketType.SV_INFO_HOST_DISCONNECTED, other.server_info_host_disconnected_callback);
 	subscribe(other, PacketType.HOST_SYNC_PLAYER, other.host_sync_player_callback);
@@ -412,6 +435,7 @@ with (oClientHandler) {
 	subscribe(other, PacketType.HOST_SYNC_DECOY_SPAWN, other.host_sync_decoy_spawn_callback);
 	subscribe(other, PacketType.HOST_SYNC_POTION_UPDATE, other.host_sync_potion_update_callback);
 	subscribe(other, PacketType.HOST_INFO_CLIENT_DISCONNECTED, other.host_info_client_disconnected_callback);
+	subscribe(other, PacketType.SV_INFO_LOBBY_CODE, other.server_info_lobby_code_callback);
 }
 
 clean_runtime_objects = function() {

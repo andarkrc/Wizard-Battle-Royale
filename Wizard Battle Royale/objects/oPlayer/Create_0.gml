@@ -15,6 +15,10 @@ total_dashes = 1;
 current_dashes = 1;
 max_dashes = 5;
 
+move_target_x = 0;
+move_target_y = 0;
+
+is_moving_to_target = false;
 
 hp = 100;
 
@@ -255,4 +259,12 @@ dash = function(dir) {
 			override_vertical = false;
 		}
 	);
+	dash_sound = audio_play_sound_at(sndDash, x, y, 0, global.fallof_ref, global.fallof_max, 1, false, 1);
+}
+
+get_movement_direction = function() {
+	if (is_moving_to_target) {
+		return (move_target_x < x) ? -1 : 1;
+	}
+	return (horizontal_speed < 0) ? -1 : 1;
 }

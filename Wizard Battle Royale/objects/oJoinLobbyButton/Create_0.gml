@@ -16,7 +16,12 @@ click_action = function() {
 	
 	with (oLobbyList) {
 		scroll_offset = 0;
-	} 
+	}
+	
+	with (oSearchList) {
+		unselect_group_members();
+		selected = true;
+	}
 	
 	with (oLobbyNameFilterTextField) {
 		text = "";

@@ -115,7 +115,6 @@ client_info_player_position_callback = function(data) {
 	players_map[? data.sender_id].x = data.x;
 	players_map[? data.sender_id].y = data.y;
 	
-
 	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_PLAYER_POSITION, {player_id: data.sender_id, x: data.x, y: data.y, accepted: true}));
 	if (data.y > void_y) {
 		damage_player(data.sender_id, 100);
@@ -167,7 +166,7 @@ client_request_spellcast_callback = function(data) {
 		player_info.spells[data.slot_index].type = Spell.NONE;
 	}
 	
-	packet_send(oClientHandler.client, packet_create(data.sender_id, PacketType.HOST_SYNC_SPELL_SLOT,
+	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_SLOT,
 		{
 			player_id: data.sender_id,
 			slot_index: data.slot_index,
@@ -237,7 +236,7 @@ client_request_spell_get_callback = function(data) {
 		spell_platforms[data.id]));
 	
 	
-	packet_send(oClientHandler.client, packet_create(data.sender_id, PacketType.HOST_SYNC_SPELL_SLOT,
+	packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_SLOT,
 		{
 			player_id: data.sender_id, 
 			slot_index: idx, 
@@ -286,7 +285,7 @@ client_request_consume_potion_callback = function(data) {
 		info.spells[idx].type = Spell.FIREBALL;
 		info.spells[idx].casts_remaining = spell_get_max_casts(Spell.FIREBALL);
 		
-		packet_send(oClientHandler.client, packet_create(data.sender_id, PacketType.HOST_SYNC_SPELL_SLOT,
+		packet_send(oClientHandler.client, packet_create(NWTarget.ALL, PacketType.HOST_SYNC_SPELL_SLOT,
 		{
 			player_id: data.sender_id, 
 			slot_index: idx, 

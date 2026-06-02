@@ -129,6 +129,10 @@ handle_create_lobby = function(sock, data) {
 	lobby.max_player_count = data.max_player_count;
 	lobby.public = data.public;
 	
+	if (lobby.name == "") {
+		lobby.name = $"{data.player_name}'s Lobby";
+	}
+	
 	ds_map_add(lobby_code_to_lobby, code, lobby);
 	ds_map_add(client_id_to_lobby, sock, lobby);
 	
