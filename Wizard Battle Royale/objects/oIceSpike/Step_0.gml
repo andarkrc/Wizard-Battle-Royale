@@ -1,8 +1,4 @@
-var _dt = delta_time / 1000000;
-vertical_speed += g * _dt;
-
-x += horizontal_speed * _dt;
-y += vertical_speed * _dt;
+move();
 
 var total_speed = abs(horizontal_speed) + abs(vertical_speed);
 
@@ -15,7 +11,7 @@ part_type_direction(particles, move_dir, move_dir, 0, 5);
 part_particles_create(oGameplayHandler.particle_system, x, y, particles, 2);
 
 
-var collision = collision_ellipse(bbox_left, bbox_top, bbox_right, bbox_bottom, oCollisionBox, false, true);
+var collision = collision_ellipse(bbox_left - 1, bbox_top - 1, bbox_right + 1, bbox_bottom + 1, oCollisionBox, false, true);
 
 var collided_players = ds_list_create();
 var collision_no = collision_ellipse_list(bbox_left, bbox_top, bbox_right, bbox_bottom, oPlayer, false, false, collided_players, false);

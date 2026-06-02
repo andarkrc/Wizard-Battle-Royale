@@ -1,7 +1,4 @@
-var _dt = delta_time  / 1000000;
-
-x += horizontal_speed * _dt;
-y += vertical_speed * _dt;
+move();
 
 
 var particles = particle_get_type(psWind, 0);

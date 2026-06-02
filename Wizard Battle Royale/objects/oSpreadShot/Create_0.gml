@@ -1,8 +1,6 @@
 event_inherited();
 move_speed = 12 * METER;
 
-vertical_speed = 0;
-horizontal_speed = 0;
 max_particle_life = 25;
 
 g = 0;

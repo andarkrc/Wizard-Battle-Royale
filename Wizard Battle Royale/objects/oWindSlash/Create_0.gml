@@ -1,10 +1,6 @@
 event_inherited();
 move_speed = 10 * METER;
 
-vertical_speed = 0;
-
-horizontal_speed = 0;
-
 image_xscale = 2;
 image_yscale = 3;
 
