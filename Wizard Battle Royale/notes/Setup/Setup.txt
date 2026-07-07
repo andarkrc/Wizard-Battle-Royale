@@ -31,7 +31,7 @@ Aici se seteaza "coding style" (naming conventions)
 - Instance Variable: all_lower
 - Local Variabble: all_lower
 - Function Parameter: all_lower
-- Enum: ALL_UPPER
+- Enum: UpperCamelCase
 - Enum Member: ALL_UPPER
 - Macro: ALL_UPPER
 - Function: all_lower

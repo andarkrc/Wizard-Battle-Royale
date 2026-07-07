@@ -2,5 +2,6 @@ enum GameState {
 	LOBBY,
 	PREGAME_LOADING,
 	GAME,
-	POSTGAME
+	POSTGAME,
+    IN_TRANSITION
 }

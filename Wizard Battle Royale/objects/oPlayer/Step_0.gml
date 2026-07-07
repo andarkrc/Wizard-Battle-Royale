@@ -1,7 +1,7 @@
 var _dt = delta_time / 1000000;
 var collisions_top = [oCollisionBox, oCollisionBoxTopOnly];
 	
-var collision_down = collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom + 1, collisions_top, false, false);
+var collision_down = collision_rectangle(bbox_left, bbox_bottom, bbox_right, bbox_bottom + 1, collisions_top, false, false);
 
 if (state != State.DASHING) {
 	override_horizontal = false;

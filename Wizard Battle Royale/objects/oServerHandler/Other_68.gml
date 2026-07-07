@@ -37,6 +37,7 @@ if (async_load[? "type"] == network_type_data &&
 	var version = buffer_read(packet, STRING);
 	var target = buffer_read(packet, S32);
 	var type = buffer_read(packet, S32);
+	var is_host = (sock == clients[0]);
 	switch (target) {
 		case NWTarget.SERVER:
 			if (version != global.networking_version) {
@@ -55,23 +56,18 @@ if (async_load[? "type"] == network_type_data &&
 			break;
 		
 		case NWTarget.HOST:
-			var is_host = (sock == clients[0]);
 			packet_send(clients[0], packet_change_client_to_server(packet, sock, is_host));
 			break;
 		
 		case NWTarget.OTHER:
-			var is_host = (sock == clients[0]);
 			packet_send_multiple_except(clients, packet_change_client_to_server(packet, sock, is_host), sock);
 			break;
 		
 		case NWTarget.ALL:
-			var is_host = (sock == clients[0]); 
 			packet_send_multiple(clients, packet_change_client_to_server(packet, sock, is_host));
 			break;
 		
 		default:
-			// If packet is malformed, it's gonna crash xd
-			var is_host = (sock == clients[0]);
 			packet_send(target, packet_change_client_to_server(packet, sock, is_host));
 			break;
 	}

@@ -26,6 +26,7 @@ if (window_has_focus()) {
 			flexpanel_calculate_layout(layer_get_flexpanel_node("JoinLobbyCodeMenu"), w, h, d);
 			flexpanel_calculate_layout(layer_get_flexpanel_node("JoinLobbyDirectMenu"), w, h, d);
 			flexpanel_calculate_layout(layer_get_flexpanel_node("PopupLayer"), w, h, d);
+            flexpanel_calculate_layout(layer_get_flexpanel_node("UILayerLoading"), w, h, d);
 			with (oUIElement) {
 				// this is used to say hey window just resized
 				event_user(0);
@@ -64,7 +65,12 @@ if (window_has_focus()) {
 		}
 	}
 	
-	if (active_popup == noone && array_length(popup_queue) != 0) {
+	if (active_popup == noone && array_length(popup_queue) != 0 && transition_state = TransitionState.NONE) {
 		activate_popup();
-	} 
+	}
+    
+    if (transition_state == TransitionState.HALF_POINT && can_resume_transition) {
+        can_resume_transition = false;
+        activate_transition_half_end();
+    }
 }

@@ -44,14 +44,22 @@ check_host = function (data) {
 
 server_info_host_disconnected_callback = function(data) {
 	if (!check_host(data)) return;
-	oUIHandler.add_popup("Session terminated", "Host disconnected. Returning to main menu...");
-	room_goto(rmMainMenu);
+        
+	oUIHandler.activate_transition(function() {
+        room_goto(rmMainMenu);
+    });
+    
+    oUIHandler.add_popup("Session terminated", "Host disconnected. Returning to main menu...");
 }
 
 host_info_connection_rejected_callback = function(data) {
 	if (!check_host(data)) return;
-	oUIHandler.add_popup("Connection Rejected", $"Reason: {data.message}");
-	room_goto(rmMainMenu);
+        
+    oUIHandler.activate_transition(function() {
+    	room_goto(rmMainMenu);
+    });
+    
+    oUIHandler.add_popup("Connection Rejected", $"Reason: {data.message}");
 }
 
 host_sync_player_callback = function(data) {
@@ -362,32 +370,35 @@ host_sync_spell_slot_number_callback = function(data) {
 host_info_map_loading_callback = function(data) {
 	if (!check_host(data)) return;
 	
-	layer_set_visible("Foreground", true);
-	layer_set_visible("Foreground_Text", true);
-	
-	state = GameState.PREGAME_LOADING;
-	
-	lobby.Cleanup(false);
-	init_all_rooms();
+    if (!instance_exists(oInternalServer)) {
+    	oUIHandler.activate_transition_half(function() {
+        	state = GameState.PREGAME_LOADING;
+        	lobby.Cleanup(false);
+        	init_all_rooms();
+        });
+    } else {
+        state = GameState.PREGAME_LOADING;
+        lobby.Cleanup(false);
+        init_all_rooms();
+    }
 }
 
 host_info_dungeon_room_callback = function(data) {
 	if (!check_host(data)) return;
 	array_push(rooms, RoomLoader.Load(asset_get_index(data.room_index), data.world_x, data.world_y));
-	show_debug_message($"Received a new room {array_length(rooms)}");
+	//show_debug_message($"Received a new room {array_length(rooms)}");
 }
 
 host_info_game_start_callback = function(data) {
 	if (!check_host(data)) return;
-		
-	layer_set_visible("Foreground", false);
-	layer_set_visible("Foreground_Text", false);
-	
+        
 	state = GameState.GAME;
 	
 	with (oUIHandler) {
 		should_stretch_view = false;
 	}
+    
+    oUIHandler.resume_transition();
 }
 
 host_info_client_disconnected_callback = function(data) {

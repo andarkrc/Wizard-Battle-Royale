@@ -6,7 +6,9 @@ text = "Join";
 level = 2;
 
 click_action = function() {
-	global.connection_role = "guest";
-	deactivate_menus();
-	room_goto(rmGame);
+    oUIHandler.activate_transition(function() {
+    	global.connection_role = "guest";
+    	deactivate_menus();
+    	room_goto(rmGame);
+    });
 }

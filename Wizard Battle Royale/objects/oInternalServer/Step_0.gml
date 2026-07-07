@@ -50,9 +50,13 @@ if (state != GameState.GAME && time_source_get_state(ts_restock_consumables) == 
 }
 
 if (keyboard_check_pressed(vk_enter) && state == GameState.LOBBY) {
-	state = GameState.PREGAME_LOADING;
-	show_debug_message("STARTED MAP GENERATION");
-	generate_map();
+	state = GameState.IN_TRANSITION;
+    
+    oUIHandler.activate_transition_half(function() {
+        state = GameState.PREGAME_LOADING;
+        show_debug_message("STARTED MAP GENERATION");
+        generate_map();
+    });
 }
 
 if (state == GameState.PREGAME_LOADING) {

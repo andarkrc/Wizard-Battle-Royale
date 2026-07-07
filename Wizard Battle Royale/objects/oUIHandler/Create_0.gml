@@ -6,6 +6,21 @@ enum PopupType {
 	INFO
 };
 
+enum TransitionState {
+    NONE,
+    FADE_IN,
+    HALF_POINT,
+    FADE_OUT
+};
+
+transition_state = TransitionState.NONE;
+transition_progress = 0;
+transition_time = 1;
+transition_speed = 1 / transition_time;
+transition_points = [];
+transition_function = function() {};
+can_resume_transition = false;
+
 active_popup = noone;
 
 popup_queue = [];
@@ -35,4 +50,56 @@ activate_popup = function() {
 			break;
 	}
 	array_shift(popup_queue);
+}
+
+activate_transition = function(transition_callback = function() {}) {
+    if (transition_state != TransitionState.NONE) return;
+    transition_state = TransitionState.FADE_IN;
+    transition_progress = 0;
+    transition_function = transition_callback;
+    call_later(transition_time, time_source_units_seconds, function() {
+        transition_state = TransitionState.FADE_OUT;
+        transition_progress = 1;
+        layer_set_visible("UILayerLoading", true);
+        transition_function();
+        layer_set_visible("UILayerLoading", false);
+        call_later(transition_time, time_source_units_seconds, function() {
+            transition_state = TransitionState.NONE;
+        });
+    });
+}
+
+activate_transition_half = function(transition_callback = function() {}) {
+    if (transition_state != TransitionState.NONE) return;
+    can_resume_transition = false;
+    transition_state = TransitionState.FADE_IN;
+    transition_progress = 0;
+    transition_function = transition_callback;
+    call_later(transition_time, time_source_units_seconds, function() {
+        transition_state = TransitionState.HALF_POINT;
+        transition_progress = 1;
+        layer_set_visible("UILayerLoading", true);
+        transition_function();
+    });
+}
+
+activate_transition_half_end = function() {
+    transition_state = TransitionState.FADE_OUT;
+    layer_set_visible("UILayerLoading", false);
+    call_later(transition_time, time_source_units_seconds, function() {
+        transition_state = TransitionState.NONE; 
+    });
+}
+
+resume_transition = function() {
+    can_resume_transition = true;
+}
+
+repeat (15) {
+    array_push(transition_points, 
+    {
+        x: random(1), 
+        y: random(1),
+        scale: random_range(0.25, 1)
+    });
 }
